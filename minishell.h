@@ -1,5 +1,4 @@
 #ifndef MINISHELL_H
-#ifndef MINISHELL_H
 # define MINISHELL_H
 
 # include "builtin/builtin.h"
@@ -8,12 +7,6 @@
 # include "lexer/lexer.h"
 # include "parser/parser.h"
 # include "signal/signal.h"
-
-# include "builtin/builtin.h"
-# include "executor/executor.h"
-# include "expander/expander.h"
-# include "lexer/lexer.h"
-# include "parser/parser.h"
 # include <ctype.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -68,5 +61,4 @@ typedef struct s_ast
 	int				argc;
 }					t_ast;
 
-#endif
 #endif
