@@ -20,11 +20,9 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-struct				builtin
-{
-	char			*name;
-	int				(*f)(int argc, char *argv[]);
-}					t_builtin;
+
+
+
 typedef enum e_node_type
 {
 	NODE_COMMAND,
