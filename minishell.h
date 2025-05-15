@@ -1,32 +1,36 @@
-# ifndef MINISHELL_H
+#ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include "builtin/builtin.h"
-#include "executor/executor.h"
-#include "expander/expander.h"
-#include "lexer/lexer.h"
-#include "parser/parser.h"
+# include "builtin/builtin.h"
+# include "executor/executor.h"
+# include "expander/expander.h"
+# include "lexer/lexer.h"
+# include "parser/parser.h"
+# include "signal/signal.h"
 
-struct builtin {
-    char *name;
-    int (*f)(int argc,char *argv[]);
-} t_builtin;
+struct				builtin
+{
+	char			*name;
+	int				(*f)(int argc, char *argv[]);
+}					t_builtin;
 
-typedef enum e_node_type {
-    NODE_COMMAND, 
-    NODE_PIPE,
-    NODE_REDIR_OUT,
-    NODE_REDIR_IN,
-    NODE_REDIR_APPEND,
-    NODE_HEREDOC      
-}  t_node_type;
+typedef enum e_node_type
+{
+	NODE_COMMAND,
+	NODE_PIPE,
+	NODE_REDIR_OUT,
+	NODE_REDIR_IN,
+	NODE_REDIR_APPEND,
+	NODE_HEREDOC
+}					t_node_type;
 
-typedef struct s_ast {
-    t_node_type type;
-    struct s_ast *left;
-    struct s_ast *right;
-    char **argv;
-    int argc;
-} t_ast;
+typedef struct s_ast
+{
+	t_node_type		type;
+	struct s_ast	*left;
+	struct s_ast	*right;
+	char			**argv;
+	int				argc;
+}					t_ast;
 
-# endif
+#endif
