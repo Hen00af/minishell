@@ -12,7 +12,7 @@ int	main(void)
 static void	prompt(void)
 {
 	char	*cmd;
-	t_token *token_head;
+	t_token	*token_head;
 
 	cmd = readline("minishell#");
 	if (!cmd)

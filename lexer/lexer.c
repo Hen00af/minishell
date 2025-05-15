@@ -1,18 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/15 20:23:45 by nando             #+#    #+#             */
+/*   Updated: 2025/05/15 20:24:02 by nando            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
-typedef struct cmd {
-    int argc;
-    char **argv;
-    int capa;
-    int status;
-    int pid;
-    struct cmd *next;
-}t_cmd;
-
-t_token *lexer(t_cmd cmd)
+t_token	*lexer(t_cmd cmd)
 {
-	t_token token_head;
-
+	t_token	token_head;
 
 	return (token_head);
 }

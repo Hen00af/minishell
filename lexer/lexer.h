@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 20:08:16 by nando             #+#    #+#             */
-/*   Updated: 2025/05/15 20:12:15 by nando            ###   ########.fr       */
+/*   Updated: 2025/05/15 20:22:58 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ typedef enum e_tokentype
 
 typedef struct s_token
 {
-	TokenType type; // WORD, PIPE, REDIR_IN…など
-	char *text;     // 切り出した文字列
+	TokenType type;      // WORD, PIPE, REDIR_IN…など
+	char *text;          // 切り出した文字列
 	struct s_token *next // 次トークンへのポインタ
 }	t_token;
 
