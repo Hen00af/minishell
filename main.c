@@ -12,13 +12,14 @@ int	main(void)
 static void	prompt(void)
 {
 	char	*cmd;
+	t_token *token_head;
 
 	cmd = readline("minishell#");
 	if (!cmd)
 		exit(0);
 	add_history(cmd);
-	// tokens = lexer(cmd);
-	// parser(tokens);
+	// token_head = lexer(cmd);
+	// parser(token_head);
 	// expander(tokens);
 	// executor(tokens);
 	// free_cmd(tokens);

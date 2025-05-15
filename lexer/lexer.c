@@ -9,7 +9,10 @@ typedef struct cmd {
     struct cmd *next;
 }t_cmd;
 
-void lexer(t_cmd cmd)
+t_token *lexer(t_cmd cmd)
 {
-}
+	t_token token_head;
 
+
+	return (token_head);
+}
