@@ -6,11 +6,11 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 20:13:02 by shattori          #+#    #+#             */
-/*   Updated: 2025/03/30 22:26:08 by shattori         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:33:09 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 #define THIS_IS_NOT_FILE -1
 

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 20:12:25 by shattori          #+#    #+#             */
-/*   Updated: 2025/03/30 22:20:24 by shattori         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:36:43 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 int	pipex(int ac, char **av)
 {
@@ -40,9 +40,7 @@ int	pipex(int ac, char **av)
 	return (make_process(ac, av, 2));
 }
 
-int	main(int ac, char **av)
+void exevc(char *cmd)
 {
-	check_args(ac, av);
-	pipex(ac, av);
-	return (0);
+	
 }
