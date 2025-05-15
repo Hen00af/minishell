@@ -6,11 +6,11 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 20:06:43 by shattori          #+#    #+#             */
-/*   Updated: 2025/04/08 16:08:26 by shattori         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:33:21 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 void	error_pipe(t_pipe_fd pipe_fds)
 {

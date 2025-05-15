@@ -6,11 +6,11 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 19:39:08 by shattori          #+#    #+#             */
-/*   Updated: 2025/04/08 15:50:39 by shattori         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:33:26 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 char	*find_path(char *cmd, char **environ)
 {
