@@ -26,13 +26,13 @@ typedef enum e_tokentype
 	TOK_LPAREN,
 	TOK_RPAREN,
 	TOK_EOF
-}	TokenType;
+}	t_tokentype;
 
 typedef struct s_token
 {
-	TokenType type;      // WORD, PIPE, REDIR_IN…など
-	char *text;          // 切り出した文字列
-	struct s_token *next // 次トークンへのポインタ
+	t_token_type type;
+	char *text;
+	struct s_token *next;
 }	t_token;
 
 #endif LEXER_H

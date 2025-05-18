@@ -20,12 +20,6 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-struct				builtin
-{
-	char			*name;
-	int				(*f)(int argc, char *argv[]);
-}					t_builtin;
-
 typedef enum e_node_type
 {
 	NODE_COMMAND,
@@ -36,15 +30,20 @@ typedef enum e_node_type
 	NODE_HEREDOC
 }					t_node_type;
 
-typedef enum e_node_type
+typedef enum e_tokentype
 {
-	NODE_COMMAND,
-	NODE_PIPE,
-	NODE_REDIR_OUT,
-	NODE_REDIR_IN,
-	NODE_REDIR_APPEND,
-	NODE_HEREDOC
-}					t_node_type;
+	TOK_WORD,
+	TOK_PIPE,
+	TOK_AND,
+	TOK_OR,
+	TOK_REDIR_IN,
+	TOK_REDIR_OUT,
+	TOK_HEREDOC,
+	TOK_REDIR_APP,
+	TOK_LPAREN,
+	TOK_RPAREN,
+	TOK_EOF
+}	t_token_type;
 
 typedef struct s_ast
 {
@@ -54,5 +53,12 @@ typedef struct s_ast
 	char			**argv;
 	int				argc;
 }					t_ast;
+
+typedef struct s_token
+{
+	TokenType type;
+	char *text;
+	struct s_token *next;
+}	t_token;
 
 #endif
