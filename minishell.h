@@ -20,22 +20,6 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-struct				builtin
-{
-	char			*name;
-	int				(*f)(int argc, char *argv[]);
-}					t_builtin;
-
-typedef enum e_node_type
-{
-	NODE_COMMAND,
-	NODE_PIPE,
-	NODE_REDIR_OUT,
-	NODE_REDIR_IN,
-	NODE_REDIR_APPEND,
-	NODE_HEREDOC
-}					t_node_type;
-
 typedef enum e_node_type
 {
 	NODE_COMMAND,
