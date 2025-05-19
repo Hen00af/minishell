@@ -145,5 +145,3 @@ t_token	*lexer(char *cmd)
 	token_cur = token_head->next;
 	return (token_cur);
 }
-
-
