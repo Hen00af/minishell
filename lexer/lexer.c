@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 20:23:45 by nando             #+#    #+#             */
-/*   Updated: 2025/05/19 19:15:54 by nando            ###   ########.fr       */
+/*   Updated: 2025/05/19 20:32:25 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,19 +129,21 @@ t_token	*lexer(char *cmd)
 	state = STA_DEFAULT;
 	while (cmd[i])
 	{
-		if(state == STA_DEFAULT)
+		if (state == STA_DEFAULT)
 			lexer_default();
-		else if(state == STA_IN_WORD)
+		else if (state == STA_IN_WORD)
 			lexer_word();
-		else if(state == STA_IN_SQUOTE)
+		else if (state == STA_IN_SQUOTE)
 			lexer_squate();
-		else if(state == STA_IN_DQUOTE)
+		else if (state == STA_IN_DQUOTE)
 			lexer_dquate();
-		else (state == STA_IN_VARIABLE)
-			lexer_variable();
+		else
+			(state == STA_IN_VARIABLE) lexer_variable();
 		i++;
 		c = cmd[i];
 	}
 	token_cur = token_head->next;
 	return (token_cur);
 }
+
+
