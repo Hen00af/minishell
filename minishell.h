@@ -22,7 +22,6 @@
 
 
 
-
 typedef enum e_node_type
 {
 	NODE_COMMAND,
@@ -41,5 +40,6 @@ typedef struct s_ast
 	char			**argv;
 	int				argc;
 }					t_ast;
+
 
 #endif
