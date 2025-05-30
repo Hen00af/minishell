@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.h                                           :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/15 14:59:47 by nando             #+#    #+#             */
-/*   Updated: 2025/05/30 16:11:18 by nando            ###   ########.fr       */
+/*   Created: 2025/05/29 17:18:47 by nando             #+#    #+#             */
+/*   Updated: 2025/05/29 18:03:32 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SIGNAL_H
-# define SIGNAL_H
+#include "lexer.h"
 
-# define _POSIX_C_SOURCE 200809L
+void	quate_error(t_lexer *ctx)
+{
+	t_token	*token;
 
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <signal.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
+	printf("quate not closed.\n");
+	free_buf(&ctx->buf);
+	free_tokens(ctx->head);
+}
 
-#endif
+int	ft_isspace(int c)
+{
+	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
+		|| c == '\r')
+		return (1);
+	else
+		return (0);
+}

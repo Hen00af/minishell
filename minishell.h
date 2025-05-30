@@ -36,16 +36,6 @@ typedef enum e_node_type
 	NODE_HEREDOC
 }					t_node_type;
 
-typedef enum e_node_type
-{
-	NODE_COMMAND,
-	NODE_PIPE,
-	NODE_REDIR_OUT,
-	NODE_REDIR_IN,
-	NODE_REDIR_APPEND,
-	NODE_HEREDOC
-}					t_node_type;
-
 typedef struct s_ast
 {
 	t_node_type		type;

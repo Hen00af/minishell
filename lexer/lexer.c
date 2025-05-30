@@ -6,144 +6,149 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 20:23:45 by nando             #+#    #+#             */
-/*   Updated: 2025/05/19 20:33:56 by nando            ###   ########.fr       */
+/*   Updated: 2025/05/30 16:23:55 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "lexer.h"
 
-/////////////////////////////
-typedef enum e_tokentype //トークンタイプ
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <string.h>
+
+void	handle_meta(t_lexer *ctx, char c)
 {
-	TOK_WORD,
-	TOK_PIPE,
-	TOK_AND,
-	TOK_OR,
-	TOK_REDIR_IN,
-	TOK_REDIR_OUT,
-	TOK_HEREDOC,
-	TOK_REDIR_APP,
-	TOK_LPAREN,
-	TOK_RPAREN,
-	TOK_EOF,
-	TOK_NUL
-}			TokenType;
+	char	next;
 
-//////////////////////////////
-typedef enum e_statetype //状態管理
+	next = ctx->input[ctx->posi + 1];
+	if (c == '<' && next == '<')
+		append_tok_and_reset_state(ctx, TOK_HEREDOC);
+	else if (c == '>' && next == '>')
+		append_tok_and_reset_state(ctx, TOK_REDIR_APP);
+	else if (c == '|' && next == '|')
+		append_tok_and_reset_state(ctx, TOK_OR);
+	else if (c == '&' && next == '&')
+		append_tok_and_reset_state(ctx, TOK_AND);
+	else if (c == '<')
+		append_tok_and_reset_state(ctx, TOK_REDIR_IN);
+	else if (c == '>')
+		append_tok_and_reset_state(ctx, TOK_REDIR_OUT);
+	else if (c == '|')
+		append_tok_and_reset_state(ctx, TOK_PIPE);
+	else if (c == '(')
+		append_tok_and_reset_state(ctx, TOK_LPAREN);
+	else if (c == ')')
+		append_tok_and_reset_state(ctx, TOK_RPAREN);
+}
+
+int	init_lexer(t_lexer *ctx, char *input)
 {
-	STA_DEFAULT,
-	STA_IN_WORD,
-	STA_IN_SQUOTE,
-	STA_IN_DQUOTE,
-	STA_IN_VARIABLE,
-}			StateType;
+	buf_init(&ctx->buf);
+	if (!ctx->buf.word)
+		return (ERROR);
+	ctx->input = input;
+	ctx->state = STA_DEFAULT;
+	ctx->prev_state = STA_DEFAULT;
+	ctx->posi = 0;
+	ctx->head = create_token(TOK_NUL, NULL);
+	if (!ctx->head)
+		return (ERROR);
+	ctx->current = ctx->head;
+	return (0);
+}
 
-//////////////////////////////
-typedef struct s_token //トークン構造体
+void	run_lexer(t_lexer *ctx)
 {
-	TokenType type;       // WORD, PIPE, REDIR_IN…など
-	char *text;           // 切り出した文字列
-	struct s_token *next; // 次トークンへのポインタ
-}			t_token;
+	char	c;
 
-/////////////////////////////
-typedef struct s_buf
+	c = ctx->input[ctx->posi];
+	ctx->move = 1;
+	if (ctx->state == STA_DEFAULT)
+		lexer_default(ctx, c);
+	else if (ctx->state == STA_IN_WORD)
+		lexer_word(ctx, c);
+	else if (ctx->state == STA_IN_SQUOTE)
+		lexer_squate(ctx, c);
+	else if (ctx->state == STA_IN_DQUOTE)
+		lexer_dquate(ctx, c);
+	else
+		lexer_variable(ctx, c);
+	ctx->posi = ctx->posi + ctx->move;
+}
+
+t_token	*finish_lexing(t_lexer *ctx)
 {
-	char	*word;
-	size_t	len;
-	size_t	capa;
-}			t_buf;
+	t_token	*token_head;
 
-t_token	*create_token(TokenType type, char *word)
+	if (ctx->buf.len > 0)
+		append_token(ctx, TOK_WORD, buf_flush(&ctx->buf));
+	append_token(ctx, TOK_EOF, NULL);
+	token_head = ctx->head->next;
+	free_buf(&ctx->buf);
+	free(ctx->head);
+	return (token_head);
+}
+
+t_token	*lexer(char *input)
 {
-	t_token	*token;
+	t_lexer	ctx;
+	t_token	*token_head;
+	char	c;
 
-	token = malloc(sizeof *token);
-	if (!token)
+	if (init_lexer(&ctx, input) == ERROR)
 		return (NULL);
-	token->type = type;
-	token->text = word;
-	token->next = NULL;
-	return (token);
-}
-
-void	buf_init(t_buf *buf)
-{
-	buf->capa = 1;
-	buf->len = 0;
-	buf->word = malloc(buf->capa);
-	if (buf->word)
-		buf->word[0] = '\0';
-}
-
-void	buf_add(t_buf *buf, char c)
-{
-	char	*new_word;
-	size_t	new_capa;
-
-	if (buf->capa <= (buf->len + 1))
+	c = ctx.input[ctx.posi];
+	while (ctx.input[ctx.posi])
+		run_lexer(&ctx);
+	if (ctx.state == STA_IN_SQUOTE || ctx.state == STA_IN_DQUOTE)
 	{
-		new_capa = buf->capa * 2;
-		new_word = malloc(new_capa);
-		if (!new_word)
-			return ;
-		memcpy(new_word, buf->word, buf->len);
-		free(buf->word);
-		buf->word = new_word;
-		buf->capa = new_capa;
+		quate_error(&ctx);
+		return (NULL);
 	}
-	buf->word[buf->len++] = c;
-	buf->word[buf->len] = '\0';
+	token_head = finish_lexing(&ctx);
+	return (token_head);
 }
 
-char	*buf_flush(t_buf *buf, t_token *token)
-{
-	char	*text;
+// int	main(int argc, char **argv)
+// {
+// 	char		*input;
+// 	t_token		*tokens;
+// 	const char	*display_text;
+// 	char		tmp[32];
 
-	text = buf->word;
-	buf_init(buf);
-	return (text);
-}
-
-void	free_buf(t_buf *buf)
-{
-	if (buf->word)
-		free(buf->word);
-}
-
-t_token	*lexer(char *cmd)
-{
-	t_token		*token_head;
-	t_token		*token_cur;
-	t_buf		*buf;
-	StateType	state;
-	char		c;
-	int			i;
-
-	buf_init(buf);
-	token_head = create_token(TOK_NUL, NULL);
-	token_cur = token_head;
-	i = 0;
-	c = cmd[i];
-	state = STA_DEFAULT;
-	while (cmd[i])
-	{
-		if (state == STA_DEFAULT)
-			lexer_default();
-		else if (state == STA_IN_WORD)
-			lexer_word();
-		else if (state == STA_IN_SQUOTE)
-			lexer_squate();
-		else if (state == STA_IN_DQUOTE)
-			lexer_dquate();
-		else
-			(state == STA_IN_VARIABLE) lexer_variable();
-		i++;
-		c = cmd[i];
-	}
-	token_cur = token_head->next;
-	return (token_cur);
-}
-
-
+// 	if (argc > 1)
+// 		input = argv[1];
+// 	else
+// 	{
+// 		if (!input)
+// 		{
+// 			perror("strdup");
+// 			return (EXIT_FAILURE);
+// 		}
+// 		printf("Test input: %s\n", input);
+// 	}
+// 	tokens = lexer(input);
+// 	if (!tokens)
+// 	{
+// 		fprintf(stderr, "Lexer error.\n");
+// 		if (argc <= 1)
+// 			free(input);
+// 		return (EXIT_FAILURE);
+// 	}
+// 	printf("Tokens:\n");
+// 	for (t_token *tok = tokens; tok != NULL; tok = tok->next)
+// 	{
+// 		display_text = tok->text;
+// 		if (display_text == NULL)
+// 		{
+// 			// tok->text が NULL のときは、type の数値を文字列化して表示用にセット
+// 			snprintf(tmp, sizeof(tmp), "%d", tok->type);
+// 			display_text = tmp;
+// 		}
+// 		printf("  [Type=%d] '%s'\n", tok->type, display_text);
+// 	}
+// 	free_tokens(tokens);
+// 	if (argc <= 1)
+// 		free(input);
+// 	return (EXIT_SUCCESS);
+// }
