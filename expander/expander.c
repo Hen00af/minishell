@@ -1,6 +1,9 @@
-#include "expander.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-t_ast *expander(t_ast *ast)
+int	main(int ac, char **av)
 {
-
+	if (ac >= 2 && atoi(av[1]) == 0)
+		return (0);
+	return (1);
 }
