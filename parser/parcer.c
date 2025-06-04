@@ -190,13 +190,6 @@ static t_ast	*parse_and_or(t_token **cur)
 	return (left);
 }
 
-t_ast	*start_parse(t_token *tokens)
-{
-	t_token	*cur;
-
-	cur = tokens;
-	return (parse_and_or(&cur));
-}
 
 void	print_ast(t_ast *node, int indent)
 {
@@ -243,106 +236,69 @@ void	print_ast(t_ast *node, int indent)
 		print_ast(node->right, indent + 1);
 }
 
-void	print_exec_order(t_ast *node)
+t_ast	*start_parse(t_token *tokens)
 {
-	if (!node)
-		return ;
-	if (node->type == NODE_COMMAND)
-	{
-		for (int i = 0; node->argv && node->argv[i]; i++)
-			printf("%s ", node->argv[i]);
-		printf("\n");
-		return ;
-	}
-	// リダイレクトノードなら中身のコマンドを先に処理
-	if (node->type == NODE_REDIR_IN || node->type == NODE_REDIR_OUT
-		|| node->type == NODE_REDIR_APPEND || node->type == NODE_HEREDOC)
-	{
-		print_exec_order(node->left); // COMMAND ノードが left に入ってる
-		return ;
-	}
-	// サブシェルの場合も中の構文を処理
-	if (node->type == NODE_SUBSHELL)
-	{
-		print_exec_order(node->left);
-		return ;
-	}
-	// AND, OR, PIPE など：左右を処理順に従って
-	print_exec_order(node->left);
-	print_exec_order(node->right);
+	t_token	*cur;
+
+	cur = tokens;
+	return (parse_and_or(&cur));
 }
 
-// parser main
+// void	print_exec_order(t_ast *node)
+// {
+// 	if (!node)
+// 		return ;
+// 	if (node->type == NODE_COMMAND)
+// 	{
+// 		for (int i = 0; node->argv && node->argv[i]; i++)
+// 			printf("%s ", node->argv[i]);
+// 		printf("\n");
+// 		return ;
+// 	}
+// 	// リダイレクトノードなら中身のコマンドを先に処理
+// 	if (node->type == NODE_REDIR_IN || node->type == NODE_REDIR_OUT
+// 		|| node->type == NODE_REDIR_APPEND || node->type == NODE_HEREDOC)
+// 	{
+// 		print_exec_order(node->left); // COMMAND ノードが left に入ってる
+// 		return ;
+// 	}
+// 	// サブシェルの場合も中の構文を処理
+// 	if (node->type == NODE_SUBSHELL)
+// 	{
+// 		print_exec_order(node->left);
+// 		return ;
+// 	}
+// 	// AND, OR, PIPE など：左右を処理順に従って
+// 	print_exec_order(node->left);
+// 	print_exec_order(node->right);
+// }
 
-int	main(int argc, char **argv)
-{
-	t_token	*tokens;
-	t_ast	*tree;
-
-	if (argc != 2)
-	{
-		fprintf(stderr, "Usage: %s \"command string\"\n", argv[0]);
-		return (1);
-	}
-	tokens = lexer(argv[1]);
-	if (!tokens)
-	{
-		fprintf(stderr, "Tokenize error\n");
-		return (1);
-	}
-	tree = start_parse(tokens);
-	free(tokens);
-	if (!tree)
-	{
-		fprintf(stderr, "Parse error\n");
-		return (1);
-	}
-	// print_ast(tree, 0);
-	print_exec_order(tree);
-	return (0);
-}
-
-// lexer main
+// // parser main
 
 // int	main(int argc, char **argv)
 // {
-// 	char *input;
-// 	t_token *tokens;
-// 	const char *display_text;
-// 	char tmp[32];
+// 	t_token	*tokens;
+// 	t_ast	*tree;
 
-// 	if (argc > 1)
-// 		input = argv[1];
-// 	else
+// 	if (argc != 2)
 // 	{
-// 		if (!input)
-// 		{
-// 			perror("strdup");
-// 			return (EXIT_FAILURE);
-// 		}
-// 		printf("Test input: %s\n", input);
+// 		fprintf(stderr, "Usage: %s \"command string\"\n", argv[0]);
+// 		return (1);
 // 	}
-// 	tokens = lexer(input);
+// 	tokens = lexer(argv[1]);
 // 	if (!tokens)
 // 	{
-// 		fprintf(stderr, "Lexer error.\n");
-// 		if (argc <= 1)
-// 			free(input);
-// 		return (EXIT_FAILURE);
+// 		fprintf(stderr, "Tokenize error\n");
+// 		return (1);
 // 	}
-// 	printf("Tokens:\n");
-// 	for (t_token *tok = tokens; tok != NULL; tok = tok->next)
+// 	tree = start_parse(tokens);
+// 	free(tokens);
+// 	if (!tree)
 // 	{
-// 		display_text = tok->text;
-// 		if (display_text == NULL)
-// 		{
-// 			snprintf(tmp, sizeof(tmp), "%d", tok->type);
-// 			display_text = tmp;
-// 		}
-// 		printf("  [Type=%d] '%s'\n", tok->type, display_text);
+// 		fprintf(stderr, "Parse error\n");
+// 		return (1);
 // 	}
-// 	free_tokens(tokens);
-// 	if (argc <= 1)
-// 		free(input);
-// 	return (EXIT_SUCCESS);
+// 	// print_ast(tree, 0);
+// 	print_exec_order(tree);
+// 	return (0);
 // }
