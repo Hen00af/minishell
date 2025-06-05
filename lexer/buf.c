@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:31:47 by nando             #+#    #+#             */
-/*   Updated: 2025/05/29 17:17:20 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/05 16:52:55 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,12 @@ void	free_buf(t_buf *buf)
 {
 	if (buf->word)
 		free(buf->word);
+}
+
+void	buf_add_and_assign_flag(t_lexer *ctx, char c)
+{
+	buf_add(&ctx->buf, c);
+	ctx->assignment_flag = 1;
 }
 
 void	buf_add_and_set_state(t_lexer *ctx, char c)

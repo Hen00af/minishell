@@ -5,6 +5,7 @@
 # include "executor/executor.h"
 # include "expander/expander.h"
 # include "lexer/lexer.h"
+# include "libft/libft.h"
 # include "parser/parser.h"
 # include "signal/signal.h"
 # include <ctype.h>
@@ -19,12 +20,6 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-
-struct				builtin
-{
-	char			*name;
-	int				(*f)(int argc, char *argv[]);
-}					t_builtin;
 
 typedef enum e_node_type
 {

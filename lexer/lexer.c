@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 20:23:45 by nando             #+#    #+#             */
-/*   Updated: 2025/05/30 16:31:11 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/05 17:09:08 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	init_lexer(t_lexer *ctx, char *input)
 	ctx->state = STA_DEFAULT;
 	ctx->prev_state = STA_DEFAULT;
 	ctx->posi = 0;
+	ctx->assignment_flag = 0;
 	ctx->head = create_token(TOK_NUL, NULL);
 	if (!ctx->head)
 		return (ERROR);
@@ -109,46 +110,38 @@ t_token	*lexer(char *input)
 	return (token_head);
 }
 
-// int	main(int argc, char **argv)
-// {
-// 	char		*input;
-// 	t_token		*tokens;
-// 	const char	*display_text;
-// 	char		tmp[32];
+int	main(int argc, char **argv)
+{
+	t_token *tokens;
+	const char *display_text;
+	char tmp[32];
 
-// 	if (argc > 1)
-// 		input = argv[1];
-// 	else
-// 	{
-// 		if (!input)
-// 		{
-// 			perror("strdup");
-// 			return (EXIT_FAILURE);
-// 		}
-// 		printf("Test input: %s\n", input);
-// 	}
-// 	tokens = lexer(input);
-// 	if (!tokens)
-// 	{
-// 		fprintf(stderr, "Lexer error.\n");
-// 		if (argc <= 1)
-// 			free(input);
-// 		return (EXIT_FAILURE);
-// 	}
-// 	printf("Tokens:\n");
-// 	for (t_token *tok = tokens; tok != NULL; tok = tok->next)
-// 	{
-// 		display_text = tok->text;
-// 		if (display_text == NULL)
-// 		{
-// 			// tok->text が NULL のときは、type の数値を文字列化して表示用にセット
-// 			snprintf(tmp, sizeof(tmp), "%d", tok->type);
-// 			display_text = tmp;
-// 		}
-// 		printf("  [Type=%d] '%s'\n", tok->type, display_text);
-// 	}
-// 	free_tokens(tokens);
-// 	if (argc <= 1)
-// 		free(input);
-// 	return (EXIT_SUCCESS);
-// }
+	if (argc < 2)
+	{
+		fprintf(stderr, "Usage: %s \"input string\"\n", argv[0]);
+		return (EXIT_FAILURE);
+	}
+
+	printf("Test input: %s\n", argv[1]);
+
+	tokens = lexer(argv[1]);
+	if (!tokens)
+	{
+		fprintf(stderr, "Lexer error.\n");
+		return (EXIT_FAILURE);
+	}
+
+	printf("Tokens:\n");
+	for (t_token *tok = tokens; tok != NULL; tok = tok->next)
+	{
+		display_text = tok->text;
+		if (display_text == NULL)
+		{
+			snprintf(tmp, sizeof(tmp), "(NULL)");
+			display_text = tmp;
+		}
+		printf("  [Type=%d] '%s'\n", tok->type, display_text);
+	}
+	free_tokens(tokens);
+	return (EXIT_SUCCESS);
+}
