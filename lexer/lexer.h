@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 20:08:16 by nando             #+#    #+#             */
-/*   Updated: 2025/06/05 17:02:46 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/05 17:02:46 by nando            ###   ########.fr       */  
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef enum e_tokentype
 	TOK_OR,
 	TOK_REDIR_IN,
 	TOK_REDIR_OUT,
+	TOK_REDIR_APPEND,
 	TOK_HEREDOC,
 	TOK_REDIR_APP,
 	TOK_LPAREN,
@@ -106,5 +107,5 @@ void				handle_meta(t_lexer *ctx, char c);
 int					init_lexer(t_lexer *ctx, char *input);
 void				run_lexer(t_lexer *ctx);
 t_token				*finish_lexing(t_lexer *ctx);
-
+t_token				*lexer(char *input);
 #endif

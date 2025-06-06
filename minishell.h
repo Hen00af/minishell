@@ -1,6 +1,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "./libft/libft.h"
 # include "builtin/builtin.h"
 # include "executor/executor.h"
 # include "expander/expander.h"

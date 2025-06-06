@@ -1,0 +1,12 @@
+{
+	"files.associations": {
+		"parser.h": "c",
+		"minishell.h": "c",
+		"executor.h": "c",
+		"builtin.h": "c",
+		"expander.h": "c",
+		"lexer.h": "c",
+		"libft.h": "c",
+		"stdlib.h": "c"
+	}
+}
