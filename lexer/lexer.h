@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 20:08:16 by nando             #+#    #+#             */
-/*   Updated: 2025/06/04 14:48:47 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:02:46 by nando            ###   ########.fr       */  
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # define ERROR -5
 
+# include "../minishell.h"
 # include <ctype.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -31,6 +32,7 @@
 typedef enum e_tokentype
 {
 	TOK_WORD,
+	TOK_ASSIGN_WORD,
 	TOK_PIPE,
 	TOK_AND,
 	TOK_OR,
@@ -79,12 +81,14 @@ typedef struct s_lexer
 	size_t			move;
 	StateType		state;
 	StateType		prev_state;
+	int				assignment_flag;
 }					t_lexer;
 
 void				buf_init(t_buf *buf);
 void				buf_add(t_buf *buf, char c);
 void				free_buf(t_buf *buf);
 char				*buf_flush(t_buf *buf);
+void				buf_add_and_assign_flag(t_lexer *ctx, char c);
 void				buf_add_and_set_state(t_lexer *ctx, char c);
 t_token				*create_token(TokenType type, char *word);
 void				append_token(t_lexer *ctx, TokenType type, char *text);
@@ -93,6 +97,7 @@ void				append_tok_and_reset_state(t_lexer *ctx, TokenType type);
 void				free_tokens(t_token *head);
 void				quate_error(t_lexer *ctx);
 int					ft_isspace(int c);
+int					is_valid_var_name(char *buf_word);
 void				lexer_default(t_lexer *ctx, char c);
 void				lexer_word(t_lexer *ctx, char c);
 void				lexer_squate(t_lexer *ctx, char c);

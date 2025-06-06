@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:18:47 by nando             #+#    #+#             */
-/*   Updated: 2025/05/29 18:03:32 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/06 19:13:41 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,21 @@ int	ft_isspace(int c)
 		return (1);
 	else
 		return (0);
+}
+
+int	is_valid_var_name(char *buf_word)
+{
+	int	i;
+
+	i = 0;
+	if (!(ft_isalpha(buf_word[i]) || buf_word[i] == '_'))
+		return (0);
+	i++;
+	while (buf_word[i])
+	{
+		if (!(ft_isalnum(buf_word[i]) || buf_word[i] == '_'))
+			return (0);
+		i++;
+	}
+	return (1);
 }
