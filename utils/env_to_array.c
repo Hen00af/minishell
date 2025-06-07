@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:57:37 by nando             #+#    #+#             */
-/*   Updated: 2025/06/07 16:47:51 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/07 20:49:05 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,6 @@ t_env	*create_test_env(char *key, char *value)
 	node->next = NULL;
 	return (node);
 }
-
-
 
 // このmainは"assign_shell_var()"のテストも兼ねている。
 

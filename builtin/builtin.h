@@ -20,7 +20,7 @@ typedef struct s_echo
 
 int						ft_strcmp(const char *string1, const char *string2);
 int						builtin_cd(char **args, t_env *list_head);
-int						builtin_echo(char **args);
+int						builtin_echo(char **args, t_env *list_head);
 int						builtin_env(char **args, t_env *list_head);
 int						builtin_exit(char **args);
 int						builtin_export(char **args, t_env **list_head);

@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_put_str_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/02 16:50:52 by nando             #+#    #+#             */
-/*   Updated: 2025/06/07 20:45:30 by nando            ###   ########.fr       */
+/*   Created: 2025/01/17 14:46:12 by nando             #+#    #+#             */
+/*   Updated: 2025/06/07 20:55:21 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../builtin.h"
+#include "../ft_fprintf.h"
 
-int	builtin_pwd(char **args, t_env *list_head)
+int	ft_put_str_fd(int fd, char *str)
 {
-	char	*cwd;
+	int	i;
 
-	(void)args;
-	(void)list_head;
-	cwd = getcwd(NULL, 0);
-	if (!cwd)
+	i = 0;
+	if (!str)
 	{
-		perror("pwd");
-		return (NG);
+		write(fd, "(null)", 6);
+		return (6);
 	}
-	printf("%s\n", cwd);
-	free(cwd);
-	return (OK);
+	while (str[i] != '\0')
+	{
+		write(fd, &str[i], 1);
+		i++;
+	}
+	return (i);
 }

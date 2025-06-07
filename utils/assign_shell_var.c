@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 21:05:04 by nando             #+#    #+#             */
-/*   Updated: 2025/06/07 15:20:07 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/07 20:49:01 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,3 @@ void	assign_shell_var(char *var_str, t_env *list_head)
 		list_head = list_head->next;
 	list_head->next = node;
 }
-
-

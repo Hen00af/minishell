@@ -16,6 +16,7 @@ char		**env_split(char const *s, char c);
 t_env		*init_env(char **envp);
 void		print_env_list(t_env *head);
 char		**env_to_array(t_env *list_head);
+int			create_env_array(char **environ, t_env *list_head);
 void		assign_shell_var(char *var_str, t_env *list_head);
 
 #endif // UTILS_H
