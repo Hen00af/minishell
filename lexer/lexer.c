@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 20:23:45 by nando             #+#    #+#             */
-/*   Updated: 2025/06/05 17:09:08 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/08 22:30:57 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,23 @@ void	handle_meta(t_lexer *ctx, char c)
 
 	next = ctx->input[ctx->posi + 1];
 	if (c == '<' && next == '<')
-		append_tok_and_reset_state(ctx, TOK_HEREDOC);
+		append_tok_and_reset_state(ctx, TOK_HEREDOC, QUOTE_NONE);
 	else if (c == '>' && next == '>')
-		append_tok_and_reset_state(ctx, TOK_REDIR_APP);
+		append_tok_and_reset_state(ctx, TOK_REDIR_APP, QUOTE_NONE);
 	else if (c == '|' && next == '|')
-		append_tok_and_reset_state(ctx, TOK_OR);
+		append_tok_and_reset_state(ctx, TOK_OR, QUOTE_NONE);
 	else if (c == '&' && next == '&')
-		append_tok_and_reset_state(ctx, TOK_AND);
+		append_tok_and_reset_state(ctx, TOK_AND, QUOTE_NONE);
 	else if (c == '<')
-		append_tok_and_reset_state(ctx, TOK_REDIR_IN);
+		append_tok_and_reset_state(ctx, TOK_REDIR_IN, QUOTE_NONE);
 	else if (c == '>')
-		append_tok_and_reset_state(ctx, TOK_REDIR_OUT);
+		append_tok_and_reset_state(ctx, TOK_REDIR_OUT, QUOTE_NONE);
 	else if (c == '|')
-		append_tok_and_reset_state(ctx, TOK_PIPE);
+		append_tok_and_reset_state(ctx, TOK_PIPE, QUOTE_NONE);
 	else if (c == '(')
-		append_tok_and_reset_state(ctx, TOK_LPAREN);
+		append_tok_and_reset_state(ctx, TOK_LPAREN, QUOTE_NONE);
 	else if (c == ')')
-		append_tok_and_reset_state(ctx, TOK_RPAREN);
+		append_tok_and_reset_state(ctx, TOK_RPAREN, QUOTE_NONE);
 }
 
 int	init_lexer(t_lexer *ctx, char *input)
@@ -51,7 +51,7 @@ int	init_lexer(t_lexer *ctx, char *input)
 	ctx->prev_state = STA_DEFAULT;
 	ctx->posi = 0;
 	ctx->assignment_flag = 0;
-	ctx->head = create_token(TOK_NUL, NULL);
+	ctx->head = create_token(TOK_NUL, QUOTE_NONE, NULL);
 	if (!ctx->head)
 		return (ERROR);
 	ctx->current = ctx->head;
@@ -72,8 +72,6 @@ void	run_lexer(t_lexer *ctx)
 		lexer_squate(ctx, c);
 	else if (ctx->state == STA_IN_DQUOTE)
 		lexer_dquate(ctx, c);
-	else
-		lexer_variable(ctx, c);
 	ctx->posi = ctx->posi + ctx->move;
 }
 
@@ -82,8 +80,8 @@ t_token	*finish_lexing(t_lexer *ctx)
 	t_token	*token_head;
 
 	if (ctx->buf.len > 0)
-		append_token(ctx, TOK_WORD, buf_flush(&ctx->buf));
-	append_token(ctx, TOK_EOF, NULL);
+		append_token(ctx, TOK_WORD, QUOTE_NONE, buf_flush(&ctx->buf));
+	append_token(ctx, TOK_EOF, QUOTE_NONE, NULL);
 	token_head = ctx->head->next;
 	free_buf(&ctx->buf);
 	free(ctx->head);
@@ -140,7 +138,8 @@ int	main(int argc, char **argv)
 			snprintf(tmp, sizeof(tmp), "(NULL)");
 			display_text = tmp;
 		}
-		printf("  [Type=%d] '%s'\n", tok->type, display_text);
+		printf("  [Type=%d] [Quote = %d] '%s'\n", tok->type, tok->quote_type,
+			display_text);
 	}
 	free_tokens(tokens);
 	return (EXIT_SUCCESS);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 20:08:16 by nando             #+#    #+#             */
-/*   Updated: 2025/06/05 17:02:46 by nando            ###   ########.fr       */  
+/*   Updated: 2025/06/08 22:27:17 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # define ERROR -5
 
-# include "../minishell.h"
+//# include "../minishell.h"
 # include <ctype.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -43,10 +43,16 @@ typedef enum e_tokentype
 	TOK_REDIR_APP,
 	TOK_LPAREN,
 	TOK_RPAREN,
-	TOK_VARIABLE,
 	TOK_EOF,
 	TOK_NUL
 }					TokenType;
+
+typedef enum e_quotetype
+{
+	QUOTE_NONE,
+	QUOTE_SINGLE,
+	QUOTE_DOUBLE
+}					QuoteType;
 
 typedef enum e_statetype
 {
@@ -60,6 +66,7 @@ typedef enum e_statetype
 typedef struct s_token
 {
 	TokenType		type;
+	QuoteType		quote_type;
 	char			*text;
 	struct s_token	*next;
 }					t_token;
@@ -90,10 +97,13 @@ void				free_buf(t_buf *buf);
 char				*buf_flush(t_buf *buf);
 void				buf_add_and_assign_flag(t_lexer *ctx, char c);
 void				buf_add_and_set_state(t_lexer *ctx, char c);
-t_token				*create_token(TokenType type, char *word);
-void				append_token(t_lexer *ctx, TokenType type, char *text);
-void				append_tok_and_set_state(t_lexer *ctx, StateType state);
-void				append_tok_and_reset_state(t_lexer *ctx, TokenType type);
+t_token				*create_token(TokenType type, QuoteType q_type, char *word);
+void				append_token(t_lexer *ctx, TokenType type, QuoteType q_type,
+						char *text);
+void				append_tok_and_set_state(t_lexer *ctx, QuoteType q_type,
+						StateType state);
+void				append_tok_and_reset_state(t_lexer *ctx, QuoteType q_type,
+						TokenType type);
 void				free_tokens(t_token *head);
 void				quate_error(t_lexer *ctx);
 int					ft_isspace(int c);
@@ -102,7 +112,6 @@ void				lexer_default(t_lexer *ctx, char c);
 void				lexer_word(t_lexer *ctx, char c);
 void				lexer_squate(t_lexer *ctx, char c);
 void				lexer_dquate(t_lexer *ctx, char c);
-void				lexer_variable(t_lexer *ctx, char c);
 void				handle_meta(t_lexer *ctx, char c);
 int					init_lexer(t_lexer *ctx, char *input);
 void				run_lexer(t_lexer *ctx);
