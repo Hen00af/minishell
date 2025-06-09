@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 20:23:45 by nando             #+#    #+#             */
-/*   Updated: 2025/06/08 22:30:57 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/09 13:51:22 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,23 @@ void	handle_meta(t_lexer *ctx, char c)
 
 	next = ctx->input[ctx->posi + 1];
 	if (c == '<' && next == '<')
-		append_tok_and_reset_state(ctx, TOK_HEREDOC, QUOTE_NONE);
+		append_tok_and_reset_state(ctx, QUOTE_NONE, TOK_HEREDOC);
 	else if (c == '>' && next == '>')
-		append_tok_and_reset_state(ctx, TOK_REDIR_APP, QUOTE_NONE);
+		append_tok_and_reset_state(ctx, QUOTE_NONE, TOK_REDIR_APP);
 	else if (c == '|' && next == '|')
-		append_tok_and_reset_state(ctx, TOK_OR, QUOTE_NONE);
+		append_tok_and_reset_state(ctx, QUOTE_NONE, TOK_OR);
 	else if (c == '&' && next == '&')
-		append_tok_and_reset_state(ctx, TOK_AND, QUOTE_NONE);
+		append_tok_and_reset_state(ctx, QUOTE_NONE, TOK_AND);
 	else if (c == '<')
-		append_tok_and_reset_state(ctx, TOK_REDIR_IN, QUOTE_NONE);
+		append_tok_and_reset_state(ctx, QUOTE_NONE, TOK_REDIR_IN);
 	else if (c == '>')
-		append_tok_and_reset_state(ctx, TOK_REDIR_OUT, QUOTE_NONE);
+		append_tok_and_reset_state(ctx, QUOTE_NONE, TOK_REDIR_OUT);
 	else if (c == '|')
-		append_tok_and_reset_state(ctx, TOK_PIPE, QUOTE_NONE);
+		append_tok_and_reset_state(ctx, QUOTE_NONE, TOK_PIPE);
 	else if (c == '(')
-		append_tok_and_reset_state(ctx, TOK_LPAREN, QUOTE_NONE);
+		append_tok_and_reset_state(ctx, QUOTE_NONE, TOK_LPAREN);
 	else if (c == ')')
-		append_tok_and_reset_state(ctx, TOK_RPAREN, QUOTE_NONE);
+		append_tok_and_reset_state(ctx, QUOTE_NONE, TOK_RPAREN);
 }
 
 int	init_lexer(t_lexer *ctx, char *input)
@@ -110,25 +110,22 @@ t_token	*lexer(char *input)
 
 int	main(int argc, char **argv)
 {
-	t_token *tokens;
-	const char *display_text;
-	char tmp[32];
+	t_token		*tokens;
+	const char	*display_text;
+	char		tmp[32];
 
 	if (argc < 2)
 	{
 		fprintf(stderr, "Usage: %s \"input string\"\n", argv[0]);
 		return (EXIT_FAILURE);
 	}
-
 	printf("Test input: %s\n", argv[1]);
-
 	tokens = lexer(argv[1]);
 	if (!tokens)
 	{
 		fprintf(stderr, "Lexer error.\n");
 		return (EXIT_FAILURE);
 	}
-
 	printf("Tokens:\n");
 	for (t_token *tok = tokens; tok != NULL; tok = tok->next)
 	{
