@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 20:08:16 by nando             #+#    #+#             */
-/*   Updated: 2025/06/08 22:27:17 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/10 11:37:35 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # define ERROR -5
 
 //# include "../minishell.h"
+# include "../libft/libft.h"
 # include <ctype.h>
 # include <fcntl.h>
 # include <limits.h>
