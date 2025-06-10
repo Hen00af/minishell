@@ -21,7 +21,13 @@ SRCS = \
     util/ft_isalpha.c util/ft_isascii.c util/ft_isdigit.c util/ft_isprint.c \
     util/ft_itoa.c util/ft_split.c \
     twinlist/create_dlist.c twinlist/create_node.c \
-    twinlist/free_tlist.c twinlist/add_back.c twinlist/add_front.c
+    twinlist/free_tlist.c twinlist/add_back.c twinlist/add_front.c \
+	ft_printf/ft_printf.c\
+	ft_printf/conversions/ft_put_char.c ft_printf/conversions/ft_put_deci.c \
+	ft_printf/conversions/ft_put_hexa_lower.c ft_printf/conversions/ft_put_hexa_upper.c \
+	ft_printf/conversions/ft_put_int.c ft_printf/conversions/ft_put_per.c \
+	ft_printf/conversions/ft_put_ptr.c ft_printf/conversions/ft_put_str.c \
+	ft_printf/conversions/ft_put_unsigned.c 
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
