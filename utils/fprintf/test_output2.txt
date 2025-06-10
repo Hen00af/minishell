@@ -1,0 +1,2 @@
+=== file output test ===
+fd = 4 : naruki
