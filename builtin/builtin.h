@@ -4,6 +4,7 @@
 # define NG 1
 # define OK 0
 
+#include "../minishell.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>

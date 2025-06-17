@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:28:29 by nando             #+#    #+#             */
-/*   Updated: 2025/06/07 20:07:08 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/17 10:51:17 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	builtin_unset(char **args, t_env **list_head)
 		}
 		if (ft_strcmp(args[i], (*list_head)->key) == 0)
 		{
-			delete_list_head(list_head, i);
+			delete_list_head(list_head);
 			i++;
 			continue ;
 		}
