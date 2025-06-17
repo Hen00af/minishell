@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:13 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/15 16:23:53 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/17 14:26:55 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,10 @@ void						flatten_pipeline(t_ast *node, t_pipeline *pipeline);
 t_andor						*linearize_simple_command(t_ast *ast);
 t_andor						*linearizer(t_ast *ast);
 t_redir_type				map_redir_type(t_node_type type);
+
+//テスト用関数
+void						print_linerlized_ast(t_andor *tree, int indent);
+void						print_commands(t_pipeline *pipeline, int indent);
+void						print_redirections(t_list *redir_list, int indent);
 
 #endif
