@@ -9,4 +9,4 @@ run() {
 }
 
 
-run "ls | ls  | ls"
+run "ls | ls  | ls && ls  || ls | *.c"
