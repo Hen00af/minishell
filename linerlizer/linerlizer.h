@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linerlizer.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:13 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/17 14:26:55 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/17 16:51:36 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include "../minishell.h"
 # include <stdio.h>
+
+typedef struct s_ast		t_ast;
+typedef enum e_node_type	t_node_type;
 
 typedef enum e_redir_type
 {
