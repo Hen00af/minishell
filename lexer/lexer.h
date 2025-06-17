@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 20:08:16 by nando             #+#    #+#             */
-/*   Updated: 2025/06/10 11:37:35 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/10 13:13:46 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,6 @@ typedef enum e_tokentype
 	TOK_NUL
 }					TokenType;
 
-typedef enum e_quotetype
-{
-	QUOTE_NONE,
-	QUOTE_SINGLE,
-	QUOTE_DOUBLE
-}					QuoteType;
-
 typedef enum e_statetype
 {
 	STA_DEFAULT,
@@ -67,7 +60,6 @@ typedef enum e_statetype
 typedef struct s_token
 {
 	TokenType		type;
-	QuoteType		quote_type;
 	char			*text;
 	struct s_token	*next;
 }					t_token;
@@ -98,13 +90,10 @@ void				free_buf(t_buf *buf);
 char				*buf_flush(t_buf *buf);
 void				buf_add_and_assign_flag(t_lexer *ctx, char c);
 void				buf_add_and_set_state(t_lexer *ctx, char c);
-t_token				*create_token(TokenType type, QuoteType q_type, char *word);
-void				append_token(t_lexer *ctx, TokenType type, QuoteType q_type,
-						char *text);
-void				append_tok_and_set_state(t_lexer *ctx, QuoteType q_type,
-						StateType state);
-void				append_tok_and_reset_state(t_lexer *ctx, QuoteType q_type,
-						TokenType type);
+t_token				*create_token(TokenType type, char *word);
+void				append_token(t_lexer *ctx, TokenType type, char *text);
+void				append_tok_and_set_state(t_lexer *ctx, StateType state);
+void				append_tok_and_reset_state(t_lexer *ctx, TokenType type);
 void				free_tokens(t_token *head);
 void				quate_error(t_lexer *ctx);
 int					ft_isspace(int c);

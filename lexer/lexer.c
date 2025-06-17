@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 20:23:45 by nando             #+#    #+#             */
-/*   Updated: 2025/06/09 13:51:22 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/10 13:14:55 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,23 @@ void	handle_meta(t_lexer *ctx, char c)
 
 	next = ctx->input[ctx->posi + 1];
 	if (c == '<' && next == '<')
-		append_tok_and_reset_state(ctx, QUOTE_NONE, TOK_HEREDOC);
+		append_tok_and_reset_state(ctx, TOK_HEREDOC);
 	else if (c == '>' && next == '>')
-		append_tok_and_reset_state(ctx, QUOTE_NONE, TOK_REDIR_APP);
+		append_tok_and_reset_state(ctx, TOK_REDIR_APP);
 	else if (c == '|' && next == '|')
-		append_tok_and_reset_state(ctx, QUOTE_NONE, TOK_OR);
+		append_tok_and_reset_state(ctx, TOK_OR);
 	else if (c == '&' && next == '&')
-		append_tok_and_reset_state(ctx, QUOTE_NONE, TOK_AND);
+		append_tok_and_reset_state(ctx, TOK_AND);
 	else if (c == '<')
-		append_tok_and_reset_state(ctx, QUOTE_NONE, TOK_REDIR_IN);
+		append_tok_and_reset_state(ctx, TOK_REDIR_IN);
 	else if (c == '>')
-		append_tok_and_reset_state(ctx, QUOTE_NONE, TOK_REDIR_OUT);
+		append_tok_and_reset_state(ctx, TOK_REDIR_OUT);
 	else if (c == '|')
-		append_tok_and_reset_state(ctx, QUOTE_NONE, TOK_PIPE);
+		append_tok_and_reset_state(ctx, TOK_PIPE);
 	else if (c == '(')
-		append_tok_and_reset_state(ctx, QUOTE_NONE, TOK_LPAREN);
+		append_tok_and_reset_state(ctx, TOK_LPAREN);
 	else if (c == ')')
-		append_tok_and_reset_state(ctx, QUOTE_NONE, TOK_RPAREN);
+		append_tok_and_reset_state(ctx, TOK_RPAREN);
 }
 
 int	init_lexer(t_lexer *ctx, char *input)
@@ -51,7 +51,7 @@ int	init_lexer(t_lexer *ctx, char *input)
 	ctx->prev_state = STA_DEFAULT;
 	ctx->posi = 0;
 	ctx->assignment_flag = 0;
-	ctx->head = create_token(TOK_NUL, QUOTE_NONE, NULL);
+	ctx->head = create_token(TOK_NUL, NULL);
 	if (!ctx->head)
 		return (ERROR);
 	ctx->current = ctx->head;
@@ -80,8 +80,8 @@ t_token	*finish_lexing(t_lexer *ctx)
 	t_token	*token_head;
 
 	if (ctx->buf.len > 0)
-		append_token(ctx, TOK_WORD, QUOTE_NONE, buf_flush(&ctx->buf));
-	append_token(ctx, TOK_EOF, QUOTE_NONE, NULL);
+		append_token(ctx, TOK_WORD, buf_flush(&ctx->buf));
+	append_token(ctx, TOK_EOF, NULL);
 	token_head = ctx->head->next;
 	free_buf(&ctx->buf);
 	free(ctx->head);
@@ -135,8 +135,7 @@ int	main(int argc, char **argv)
 			snprintf(tmp, sizeof(tmp), "(NULL)");
 			display_text = tmp;
 		}
-		printf("  [Type=%d] [Quote = %d] '%s'\n", tok->type, tok->quote_type,
-			display_text);
+		printf("  [Type=%d]'%s'\n", tok->type, display_text);
 	}
 	free_tokens(tokens);
 	return (EXIT_SUCCESS);
