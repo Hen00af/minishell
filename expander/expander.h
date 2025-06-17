@@ -2,7 +2,6 @@
 # define EXPANDER_H
 
 # include "../libft/libft.h"
-// # include "../minishell.h"
 # include "../utils/utils.h"
 # include <dirent.h>
 # include <stdbool.h>
