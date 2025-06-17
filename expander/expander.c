@@ -6,113 +6,159 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 14:30:21 by nando             #+#    #+#             */
-/*   Updated: 2025/06/10 11:41:47 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/17 09:38:18 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
-#include <dirent.h>
-#include <stdlib.h>
-#include <unistd.h>
 
-typedef struct s_ast
+char	*expand_string(char *arg, t_env *env)
 {
-	t_node_type		type;
-	QuoteType		q_type;
-	char			**argv;
-	struct s_ast	*left;
-	struct s_ast	*right;
-	char			*filename;
-}					t_ast;
-
-typedef struct s_env
-{
-	char			*key;
-	char			*value;
-	int				flag;
-	t_env			*next;
-}					t_env;
-
-char	*expand_variables(char *arg, t_env *env_node)
-{
-	int		i;
-	int		j;
-	int		flag;
-	char	*var;
-	char	*replace_var;
-	size_t	var_len;
-
-	i = 0;
-	while (arg[i])
-	{
-		if (arg[i] == '$' && arg[i + 1] == '{')
-		{
-			j = i;
-			while (arg[j] != '}')
-				j++;
-			var_len = j - (i + 2);
-			var = malloc(sizeof(char) * (var_len + 1));
-			if (!var)
-				return (NULL);
-			ft_strlcpy(var, &arg[i + 2], var_len + 1);
-		}
-		else if (arg[i] == '$' && arg[i + 1] != '{')
-			var = ft_strdup(arg[i + 1]);
-		var_len = ft_strlen(var);
-		while (env_node->next)
-		{
-			if (ft_strncmp(var, env_node->key, var_len) == 0)
-			{
-				var = ft_strdup(env_node->value);
-			}
-			env_node = env_node->next;
-		}
-	}
-}
-
-char	*expand_tilda(char *arg, t_env *env)
-{
-}
-
-char	*expand_wild_card(char *arg, t_env *env)
-{
-}
-
-char	*expand_string(t_ast *node, char *arg, t_env *env)
-{
-	DIR	*dir;
 	int	i;
 
 	i = 0;
-	printf("default arg = %s\n", arg);
-	if (node->q_type == QUOTE_SINGLE)
+	ft_printf("default arg = %s\n", arg);
+	if (arg[i] == '\'')
 	{
-		// printf("[single quote]no expanded arg = %s\n", arg);
+		printf("[single quote]no expanded arg = %s\n", arg);
 		return (arg);
 	}
-	else if (node->q_type == QUOTE_DOUBLE)
+	else if (arg[i] == '\"')
 	{
 		arg = expand_variables(arg, env);
-		// printf("[double quote]expanded variables arg = %s\n", arg);
+		printf("[double quote]expanded variables arg = %s\n", arg);
 		return (arg);
 	}
 	arg = expand_variables(arg, env);
-	// printf("[none quote]expanded variables arg = %s\n", arg);
+	printf("[none quote]expanded variables arg = %s\n", arg);
 	arg = expand_tilda(arg, env);
-	// printf("[none quote]expanded tilda arg = %s\n", arg);
-	arg = expand_wild_card(arg, env);
-	// printf("[none quote]expanded wild_card arg = %s\n", arg);
+	printf("[none quote]expanded tilda arg = %s\n", arg);
+	arg = expand_wild_card(arg);
+	printf("[none quote]expanded wild_card arg = %s\n", arg);
 	return (arg);
 }
 
-void	expander(t_ast *node, t_env *env)
+void	expander(t_line *node, t_env *env)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while (node->argv && node->argv[i])
+	while (node)
 	{
-		node->argv[i] = expand_string(node, node->argv[i], env);
-		i++;
+		if (node->type == NODE_COMMAND)
+		{
+			while (node->argv && node->argv[i])
+			{
+				node->argv[i] = expand_string(node->argv[i], env);
+				i++;
+			}
+		}
+		node = node->next;
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//     test  code    /////////////////////////////////////////////////////////
+typedef struct s_testcase
+{
+	char	*input;
+	char	*expected;
+}			t_testcase;
+
+t_env	*create_env(char *key, char *value)
+{
+	t_env	*env;
+
+	env = malloc(sizeof(t_env));
+	env->key = ft_strdup(key);
+	env->value = ft_strdup(value);
+	env->flag = 0;
+	env->next = NULL;
+	return (env);
+}
+
+// 環境変数リストを構築
+t_env	*setup_env_list(void)
+{
+	t_env	*head;
+
+	head = create_env("USER", "nando");
+	head->next = create_env("HOME", "/home/nando");
+	head->next->next = create_env("SHELL", "/bin/bash");
+	return (head);
+}
+
+// メモリ解放
+void	free_env_list(t_env *env)
+{
+	t_env	*tmp;
+
+	while (env)
+	{
+		tmp = env->next;
+		free(env->key);
+		free(env->value);
+		free(env);
+		env = tmp;
+	}
+}
+
+void	test_expand_string(t_env *env_list)
+{
+	int		i;
+	char	*result;
+
+	t_testcase test_cases[] = {// --- 変数展開のみ ---
+								{"Hello $USER", "Hello nando"},
+								{"$HOME is where the heart is",
+									"/home/nando is where the heart is"},
+								{"Undefined: $UNDEF", "Undefined:"},
+								// --- ワイルドカード（この結果は実行環境に依存） ---
+								{"*.c", "[depends on dir]"},
+								{"abc*", "[depends on dir]"},
+								{"no_match*", "no_match*"},
+								// --- クォート付きワイルドカード（展開しない） ---
+								{"\"*.c\"", "*.c"},
+								{"'*.c'", "*.c"},
+								// --- クォート付き変数展開 ---
+								{"\"$USER\"", "nando"},
+								{"'$USER'", "$USER"},
+								// --- クォートとワイルドカードの混合 ---
+								{"echo \"*.c\"", "echo *.c"},
+								{"echo '*.c'", "echo *.c"},
+								{"echo *.c", "[depends on dir]"},
+								// --- 複合パターン ---
+								{"$USER*.c", "[depends on dir]"},
+								{"$USER:$SHELL *.h", "[depends on dir]"},
+								{"\"$USER:$SHELL\" *.h", "[depends on dir]"},
+								{"echo '$USER:$SHELL'", "echo $USER:$SHELL"},
+								// --- 変数名の途中にワイルドカード ---
+								{"$U*ER", "$U*ER"},
+								{NULL, NULL}};
+	printf("==== Testing expand_string() (with expected output) ====\n");
+	for (i = 0; test_cases[i].input; i++)
+	{
+		printf("Test #%d\n", i + 1);
+		printf("Input    : \"%s\"\n", test_cases[i].input);
+		printf("Expected : \"%s\"\n", test_cases[i].expected);
+		result = expand_string(ft_strdup(test_cases[i].input), env_list);
+		printf("Expanded : \"%s\"\n", result);
+		if (strcmp(result, test_cases[i].expected) == 0
+			|| strcmp(test_cases[i].expected, "[depends on dir]") == 0)
+			printf("✅ Match!\n");
+		else
+			printf("❌ Mismatch!\n");
+		printf("-------------------------------\n");
+		free(result);
+	}
+}
+
+int	main(void)
+{
+	t_env	*env_list;
+
+	env_list = setup_env_list();
+	test_expand_string(env_list);
+	free_env_list(env_list);
+	return (0);
 }
