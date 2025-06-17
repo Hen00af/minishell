@@ -190,7 +190,6 @@ static t_ast	*parse_and_or(t_token **cur)
 	return (left);
 }
 
-
 void	print_ast(t_ast *node, int indent)
 {
 	if (!node)
@@ -298,7 +297,7 @@ t_ast	*start_parse(t_token *tokens)
 // 		fprintf(stderr, "Parse error\n");
 // 		return (1);
 // 	}
-// 	// print_ast(tree, 0);
-// 	print_exec_order(tree);
+// 	print_ast(tree, 0);
+// 	// print_exec_order(tree);
 // 	return (0);
 // }
