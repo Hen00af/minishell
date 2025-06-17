@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:40:32 by nando             #+#    #+#             */
-/*   Updated: 2025/06/17 09:32:16 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/17 14:39:39 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,19 @@ typedef struct s_file_node
 	char				*name;
 	struct s_file_node	*next;
 }						t_file_node;
+
+void	free_file_list(t_file_node *head)
+{
+	t_file_node	*tmp;
+
+	while (head)
+	{
+		tmp = head->next;
+		free(head->name);
+		free(head);
+		head = tmp;
+	}
+}
 
 bool	has_wildcard(char *arg)
 {
@@ -194,41 +207,15 @@ char	*expand_wild_card(char *arg)
 	t_file_node	*match_files;
 	char		*joined;
 
-	if (has_wildcard(arg))
-	{
-		files = get_files_in_cwd();
-		match_files = filter_matching_files(files, arg);
-		if (!match_files)
-			return (arg);
-		sort_files(match_files);
-		joined = join_files(match_files);
-		return (joined);
-	}
-	return (arg);
+	if (!has_wildcard(arg))
+		return (ft_strdup(arg));
+	files = get_files_in_cwd();
+	match_files = filter_matching_files(files, arg);
+	free_file_list(files);
+	if (!match_files)
+		return (ft_strdup(arg));
+	sort_files(match_files);
+	joined = join_files(match_files);
+	free_file_list(match_files);
+	return (joined);
 }
-
-// void	test_expand(char *pattern)
-//{
-//	char	*result;
-
-//	result = expand_wild_card(pattern);
-//	printf("Pattern: %-15s → Expanded: %s\n", pattern, result);
-//	if (result != pattern)
-//		free(result); // argと同じならfree不要
-//}
-
-// int	main(void)
-//{
-//	printf("==== Wildcard Pattern Expansion Test ====\n");
-//	test_expand("*");
-//	test_expand("*.c");
-//	test_expand("*.h");
-//	test_expand("*.txt");
-//	test_expand("a*");
-//	test_expand("*z*");
-//	test_expand("abc*");
-//	test_expand("ab*123*");
-//	test_expand("main.c");
-//	test_expand("no_match*");
-//	return (0);
-//}

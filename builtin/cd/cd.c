@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 15:02:10 by nando             #+#    #+#             */
-/*   Updated: 2025/06/07 19:23:24 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/17 10:50:44 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,7 @@ int	builtin_cd(char **args, t_env *list_head)
 // 	print_env_list(env_head);
 // 	// ⑥ テスト: cd /bin/ls
 // 	printf("\n--------------------- Test 4: cd
-/ home /
-	nando-- -----------------\n ");
+// home / nando-- -----------------\n ");
 	// 	builtin_cd(args4, env_head);
 	// 	print_env_list(env_head);
 	// 	// 6️⃣ メモリ解放（省略、必要なら実装）

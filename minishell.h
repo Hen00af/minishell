@@ -7,6 +7,7 @@
 # include "expander/expander.h"
 # include "lexer/lexer.h"
 # include "libft/libft.h"
+# include "linerlizer/linerlizer.h"
 # include "parser/parser.h"
 # include "signal/signal.h"
 # include "utils/utils.h"
@@ -44,18 +45,18 @@
 
 typedef struct s_env
 {
-	char			*key;
-	char			*value;
-	int				flag;
-	t_env			*next;
-}					t_env;
+	char	*key;
+	char	*value;
+	int		flag;
+	t_env	*next;
+}			t_env;
 
 typedef struct s_ctx
 {
-	t_env			*head;
-	t_env			*tail;
-	t_env			*node;
-	char			**key_value;
-}					t_ctx;
+	t_env	*head;
+	t_env	*tail;
+	t_env	*node;
+	char	**key_value;
+}			t_ctx;
 
 #endif

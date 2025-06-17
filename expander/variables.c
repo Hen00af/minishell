@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:40:45 by nando             #+#    #+#             */
-/*   Updated: 2025/06/17 09:31:43 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/17 14:28:17 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,10 @@ char	*make_new_arg(char *arg, t_var *var)
 
 char	*expand_variables(char *arg, t_env *env_head)
 {
-	int i;
-	t_var *var;
-	t_env *env;
-	char *new_arg;
+	int		i;
+	t_var	*var;
+	t_env	*env;
+	char	*new_arg;
 
 	var = init_var();
 	if (!var)
