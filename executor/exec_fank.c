@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/21 17:38:14 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/21 19:08:55 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ static void	exec_command(t_command *cmd, t_env *env)
 	if (is_builtin(cmd->argv[0]))
 	{
 		g_exit_status = exec_builtin(cmd->argv, env);
-		printf("\nbuiltin\n");
+		// ft_printf("\nbuiltin\n");
 		exit(g_exit_status);
 	}
 	else
 	{
-		printf("\nnot builtin\n");
+		// ft_printf("\nnot builtin\n");
 		path = search_path(cmd->argv[0], env);
 		if (!path)
 		{
@@ -230,6 +230,8 @@ char	**convert_env(t_env *env)
 	envp = malloc(sizeof(char *) * (size + 1));
 	if (!envp)
 		return (NULL);
+	i = 0;
+	cur = env;
 	while (cur)
 	{
 		envp[i] = ft_strjoin_3(cur->key, "=", cur->value);
@@ -239,6 +241,7 @@ char	**convert_env(t_env *env)
 	envp[i] = NULL;
 	return (envp);
 }
+
 char	*get_env_value(const char *name, t_env *env)
 {
 	while (env)
@@ -249,6 +252,7 @@ char	*get_env_value(const char *name, t_env *env)
 	}
 	return (NULL);
 }
+
 char	*ft_strjoin_path(char *dir, char *file)
 {
 	char	*tmp;
@@ -259,6 +263,7 @@ char	*ft_strjoin_path(char *dir, char *file)
 	free(tmp);
 	return (res);
 }
+
 int	env_size(t_env *env)
 {
 	int	i;
@@ -271,6 +276,7 @@ int	env_size(t_env *env)
 	}
 	return (i);
 }
+
 char	*ft_strjoin_3(char *s1, char *s2, char *s3)
 {
 	char	*tmp;
@@ -291,19 +297,17 @@ int	main(int ac, char **av, char **envp)
 	char	*cmd;
 	t_token	*token_head;
 
+	env = init_env(envp);
 	while (1)
 	{
 		cmd = readline("minishell# ");
-		if (!cmd)
-			exit(0);
 		add_history(cmd);
 		lex = lexer(cmd);
 		ast = start_parse(lex);
-		// print_ast(ast, 0);
+		if (!ast)
+			continue ;
 		linearized_ast = linearizer(ast);
-		env = init_env(envp);
 		expander(linearized_ast, env);
-		env = init_env(envp);
 		executor(linearized_ast, env);
 		free(cmd);
 	}
