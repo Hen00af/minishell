@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/21 19:08:55 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/21 19:26:46 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,11 +172,17 @@ static int	exec_pipeline(t_pipeline *pipeline, t_env *env)
 static int	exec_andor(t_andor *node, t_env *env)
 {
 	int	left_status;
+	int	right_status;
 
 	left_status = executor(node->left, env);
 	if ((node->type == ANDOR_AND && left_status == 0) || (node->type == ANDOR_OR
 			&& left_status != 0))
-		return (executor(node->right, env));
+	{
+		right_status = executor(node->right, env);
+		g_exit_status = right_status;
+		return (right_status);
+	}
+	g_exit_status = left_status;
 	return (left_status);
 }
 
@@ -301,11 +307,11 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		cmd = readline("minishell# ");
-		add_history(cmd);
 		lex = lexer(cmd);
 		ast = start_parse(lex);
 		if (!ast)
 			continue ;
+		add_history(cmd);
 		linearized_ast = linearizer(ast);
 		expander(linearized_ast, env);
 		executor(linearized_ast, env);
