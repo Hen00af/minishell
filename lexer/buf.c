@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:31:47 by nando             #+#    #+#             */
-/*   Updated: 2025/06/22 18:13:22 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/22 19:05:04 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	buf_init(t_buf *buf)
 	if (buf->word)
 		buf->word[0] = '\0';
 }
-//
+
+// 
 void	buf_add(t_buf *buf, char c)
 {
 	char	*new_word;
@@ -43,6 +44,7 @@ void	buf_add(t_buf *buf, char c)
 	buf->word[buf->len] = '\0';
 }
 
+// flush bufer and return str content
 char	*buf_flush(t_buf *buf)
 {
 	char	*text;

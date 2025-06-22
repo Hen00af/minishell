@@ -8,17 +8,17 @@ int	main(int argc, char **argv)
 
 	if (argc < 2)
 	{
-		fprintf(stderr, "Usage: %s \"input string\"\n", argv[0]);
+		ft_fprintf(stderr, "Usage: %s \"input string\"\n", argv[0]);
 		return (EXIT_FAILURE);
 	}
 	printf("Test input: %s\n", argv[1]);
 	tokens = lexer(argv[1]);
 	if (!tokens)
 	{
-		fprintf(stderr, "Lexer error.\n");
+		ft_fprintf(stderr, "Lexer error.\n");
 		return (EXIT_FAILURE);
 	}
-	printf("Tokens:\n");
+	ft_printf("Tokens:\n");
 	for (t_token *tok = tokens; tok != NULL; tok = tok->next)
 	{
 		display_text = tok->text;
@@ -27,7 +27,7 @@ int	main(int argc, char **argv)
 			snprintf(tmp, sizeof(tmp), "(NULL)");
 			display_text = tmp;
 		}
-		printf("  [Type=%d]'%s'\n", tok->type, display_text);
+		ft_printf("  [Type=%d]'%s'\n", tok->type, display_text);
 	}
 	free_tokens(tokens);
 	return (EXIT_SUCCESS);

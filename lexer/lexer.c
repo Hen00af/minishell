@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 20:23:45 by nando             #+#    #+#             */
-/*   Updated: 2025/06/22 18:21:08 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/22 18:47:53 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	handle_meta(t_lexer *ctx, char c)
 	else if (c == ')')
 		append_tok_and_reset_state(ctx, TOK_RPAREN);
 }
+
 // initialize t_lexer funk
 int	init_lexer(t_lexer *ctx, char *input)
 {
@@ -57,6 +58,7 @@ int	init_lexer(t_lexer *ctx, char *input)
 	ctx->current = ctx->head;
 	return (0);
 }
+
 //　start run
 void	run_lexer(t_lexer *ctx)
 {
@@ -87,6 +89,7 @@ t_token	*finish_lexing(t_lexer *ctx)
 	free(ctx->head);
 	return (token_head);
 }
+
 // entry point for lex
 t_token	*lexer(char *input)
 {
