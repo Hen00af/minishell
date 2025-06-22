@@ -16,7 +16,7 @@ void	buf_init(t_buf *buf)
 {
 	buf->capa = 1;
 	buf->len = 0;
-	buf->word = malloc(buf->capa * sizeof(buf->word));
+	buf->word = malloc(buf->capa * sizeof(*buf->word));
 	if (!buf->word)
 		return ;
 	if (buf->word)
