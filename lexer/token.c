@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:16:10 by nando             #+#    #+#             */
-/*   Updated: 2025/06/10 13:13:32 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/22 18:53:52 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-t_token	*create_token(TokenType type, char *word)
+// put token to t_token funk
+t_token	*create_token(t_tokentype type, char *word)
 {
 	t_token	*tok;
 
-	tok = malloc(sizeof *tok);
+	tok = malloc(sizeof * tok);
 	if (!tok)
 		return (NULL);
 	tok->type = type;
@@ -25,7 +26,7 @@ t_token	*create_token(TokenType type, char *word)
 	return (tok);
 }
 
-void	append_token(t_lexer *ctx, TokenType type, char *text)
+void	append_token(t_lexer *ctx, t_tokentype type, char *text)
 {
 	t_token	*tok;
 
@@ -36,14 +37,14 @@ void	append_token(t_lexer *ctx, TokenType type, char *text)
 	ctx->current = tok;
 }
 
-void	append_tok_and_set_state(t_lexer *ctx, StateType state)
+void	append_tok_and_set_state(t_lexer *ctx, t_statetype state)
 {
 	if (ctx->buf.len > 0)
 		append_token(ctx, TOK_WORD, buf_flush(&ctx->buf));
 	ctx->state = state;
 }
 
-void	append_tok_and_reset_state(t_lexer *ctx, TokenType type)
+void	append_tok_and_reset_state(t_lexer *ctx, t_tokentype type)
 {
 	if (ctx->buf.len > 0)
 		append_token(ctx, TOK_WORD, buf_flush(&ctx->buf));

@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_actions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:22:25 by nando             #+#    #+#             */
-/*   Updated: 2025/06/10 13:12:45 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/22 19:04:10 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
+//identify and sepalate using spaces and special characters.
+//and add token state
 void	lexer_default(t_lexer *ctx, char c)
 {
 	ctx->move = 1;
@@ -34,6 +36,7 @@ void	lexer_default(t_lexer *ctx, char c)
 		buf_add_and_set_state(ctx, c);
 }
 
+//
 void	lexer_word(t_lexer *ctx, char c)
 {
 	ctx->move = 1;

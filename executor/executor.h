@@ -1,31 +1,24 @@
 #ifndef EXECUTOR_H
-#define EXECUTOR_H
+# define EXECUTOR_H
 
-typedef struct s_pipe_fd
-{
-	int	pipe_fd[2];
-	int	fd_in;
-	int	pid;
-}		t_pipe_fd;
+# include "../minishell.h"
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <unistd.h>
 
-# define FAILED -1
-# define THIS_IS_NOT_FILE -1
+typedef struct s_ast	t_ast;
+typedef struct s_andor	t_andor;
+typedef struct s_env	t_env;
 
-int		make_process(int argc, char **argv, int i);
-void	do_pipe(int pipe_fd[2]);
-void	handle_parent(int i, int ac, char **av);
-int		pipex(int ac, char **av);
-int		dir_check(char *file);
-int		check_file(char *infile, char *outfile);
-void	check_args(int ac, char **av);
-void	handle_child(t_pipe_fd pipe_fds, char *cmd, int is_last, char *outfile);
-void	setup_infile(char *filename, int *fd_in);
-void	setup_outfile(char *filename, int *outfile);
-void	error(void);
-void	error_output_fd(int input_fd, int output_fd);
-void	error_input_fd(int input_fd);
-void	error_pipe(t_pipe_fd pipe_fds);
-void	noting_path(char **paths);
+int						executor(t_andor *node, t_env *env);
+int						exec_builtin(char **argv, t_env *env);
+char					**convert_env(t_env *env);
+char					*search_path(char *cmd, t_env *env);
+char					*get_env_value(const char *name, t_env *env);
+char					*ft_strjoin_path(char *dir, char *file);
+int						env_size(t_env *env);
+char					*ft_strjoin_3(char *s1, char *s2, char *s3);
+int						executor(t_andor *node, t_env *env);
 
-
-#endif // EXECUTOR_H
+#endif

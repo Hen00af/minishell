@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:18:47 by nando             #+#    #+#             */
-/*   Updated: 2025/06/06 19:13:41 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/22 19:10:08 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	quate_error(t_lexer *ctx)
 {
 	t_token	*token;
 
-	printf("quate not closed.\n");
+	ft_printf("quate not closed.\n");
 	free_buf(&ctx->buf);
 	free_tokens(ctx->head);
 }

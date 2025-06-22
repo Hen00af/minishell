@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buf.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:31:47 by nando             #+#    #+#             */
-/*   Updated: 2025/06/06 19:13:20 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/22 19:05:04 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@ void	buf_init(t_buf *buf)
 {
 	buf->capa = 1;
 	buf->len = 0;
-	buf->word = malloc(buf->capa * sizeof *buf->word);
+	buf->word = malloc(buf->capa * sizeof(*buf->word));
 	if (!buf->word)
 		return ;
 	if (buf->word)
 		buf->word[0] = '\0';
 }
 
+// 
 void	buf_add(t_buf *buf, char c)
 {
 	char	*new_word;
@@ -34,7 +35,7 @@ void	buf_add(t_buf *buf, char c)
 		new_word = malloc(new_capa);
 		if (!new_word)
 			return ;
-		memcpy(new_word, buf->word, buf->len);
+		ft_memcpy(new_word, buf->word, buf->len);
 		free(buf->word);
 		buf->word = new_word;
 		buf->capa = new_capa;
@@ -43,6 +44,7 @@ void	buf_add(t_buf *buf, char c)
 	buf->word[buf->len] = '\0';
 }
 
+// flush bufer and return str content
 char	*buf_flush(t_buf *buf)
 {
 	char	*text;

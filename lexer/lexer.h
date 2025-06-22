@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/15 20:08:16 by nando             #+#    #+#             */
-/*   Updated: 2025/06/17 17:00:50 by nando            ###   ########.fr       */
+/*   Created: 2025/06/22 18:51:48 by shattori          #+#    #+#             */
+/*   Updated: 2025/06/22 19:27:05 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # define ERROR -5
 
-# include "../libft/libft.h"
+# include "../minishell.h"
 # include <ctype.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -45,7 +45,7 @@ typedef enum e_tokentype
 	TOK_RPAREN,
 	TOK_EOF,
 	TOK_NUL
-}					TokenType;
+}					t_tokentype;
 
 typedef enum e_statetype
 {
@@ -54,11 +54,11 @@ typedef enum e_statetype
 	STA_IN_SQUOTE,
 	STA_IN_DQUOTE,
 	STA_IN_VARIABLE,
-}					StateType;
+}					t_statetype;
 
 typedef struct s_token
 {
-	TokenType		type;
+	t_tokentype		type;
 	char			*text;
 	struct s_token	*next;
 }					t_token;
@@ -78,8 +78,8 @@ typedef struct s_lexer
 	t_buf			buf;
 	size_t			posi;
 	size_t			move;
-	StateType		state;
-	StateType		prev_state;
+	t_statetype		state;
+	t_statetype		prev_state;
 	int				assignment_flag;
 }					t_lexer;
 
@@ -89,10 +89,10 @@ void				free_buf(t_buf *buf);
 char				*buf_flush(t_buf *buf);
 void				buf_add_and_assign_flag(t_lexer *ctx, char c);
 void				buf_add_and_set_state(t_lexer *ctx, char c);
-t_token				*create_token(TokenType type, char *word);
-void				append_token(t_lexer *ctx, TokenType type, char *text);
-void				append_tok_and_set_state(t_lexer *ctx, StateType state);
-void				append_tok_and_reset_state(t_lexer *ctx, TokenType type);
+t_token				*create_token(t_tokentype type, char *word);
+void				append_token(t_lexer *ctx, t_tokentype type, char *text);
+void				append_tok_and_set_state(t_lexer *ctx, t_statetype state);
+void				append_tok_and_reset_state(t_lexer *ctx, t_tokentype type);
 void				free_tokens(t_token *head);
 void				quate_error(t_lexer *ctx);
 int					ft_isspace(int c);
@@ -106,4 +106,5 @@ int					init_lexer(t_lexer *ctx, char *input);
 void				run_lexer(t_lexer *ctx);
 t_token				*finish_lexing(t_lexer *ctx);
 t_token				*lexer(char *input);
+
 #endif
