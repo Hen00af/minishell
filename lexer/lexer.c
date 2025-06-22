@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 20:23:45 by nando             #+#    #+#             */
-/*   Updated: 2025/06/17 16:52:11 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/22 18:21:08 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	handle_meta(t_lexer *ctx, char c)
 	else if (c == ')')
 		append_tok_and_reset_state(ctx, TOK_RPAREN);
 }
-
+// initialize t_lexer funk
 int	init_lexer(t_lexer *ctx, char *input)
 {
 	buf_init(&ctx->buf);
@@ -57,7 +57,7 @@ int	init_lexer(t_lexer *ctx, char *input)
 	ctx->current = ctx->head;
 	return (0);
 }
-
+//　start run
 void	run_lexer(t_lexer *ctx)
 {
 	char	c;
@@ -87,7 +87,7 @@ t_token	*finish_lexing(t_lexer *ctx)
 	free(ctx->head);
 	return (token_head);
 }
-
+// entry point for lex
 t_token	*lexer(char *input)
 {
 	t_lexer	ctx;
@@ -107,36 +107,3 @@ t_token	*lexer(char *input)
 	token_head = finish_lexing(&ctx);
 	return (token_head);
 }
-
-// int	main(int argc, char **argv)
-// {
-// 	t_token		*tokens;
-// 	const char	*display_text;
-// 	char		tmp[32];
-
-// 	if (argc < 2)
-// 	{
-// 		fprintf(stderr, "Usage: %s \"input string\"\n", argv[0]);
-// 		return (EXIT_FAILURE);
-// 	}
-// 	printf("Test input: %s\n", argv[1]);
-// 	tokens = lexer(argv[1]);
-// 	if (!tokens)
-// 	{
-// 		fprintf(stderr, "Lexer error.\n");
-// 		return (EXIT_FAILURE);
-// 	}
-// 	printf("Tokens:\n");
-// 	for (t_token *tok = tokens; tok != NULL; tok = tok->next)
-// 	{
-// 		display_text = tok->text;
-// 		if (display_text == NULL)
-// 		{
-// 			snprintf(tmp, sizeof(tmp), "(NULL)");
-// 			display_text = tmp;
-// 		}
-// 		printf("  [Type=%d]'%s'\n", tok->type, display_text);
-// 	}
-// 	free_tokens(tokens);
-// 	return (EXIT_SUCCESS);
-// }

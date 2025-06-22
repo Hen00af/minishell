@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:16:10 by nando             #+#    #+#             */
-/*   Updated: 2025/06/10 13:13:32 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/22 18:13:08 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
-
+// put token to t_token funk
 t_token	*create_token(TokenType type, char *word)
 {
 	t_token	*tok;

@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_actions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:22:25 by nando             #+#    #+#             */
-/*   Updated: 2025/06/10 13:12:45 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/22 18:12:33 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
-
+//
 void	lexer_default(t_lexer *ctx, char c)
 {
 	ctx->move = 1;
