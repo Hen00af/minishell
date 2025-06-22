@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parcer.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/22 20:21:45 by shattori          #+#    #+#             */
+/*   Updated: 2025/06/22 20:38:07 by shattori         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parser.h"
 
 static t_ast	*create_ast_node(t_node_type type, t_ast *left, t_ast *right)
@@ -13,108 +25,12 @@ static t_ast	*create_ast_node(t_node_type type, t_ast *left, t_ast *right)
 	return (node);
 }
 
-t_ast	*parse_pipeline(t_token **cur)
-{
-	t_ast	*left;
-	t_ast	*right;
-
-	left = parse_command_or_subshell(cur);
-	if (!left)
-		return (NULL);
-	while (*cur && (*cur)->type == TOK_PIPE)
-	{
-		*cur = (*cur)->next;
-		right = parse_command_or_subshell(cur);
-		if (!right)
-		{
-			fprintf(stderr, "Syntax error after pipe\n");
-			return (NULL);
-		}
-		left = create_ast_node(NODE_PIPE, left, right);
-	}
-	return (left);
-}
-
-t_ast	*parse_subshell(t_token **cur)
-{
-	t_ast	*inner;
-	t_ast	*node;
-
-	if (!*cur || (*cur)->type != TOK_LPAREN)
-	{
-		fprintf(stderr, "Syntax error: expected '('\n");
-		return (NULL);
-	}
-	*cur = (*cur)->next;
-	inner = parse_and_or(cur);
-	if (!inner)
-		return (NULL);
-	if (!*cur || (*cur)->type != TOK_RPAREN)
-	{
-		fprintf(stderr, "Syntax error: expected ')' but got '%s'\n",
-			(*cur) ? (*cur)->text : "end of input");
-		return (NULL);
-	}
-	*cur = (*cur)->next;
-	node = calloc(1, sizeof(t_ast));
-	if (!node)
-		return (NULL);
-	node->type = NODE_SUBSHELL;
-	node->left = inner;
-	return (node);
-}
-
-t_ast	*parse_command_or_subshell(t_token **cur)
-{
-	if ((*cur)->type == TOK_LPAREN)
-		return (parse_subshell(cur));
-	return (parse_command(cur));
-}
-
 static int	is_redirection_token(t_token *tok)
 {
 	if (!tok)
 		return (0);
 	return (tok->type == TOK_REDIR_IN || tok->type == TOK_REDIR_OUT
 		|| tok->type == TOK_REDIR_APPEND || tok->type == TOK_HEREDOC);
-}
-
-static t_ast	*parse_redirection(t_token **cur, t_ast *cmd)
-{
-	t_node_type	type;
-	t_ast		*redir;
-
-	switch ((*cur)->type)
-	{
-	case TOK_REDIR_IN:
-		type = NODE_REDIR_IN;
-		break ;
-	case TOK_REDIR_OUT:
-		type = NODE_REDIR_OUT;
-		break ;
-	case TOK_REDIR_APPEND:
-		type = NODE_REDIR_APPEND;
-		break ;
-	case TOK_HEREDOC:
-		type = NODE_HEREDOC;
-		break ;
-	default:
-		fprintf(stderr, "Unexpected token in redirection\n");
-		return (NULL);
-	}
-	*cur = (*cur)->next;
-	if (!*cur || (*cur)->type != TOK_WORD)
-	{
-		fprintf(stderr, "Expected filename after redirection\n");
-		return (NULL);
-	}
-	redir = calloc(1, sizeof(t_ast));
-	redir->type = type;
-	redir->filename = ft_strdup((*cur)->text);
-	redir->left = cmd;
-	redir->right = NULL;
-	*cur = (*cur)->next;
-	return (redir);
 }
 
 static t_ast	*parse_simple_command(t_token **cur)
@@ -181,58 +97,10 @@ static t_ast	*parse_and_or(t_token **cur)
 		*cur = (*cur)->next;
 		right = parse_pipeline(cur);
 		if (!right)
-		{
-			fprintf(stderr, "Syntax error after && or ||\n");
 			return (NULL);
-		}
 		left = create_ast_node(op_type, left, right);
 	}
 	return (left);
-}
-
-void	print_ast(t_ast *node, int indent)
-{
-	if (!node)
-		return ;
-	for (int i = 0; i < indent; i++)
-		printf("  ");
-	switch (node->type)
-	{
-	case NODE_COMMAND:
-		printf("COMMAND:");
-		for (int i = 0; node->argv && node->argv[i]; i++)
-			printf(" %s", node->argv[i]);
-		printf("\n");
-		break ;
-	case NODE_PIPE:
-		printf("PIPE\n");
-		break ;
-	case NODE_AND:
-		printf("AND\n");
-		break ;
-	case NODE_OR:
-		printf("OR\n");
-		break ;
-	case NODE_SUBSHELL:
-		printf("SUBSHELL\n");
-		break ;
-	case NODE_REDIR_IN:
-		printf("REDIR_IN → %s\n", node->filename);
-		break ;
-	case NODE_REDIR_OUT:
-		printf("REDIR_OUT → %s\n", node->filename);
-		break ;
-	case NODE_REDIR_APPEND:
-		printf("REDIR_APPEND → %s\n", node->filename);
-		break ;
-	case NODE_HEREDOC:
-		printf("HEREDOC → %s\n", node->filename);
-		break ;
-	}
-	if (node->left)
-		print_ast(node->left, indent + 1);
-	if (node->right)
-		print_ast(node->right, indent + 1);
 }
 
 t_ast	*start_parse(t_token *tokens)
@@ -244,4 +112,3 @@ t_ast	*start_parse(t_token *tokens)
 	cur = tokens;
 	return (parse_and_or(&cur));
 }
-
