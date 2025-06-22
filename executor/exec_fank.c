@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/21 19:26:46 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/22 16:35:53 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,7 @@ static void	exec_command(t_command *cmd, t_env *env)
 	}
 	if (!cmd->argv || !cmd->argv[0])
 		exit(0);
-	if (is_builtin(cmd->argv[0]))
-	{
-		g_exit_status = exec_builtin(cmd->argv, env);
-		// ft_printf("\nbuiltin\n");
-		exit(g_exit_status);
-	}
-	else
+	else if (!is_builtin(cmd->argv[0]))
 	{
 		// ft_printf("\nnot builtin\n");
 		path = search_path(cmd->argv[0], env);
@@ -128,6 +122,11 @@ static int	exec_pipeline(t_pipeline *pipeline, t_env *env)
 	while (cmd_list)
 	{
 		cmd = cmd_list->content;
+		if (is_builtin(cmd->argv[0]))
+		{
+			g_exit_status = exec_builtin(cmd->argv, env);
+			// ft_printf("\nbuiltin\n");
+		}
 		if (cmd_list->next && pipe(pipefd) == -1)
 		{
 			perror("pipe");
