@@ -239,65 +239,9 @@ t_ast	*start_parse(t_token *tokens)
 {
 	t_token	*cur;
 
+	if (tokens == NULL)
+		return (NULL);
 	cur = tokens;
 	return (parse_and_or(&cur));
 }
 
-// void	print_exec_order(t_ast *node)
-// {
-// 	if (!node)
-// 		return ;
-// 	if (node->type == NODE_COMMAND)
-// 	{
-// 		for (int i = 0; node->argv && node->argv[i]; i++)
-// 			printf("%s ", node->argv[i]);
-// 		printf("\n");
-// 		return ;
-// 	}
-// 	// リダイレクトノードなら中身のコマンドを先に処理
-// 	if (node->type == NODE_REDIR_IN || node->type == NODE_REDIR_OUT
-// 		|| node->type == NODE_REDIR_APPEND || node->type == NODE_HEREDOC)
-// 	{
-// 		print_exec_order(node->left); // COMMAND ノードが left に入ってる
-// 		return ;
-// 	}
-// 	// サブシェルの場合も中の構文を処理
-// 	if (node->type == NODE_SUBSHELL)
-// 	{
-// 		print_exec_order(node->left);
-// 		return ;
-// 	}
-// 	// AND, OR, PIPE など：左右を処理順に従って
-// 	print_exec_order(node->left);
-// 	print_exec_order(node->right);
-// }
-
-// // parser main
-
-// int	main(int argc, char **argv)
-// {
-// 	t_token	*tokens;
-// 	t_ast	*tree;
-
-// 	if (argc != 2)
-// 	{
-// 		fprintf(stderr, "Usage: %s \"command string\"\n", argv[0]);
-// 		return (1);
-// 	}
-// 	tokens = lexer(argv[1]);
-// 	if (!tokens)
-// 	{
-// 		fprintf(stderr, "Tokenize error\n");
-// 		return (1);
-// 	}
-// 	tree = start_parse(tokens);
-// 	free(tokens);
-// 	if (!tree)
-// 	{
-// 		fprintf(stderr, "Parse error\n");
-// 		return (1);
-// 	}
-// 	print_ast(tree, 0);
-// 	// print_exec_order(tree);
-// 	return (0);
-// }
