@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:31:47 by nando             #+#    #+#             */
-/*   Updated: 2025/06/22 19:05:04 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/22 20:21:06 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	buf_init(t_buf *buf)
 		buf->word[0] = '\0';
 }
 
-// 
 void	buf_add(t_buf *buf, char c)
 {
 	char	*new_word;
@@ -60,16 +59,4 @@ void	free_buf(t_buf *buf)
 {
 	if (buf->word)
 		free(buf->word);
-}
-
-void	buf_add_and_assign_flag(t_lexer *ctx, char c)
-{
-	buf_add(&ctx->buf, c);
-	ctx->assignment_flag = 1;
-}
-
-void	buf_add_and_set_state(t_lexer *ctx, char c)
-{
-	buf_add(&ctx->buf, c);
-	ctx->state = STA_IN_WORD;
 }

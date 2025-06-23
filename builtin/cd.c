@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 15:02:10 by nando             #+#    #+#             */
-/*   Updated: 2025/06/17 10:50:44 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/22 19:12:00 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
-#include "../builtin.h"
+#include "../minishell.h"
+#include "builtin.h"
 #include <stdio.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -136,8 +136,8 @@ int	builtin_cd(char **args, t_env *list_head)
 // 	// ⑥ テスト: cd /bin/ls
 // 	printf("\n--------------------- Test 4: cd
 // home / nando-- -----------------\n ");
-	// 	builtin_cd(args4, env_head);
-	// 	print_env_list(env_head);
-	// 	// 6️⃣ メモリ解放（省略、必要なら実装）
-	// 	return (0);
-	// }
+// 	builtin_cd(args4, env_head);
+// 	print_env_list(env_head);
+// 	// 6️⃣ メモリ解放（省略、必要なら実装）
+// 	return (0);
+// }

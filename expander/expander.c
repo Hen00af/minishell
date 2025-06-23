@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 14:30:21 by nando             #+#    #+#             */
-/*   Updated: 2025/06/17 16:11:30 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/21 18:13:42 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,26 @@ void	expand_andor_arguments(t_andor *ast, t_env *env)
 		expand_andor_arguments(ast->right, env);
 	}
 }
+
+// ====== MAIN ======
+// int	main(int ac, char **av, char **envp)
+// {
+// 	t_token	*lex;
+// 	t_ast	*ast;
+// 	t_andor	*linearized_ast;
+// 	t_env	*env;
+
+// 	if (ac < 2)
+// 		return (0);
+// 	lex = lexer(av[1]);
+// 	ast = start_parse(lex);
+// 	// print_ast(ast, 0);
+// 	linearized_ast = linearizer(ast);
+// 	env = init_env(envp);
+// 	expander(linearized_ast, env);
+// 	print_linerlized_ast(linearized_ast, 0);
+// 	return (0);
+// }
 
 //////////////////////////////////////////////////////////////////////////////
 // test code /////////////////////////////////////////////////////////

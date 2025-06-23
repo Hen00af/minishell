@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 15:05:25 by nando             #+#    #+#             */
-/*   Updated: 2025/06/10 09:44:05 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/22 19:10:57 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ static void	print_env(char **envp)
 // 	env_head = init_env(envp);
 // 	if (!env_head)
 // 	{
-// 		fprintf(stderr, "Failed to initialize environment list\n");
+// 		ft_fprintf(stderr, "Failed to initialize environment list\n");
 // 		return (1);
 // 	}
 // 	printf("============= ENV LIST CONTENTS ===========\n");
@@ -201,6 +201,4 @@ static void	print_env(char **envp)
 // 	return (0);
 // }
 
-
-//TEST OK
-
+// TEST OK

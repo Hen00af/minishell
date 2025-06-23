@@ -1,6 +1,9 @@
 #ifndef UTILS_H
 # define UTILS_H
 
+# include "../minishell.h"
+# include "./fprintf/ft_fprintf.h"
+
 typedef struct s_env	t_env;
 typedef struct s_ctx	t_ctx;
 

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:30:31 by nando             #+#    #+#             */
-/*   Updated: 2025/06/07 20:05:35 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/21 16:50:19 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../builtin.h"
+#include "builtin.h"
 
 void	free_key_value(char **key_value)
 {
@@ -121,7 +121,7 @@ void	include_key_value(char *env, t_env *current)
 	{
 		if ((ft_strcmp(key_value[0], current->key)) == 0)
 		{
-			if ((current->flag == 0))
+			if (current->flag == 0)
 				current->flag = 1;
 			free(current->value);
 			current->value = ft_strdup(key_value[1]);

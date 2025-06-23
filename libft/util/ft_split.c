@@ -6,11 +6,11 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 15:41:26 by shattori          #+#    #+#             */
-/*   Updated: 2025/04/04 18:00:44 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/21 15:30:35 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../libft.h"
 
 int	is_charset(char c, char *charset)
 {

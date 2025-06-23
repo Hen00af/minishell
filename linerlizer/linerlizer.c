@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:37 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/17 16:02:23 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/22 19:33:17 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_redir_type	map_redir_type(t_node_type type)
 		return (REDIR_APPEND);
 	if (type == NODE_HEREDOC)
 		return (REDIR_HEREDOC);
-	fprintf(stderr, "Unknown redirection type!\n");
+	ft_fprintf(STDERROR_INT, "Unknown redirection type!\n");
 	exit(1);
 }
 
@@ -230,21 +230,4 @@ void	print_linerlized_ast(t_andor *tree, int indent)
 		printf("PIPELINE\n");
 		print_commands(tree->pipeline, indent + 1);
 	}
-}
-
-// ====== MAIN ======
-int	main(int ac, char **av)
-{
-	t_token	*lex;
-	t_ast	*ast;
-	t_andor	*linearized_ast;
-
-	if (ac < 2)
-		return (0);
-	lex = lexer(av[1]);
-	ast = start_parse(lex);
-	// print_ast(ast, 0);
-	linearized_ast = linearizer(ast);
-	print_linerlized_ast(linearized_ast, 0);
-	return (0);
 }

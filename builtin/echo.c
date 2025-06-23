@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 21:05:26 by nando             #+#    #+#             */
-/*   Updated: 2025/06/07 19:54:05 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/21 14:40:19 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
-#include "../builtin.h"
+#include "../minishell.h"
+#include "builtin.h"
 
 static int	count_args(char **args)
 {

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:50:52 by nando             #+#    #+#             */
-/*   Updated: 2025/06/07 19:18:49 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/18 13:04:43 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../builtin.h"
+#include "builtin.h"
 
 int	builtin_pwd(char **args, t_env *list_head)
 {

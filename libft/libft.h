@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 14:18:05 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/10 09:25:02 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/21 15:32:12 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,6 @@ void				add_front(t_DList *list, int data);
 t_DList				*create_dlist(void);
 t_DNode				*create_node(int data);
 void				free_list(t_DList *list);
+char				**free_split(char **str);
 
 #endif /* LIBFT_H */

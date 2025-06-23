@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:28:29 by nando             #+#    #+#             */
-/*   Updated: 2025/06/17 10:51:17 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/21 17:11:04 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../builtin.h"
+#include "builtin.h"
 
 int	ft_strcmp(const char *string1, const char *string2)
 {
@@ -64,7 +64,7 @@ int	builtin_unset(char **args, t_env **list_head)
 	i = 1;
 	status = 0;
 	if (!*list_head)
-		return ;
+		return (0);
 	while (args[i])
 	{
 		if (is_valid_initial(args[i][0]) == 1)

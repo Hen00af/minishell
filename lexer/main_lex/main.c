@@ -8,14 +8,14 @@ int	main(int argc, char **argv)
 
 	if (argc < 2)
 	{
-		ft_fprintf(stderr, "Usage: %s \"input string\"\n", argv[0]);
+		ft_fprintf(STDERROR_INT, "Usage: %s \"input string\"\n", argv[0]);
 		return (EXIT_FAILURE);
 	}
 	printf("Test input: %s\n", argv[1]);
 	tokens = lexer(argv[1]);
 	if (!tokens)
 	{
-		ft_fprintf(stderr, "Lexer error.\n");
+		ft_fprintf(STDERROR_INT, "Lexer error.\n");
 		return (EXIT_FAILURE);
 	}
 	ft_printf("Tokens:\n");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_to_array.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:57:37 by nando             #+#    #+#             */
-/*   Updated: 2025/06/10 09:55:46 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/21 14:46:46 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,43 +104,43 @@ t_env	*create_test_env(char *key, char *value)
 
 //このmainは"assign_shell_var()"のテストも兼ねている。
 
-int	main(void)
-{
-	t_env	*env_head;
-	t_env	*node2;
-	char	**env_array;
-	int		i;
+// int	main(void)
+// {
+// 	t_env	*env_head;
+// 	t_env	*node2;
+// 	char	**env_array;
+// 	int		i;
 
-	//①　テスト用の環境変数リスト作成
-	env_head = create_test_env("USER", "nando");
-	node2 = create_test_env("PWD", "/home/nando");
-	env_head->next = node2;
-	//②　assign_shell_var()のテスト
-	assign_shell_var("FOO=naruki", env_head);
-	//③　env_to_array()のテスト 　　（”flag = 1”のみ二次元配列に格納）
-	env_array = env_to_array(env_head);
-	//④　結果の表示
-	if (!env_array)
-	{
-		printf("env_to_array() failed\n");
-		return (1);
-	}
-	i = 0;
-	while (env_array[i])
-	{
-		printf("env_array[%d] = %s\n", i, env_array[i]);
-		i++;
-	}
-	//⑤メモリ解放
-	i = 0;
-	while (env_array[i])
-	{
-		free(env_array[i]);
-		i++;
-	}
-	free(env_array);
-	//ノードの解放（今回はテストなので key, value は解放不要）
-	free(env_head);
-	free(node2);
-	return (0);
-}
+// 	//①　テスト用の環境変数リスト作成
+// 	env_head = create_test_env("USER", "nando");
+// 	node2 = create_test_env("PWD", "/home/nando");
+// 	env_head->next = node2;
+// 	//②　assign_shell_var()のテスト
+// 	assign_shell_var("FOO=naruki", env_head);
+// 	//③　env_to_array()のテスト 　　（”flag = 1”のみ二次元配列に格納）
+// 	env_array = env_to_array(env_head);
+// 	//④　結果の表示
+// 	if (!env_array)
+// 	{
+// 		printf("env_to_array() failed\n");
+// 		return (1);
+// 	}
+// 	i = 0;
+// 	while (env_array[i])
+// 	{
+// 		printf("env_array[%d] = %s\n", i, env_array[i]);
+// 		i++;
+// 	}
+// 	//⑤メモリ解放
+// 	i = 0;
+// 	while (env_array[i])
+// 	{
+// 		free(env_array[i]);
+// 		i++;
+// 	}
+// 	free(env_array);
+// 	//ノードの解放（今回はテストなので key, value は解放不要）
+// 	free(env_head);
+// 	free(node2);
+// 	return (0);
+// }

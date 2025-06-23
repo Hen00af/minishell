@@ -1,11 +1,13 @@
 #!/bin/bash
 
 run() {
-cc  -lreadline ../expander/*.c ../parser/*.c ../lexer/*.c ../linerlizer/*.c ./*.c ../builtin/*.c ../utils/*.c ../libft/libft.a 
+cc  -lreadline ../expander/*.c ../parser/*.c ../lexer/*.c ../linerlizer/*.c ./*.c ../builtin/*.c ../utils/*.c ../utils/fprintf/fprintf.a ../libft/libft.a ./exec_test/main.c
 	input="$1"
 	# leak_check=(valgrind -q --leak-check=full)
 	#if you want to check leaking, add this command "${leak_check[0]}" to head of ↓
-	./a.out "$input"
+	mv ./a.out ./exec_test
+	# valgrind 
+	./exec_test/a.out "$input"
 }
 
 
