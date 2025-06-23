@@ -14,6 +14,9 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
+# define STDERROR_INT 2
+# define STDOUT_INT 1
+
 
 // typedef enum e_node_type
 // {

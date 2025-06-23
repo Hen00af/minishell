@@ -4,7 +4,7 @@
 # define NG 1
 # define OK 0
 
-#include "../minishell.h"
+# include "../minishell.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -21,11 +21,12 @@ typedef struct s_echo
 
 int						ft_strcmp(const char *string1, const char *string2);
 int						builtin_cd(char **args, t_env *list_head);
-int						builtin_echo(char **args);
+int						builtin_echo(char **args, t_env *list_head);
+int						is_valid_initial(char c);
 int						builtin_env(char **args, t_env *list_head);
 int						builtin_exit(char **args);
 int						builtin_export(char **args, t_env **list_head);
 int						builtin_pwd(char **args, t_env *list_head);
 int						builtin_unset(char **args, t_env **list_head);
-
+int						builtin_env(char **args, t_env *list_head);
 #endif // BUILTIN_H

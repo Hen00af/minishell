@@ -6,14 +6,14 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:22:25 by nando             #+#    #+#             */
-/*   Updated: 2025/06/22 19:04:10 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/22 20:16:57 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-//identify and sepalate using spaces and special characters.
-//and add token state
+// identify and sepalate using spaces and special characters.
+// and add token state
 void	lexer_default(t_lexer *ctx, char c)
 {
 	ctx->move = 1;
@@ -36,7 +36,6 @@ void	lexer_default(t_lexer *ctx, char c)
 		buf_add_and_set_state(ctx, c);
 }
 
-//
 void	lexer_word(t_lexer *ctx, char c)
 {
 	ctx->move = 1;
@@ -55,7 +54,12 @@ void	lexer_word(t_lexer *ctx, char c)
 		else
 			append_tok_and_set_state(ctx, STA_DEFAULT);
 	}
-	else if (c == '\'')
+	lexer_word2(ctx, c);
+}
+
+void	lexer_word2(t_lexer *ctx, char c)
+{
+	if (c == '\'')
 	{
 		append_tok_and_set_state(ctx, STA_IN_SQUOTE);
 		buf_add(&ctx->buf, c);
