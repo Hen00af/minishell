@@ -6,13 +6,13 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 20:21:45 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/22 20:38:07 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/23 15:11:50 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-static t_ast	*create_ast_node(t_node_type type, t_ast *left, t_ast *right)
+t_ast	*create_ast_node(t_node_type type, t_ast *left, t_ast *right)
 {
 	t_ast	*node;
 
@@ -33,7 +33,7 @@ static int	is_redirection_token(t_token *tok)
 		|| tok->type == TOK_REDIR_APPEND || tok->type == TOK_HEREDOC);
 }
 
-static t_ast	*parse_simple_command(t_token **cur)
+t_ast	*parse_simple_command(t_token **cur)
 {
 	t_token	*tok;
 	int		argc;
@@ -79,7 +79,7 @@ t_ast	*parse_command(t_token **cur)
 	return (cmd);
 }
 
-static t_ast	*parse_and_or(t_token **cur)
+t_ast	*parse_and_or(t_token **cur)
 {
 	t_ast		*left;
 	t_node_type	op_type;

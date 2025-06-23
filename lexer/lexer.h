@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 18:51:48 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/22 19:31:29 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/23 15:14:45 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,6 @@ int					init_lexer(t_lexer *ctx, char *input);
 void				run_lexer(t_lexer *ctx);
 t_token				*finish_lexing(t_lexer *ctx);
 t_token				*lexer(char *input);
+void				lexer_word2(t_lexer *ctx, char c);
 
 #endif

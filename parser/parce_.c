@@ -49,3 +49,31 @@ t_ast	*parse_command_or_subshell(t_token **cur)
 		return (parse_subshell(cur));
 	return (parse_command(cur));
 }
+t_ast	*parse_redirection(t_token **cur, t_ast *cmd)
+{
+	t_node_type	type;
+	t_ast		*redir;
+
+	if ((*cur)->type == TOK_REDIR_IN)
+		type = NODE_REDIR_IN;
+	else if ((*cur)->type == TOK_REDIR_OUT)
+		type = NODE_REDIR_OUT;
+	else if ((*cur)->type == TOK_REDIR_APPEND)
+		type = NODE_REDIR_APPEND;
+	else if ((*cur)->type == TOK_HEREDOC)
+		type = NODE_HEREDOC;
+	else
+		return (NULL);
+	*cur = (*cur)->next;
+	if (!*cur || (*cur)->type != TOK_WORD)
+		return (NULL);
+	redir = calloc(1, sizeof(t_ast));
+	if (!redir)
+		return (NULL); // calloc failure safety
+	redir->type = type;
+	redir->filename = ft_strdup((*cur)->text);
+	redir->left = cmd;
+	redir->right = NULL;
+	*cur = (*cur)->next;
+	return (redir);
+}
