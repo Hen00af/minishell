@@ -9,10 +9,16 @@ int	main(int ac, char **av, char **envp)
 	char	*cmd;
 	t_token	*token_head;
 
+	init_signal();
 	env = init_env(envp);
 	while (1)
 	{
 		cmd = readline("minishell# ");
+		if (!cmd)
+		{
+			ft_printf("exit\n");
+			exit(0);
+		}
 		lex = lexer(cmd);
 		ast = start_parse(lex);
 		if (!ast)

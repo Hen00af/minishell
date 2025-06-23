@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:59:39 by nando             #+#    #+#             */
-/*   Updated: 2025/05/15 16:10:48 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/23 17:56:19 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,17 @@ static void	prompt(void)
 	cmd = readline("minishell$ ");
 	if (!cmd)
 	{
-		printf("exit\n");
+		ft_printf("exit\n");
 		exit(0);
 	}
 	add_history(cmd);
 	free(cmd);
 }
 
-int	main(void)
-{
-	init_signal();
-	while (1)
-		prompt();
-	exit(0);
-}
+// int	main(void)
+// {
+// 	init_signal();
+// 	while (1)
+// 		prompt();
+// 	exit(0);
+// }

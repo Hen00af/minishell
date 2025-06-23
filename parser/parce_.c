@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parce_.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/23 15:16:11 by shattori          #+#    #+#             */
+/*   Updated: 2025/06/23 15:18:14 by shattori         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./parser.h"
 
 t_ast	*parse_pipeline(t_token **cur)
@@ -43,12 +55,14 @@ t_ast	*parse_subshell(t_token **cur)
 	node->left = inner;
 	return (node);
 }
+
 t_ast	*parse_command_or_subshell(t_token **cur)
 {
 	if ((*cur)->type == TOK_LPAREN)
 		return (parse_subshell(cur));
 	return (parse_command(cur));
 }
+
 t_ast	*parse_redirection(t_token **cur, t_ast *cmd)
 {
 	t_node_type	type;
@@ -69,11 +83,24 @@ t_ast	*parse_redirection(t_token **cur, t_ast *cmd)
 		return (NULL);
 	redir = calloc(1, sizeof(t_ast));
 	if (!redir)
-		return (NULL); // calloc failure safety
+		return (NULL);
 	redir->type = type;
 	redir->filename = ft_strdup((*cur)->text);
 	redir->left = cmd;
 	redir->right = NULL;
 	*cur = (*cur)->next;
 	return (redir);
+}
+
+t_ast	*create_ast_node(t_node_type type, t_ast *left, t_ast *right)
+{
+	t_ast	*node;
+
+	node = calloc(1, sizeof(t_ast));
+	if (!node)
+		return (NULL);
+	node->type = type;
+	node->left = left;
+	node->right = right;
+	return (node);
 }
