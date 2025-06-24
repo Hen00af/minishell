@@ -10,4 +10,4 @@ run() {
 }
 
 
-run '$HOME'
+run 'echo nando'
