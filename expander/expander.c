@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 14:30:21 by nando             #+#    #+#             */
-/*   Updated: 2025/06/21 18:13:42 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/25 21:49:54 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,23 +43,28 @@ char	*remove_quote(char *arg)
 	return (ft_strdup(arg));
 }
 
-char	*expand_string(char *arg, t_env *env, t_expand *ctx)
+char	*expand_string(char *arg, t_env *env, t_expand *ctx, t_list *node)
 {
-	char	*cleaned_quote;
-	char	*before;
-	char	*tmp;
+	char			*cleaned_quote;
+	char			*before;
+	char			*tmp;
+	t_redirection	*redir;
 
+	redir = (t_redirection *)node->content;
 	if (arg[0] == '\'')
 	{
+		redir->need_expand = true;
 		cleaned_quote = remove_quote(arg);
 		return (cleaned_quote);
 	}
 	else if (arg[0] == '\"')
 	{
+		redir->need_expand = true;
 		cleaned_quote = remove_quote(arg);
 		cleaned_quote = expand_variables(cleaned_quote, env);
 		return (cleaned_quote);
 	}
+	redir->need_expand = false;
 	before = ft_strdup(arg);
 	arg = expand_variables(arg, env);
 	arg = expand_tilda(arg, env);
@@ -142,7 +147,8 @@ void	expander(t_andor *ast, t_env *env)
 			while (cmd->argv && cmd->argv[i])
 			{
 				ctx.wild_flag = 0;
-				ctx.expanded = expand_string(cmd->argv[i], env, &ctx);
+				ctx.expanded = expand_string(cmd->argv[i], env, &ctx,
+						ast->pipeline->commands);
 				if (ctx.wild_flag)
 				{
 					ctx.split_words = ft_split(ctx.expanded, " ");
