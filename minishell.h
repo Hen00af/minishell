@@ -5,6 +5,7 @@
 # include "builtin/builtin.h"
 # include "executor/executor.h"
 # include "expander/expander.h"
+# include "heredoc/heredoc.h"
 # include "lexer/lexer.h"
 # include "libft/libft.h"
 # include "linerlizer/linerlizer.h"
@@ -16,7 +17,6 @@
 
 # define STDERROR_INT 2
 # define STDOUT_INT 1
-
 
 // typedef enum e_node_type
 // {
