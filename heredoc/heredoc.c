@@ -6,62 +6,12 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/06/25 21:13:59 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/25 23:28:14 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "heredoc.h"
-
-//typedef struct s_ast		t_ast;
-//typedef enum e_node_type	t_node_type;
-
-//typedef enum e_redir_type
-//{
-//	REDIR_IN,
-//	REDIR_OUT,
-//	REDIR_APPEND,
-//	REDIR_HEREDOC
-//}							t_redir_type;
-
-//typedef struct s_redirection
-//{
-//	t_redir_type			type;
-//	char					*filename;
-//}							t_redirection;
-
-//typedef struct s_command
-//{
-//	char					**argv;
-//	t_list					*redirections;
-//	struct s_andor			*subshell_ast;
-//}							t_command;
-
-//typedef struct s_pipeline
-//{
-//	t_list					*commands;
-//}							t_pipeline;
-
-//typedef enum e_andor_type
-//{
-//	ANDOR_PIPELINE,
-//	ANDOR_AND,
-//	ANDOR_OR
-//}							t_andor_type;
-
-//typedef struct s_andor
-//{
-//	t_andor_type			type;
-//	union
-//	{
-//		struct
-//		{
-//			struct s_andor	*left;
-//			struct s_andor	*right;
-//		};
-//		t_pipeline			*pipeline;
-//	};
-//}							t_andor;
 
 static char	*generate_tmpfile_path(void)
 {
@@ -93,7 +43,7 @@ static char	*generate_tmpfile_path(void)
 	return (path);
 }
 
-char	*run_heredoc(const char *delimiter)
+char	*run_heredoc(const char *delimiter, bool need_expand, t_env *env)
 {
 	char	*path;
 	int		fd;
@@ -119,6 +69,8 @@ char	*run_heredoc(const char *delimiter)
 			free(line);
 			break ;
 		}
+		if (need_expand)
+			line = expand_variables(line, env);
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free(line);
@@ -127,7 +79,7 @@ char	*run_heredoc(const char *delimiter)
 	return (path);
 }
 
-void	process_heredoc(t_command *cmd)
+void	process_heredoc(t_command *cmd, t_env *env)
 {
 	t_list			*node;
 	t_redirection	*redir;
@@ -141,7 +93,7 @@ void	process_heredoc(t_command *cmd)
 		redir = (t_redirection *)node->content;
 		if (redir->type == REDIR_HEREDOC)
 		{
-			tmpfile = run_heredoc(redir->filename);
+			tmpfile = run_heredoc(redir->filename, redir->need_expand, env);
 			free(redir->filename);
 			redir->filename = tmpfile;
 		}
@@ -149,7 +101,7 @@ void	process_heredoc(t_command *cmd)
 	}
 }
 
-void	handle_heredoc(t_andor *node)
+void	handle_heredoc(t_andor *node, t_env *env)
 {
 	t_list		*cmds;
 	t_command	*cmd;
@@ -162,36 +114,43 @@ void	handle_heredoc(t_andor *node)
 		while (cmds)
 		{
 			cmd = (t_command *)cmds->content;
-			process_heredoc(cmd);
+			process_heredoc(cmd, env);
 			cmds = cmds->next;
 		}
 	}
 	else
 	{
-		handle_heredoc(node->left);
-		handle_heredoc(node->right);
+		handle_heredoc(node->left, env);
+		handle_heredoc(node->right, env);
 	}
 }
 
 #include <fcntl.h>
+#include <readline/readline.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
 	char	*path;
 	int		fd;
 	char	buf[1024];
 	ssize_t	n;
+	t_env	*env;
 
-	path = run_heredoc("END");
+	env = malloc(sizeof(t_env));
+	env = init_env(envp);
+	// ■ テスト１: need_expand = false
+	printf("=== heredoc without expansion (delimiter: END) ===\n");
+	path = run_heredoc("END", false, env);
 	if (!path)
 	{
 		fprintf(stderr, "run_heredoc failed\n");
 		return (1);
 	}
-	printf("→ heredoc saved to: %s\n", path);
+	printf("→ saved to %s\n", path);
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 	{
@@ -199,16 +158,41 @@ int	main(void)
 		free(path);
 		return (1);
 	}
-	printf("---- file content ----\n");
+	printf("--- file content ---\n");
 	while ((n = read(fd, buf, sizeof(buf) - 1)) > 0)
 	{
 		buf[n] = '\0';
 		printf("%s", buf);
 	}
-	printf("---- end content ----\n");
+	printf("--- end content ---\n");
 	close(fd);
-	if (unlink(path) < 0)
-		perror("unlink");
+	unlink(path);
+	free(path);
+	// ■ テスト２: need_expand = true
+	printf("\n=== heredoc with expansion (delimiter: EXP) ===\n");
+	path = run_heredoc("EXP", true, env);
+	if (!path)
+	{
+		fprintf(stderr, "run_heredoc failed\n");
+		return (1);
+	}
+	printf("→ saved to %s\n", path);
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+	{
+		perror("open");
+		free(path);
+		return (1);
+	}
+	printf("--- file content ---\n");
+	while ((n = read(fd, buf, sizeof(buf) - 1)) > 0)
+	{
+		buf[n] = '\0';
+		printf("%s", buf);
+	}
+	printf("--- end content ---\n");
+	close(fd);
+	unlink(path);
 	free(path);
 	return (0);
 }

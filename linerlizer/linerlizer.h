@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:13 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/25 21:48:28 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/25 23:03:24 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LINERIZER_H
 
 # include "../minishell.h"
+# include <stdbool.h>
 # include <stdio.h>
 
 typedef struct s_ast		t_ast;
