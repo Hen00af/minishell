@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_actions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:22:25 by nando             #+#    #+#             */
-/*   Updated: 2025/06/22 20:16:57 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/26 15:23:14 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,16 @@ void	lexer_word(t_lexer *ctx, char c)
 {
 	ctx->move = 1;
 	if (c == '=' && is_valid_var_name(ctx->buf.word))
+	{
 		buf_add_and_assign_flag(ctx, c);
+		return ;
+	}
 	else if (c == '<' || c == '>' || c == '&' || c == '|' || c == '('
 		|| c == ')')
+	{
 		handle_meta(ctx, c);
+		return ;
+	}
 	else if (ft_isspace(c))
 	{
 		if (ctx->assignment_flag == 1)
@@ -53,6 +59,7 @@ void	lexer_word(t_lexer *ctx, char c)
 		}
 		else
 			append_tok_and_set_state(ctx, STA_DEFAULT);
+		return ;
 	}
 	lexer_word2(ctx, c);
 }
