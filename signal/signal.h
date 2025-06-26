@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:59:47 by nando             #+#    #+#             */
-/*   Updated: 2025/06/23 17:56:02 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/26 15:01:13 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-void	init_signal(void);
+extern volatile sig_atomic_t	g_ack_status;
+
+void							init_signal(void);
 
 #endif
