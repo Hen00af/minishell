@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/22 18:17:34 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/26 16:20:41 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	is_builtin(const char *cmd)
 static void	exec_command(t_command *cmd, t_env *env)
 {
 	char	*path;
+	int		status;
 
 	if (cmd->redirections)
 		handle_redirections(cmd->redirections);
@@ -70,20 +71,22 @@ static void	exec_command(t_command *cmd, t_env *env)
 	}
 	if (!cmd->argv || !cmd->argv[0])
 		exit(0);
-	else if (!is_builtin(cmd->argv[0]))
+	if (is_builtin(cmd->argv[0]))
 	{
-		// ft_printf("\nnot builtin\n");
-		path = search_path(cmd->argv[0], env);
-		if (!path)
-		{
-			perror("command not found");
-			exit(127);
-		}
-		execve(path, cmd->argv, convert_env(env));
-		perror("execve");
-		exit(1);
+		status = exec_builtin(cmd->argv, env);
+		exit(status);
 	}
+	path = search_path(cmd->argv[0], env);
+	if (!path)
+	{
+		perror("command not found");
+		exit(127);
+	}
+	execve(path, cmd->argv, convert_env(env));
+	perror("execve");
+	exit(1);
 }
+
 // run builtin
 int	exec_builtin(char **argv, t_env *env)
 {
@@ -122,11 +125,6 @@ static int	exec_pipeline(t_pipeline *pipeline, t_env *env)
 	while (cmd_list)
 	{
 		cmd = cmd_list->content;
-		if (is_builtin(cmd->argv[0]))
-		{
-			g_exit_status = exec_builtin(cmd->argv, env);
-			// ft_printf("\nbuiltin\n");
-		}
 		if (cmd_list->next && pipe(pipefd) == -1)
 		{
 			perror("pipe");
@@ -185,6 +183,30 @@ static int	exec_andor(t_andor *node, t_env *env)
 	return (left_status);
 }
 
+int	exec_subshell(t_andor *subtree, t_env *env)
+{
+	pid_t	pid;
+	int		status;
+	int		exit_status;
+
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork");
+		return (1);
+	}
+	if (pid == 0)
+	{
+		exit_status = executor(subtree, env);
+		exit(exit_status);
+	}
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	else
+		return (1);
+}
+
 // ---------- main dispatcher ----------
 int	executor(t_andor *node, t_env *env)
 {
@@ -194,6 +216,8 @@ int	executor(t_andor *node, t_env *env)
 		return (exec_andor(node, env));
 	if (node->type == ANDOR_PIPELINE)
 		return (exec_pipeline(node->pipeline, env));
+	if (node->type == NODE_SUBSHELL)
+		return (exec_subshell(node->left, env));
 	return (1);
 }
 
@@ -292,4 +316,3 @@ char	*ft_strjoin_3(char *s1, char *s2, char *s3)
 	free(tmp);
 	return (res);
 }
-
