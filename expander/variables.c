@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:40:45 by nando             #+#    #+#             */
-/*   Updated: 2025/06/17 14:28:17 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/26 16:57:06 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ char	*expand_variables(char *arg, t_env *env_head)
 {
 	int		i;
 	t_var	*var;
-	t_env	*env;
 	char	*new_arg;
 
 	var = init_var();
@@ -102,8 +101,7 @@ char	*expand_variables(char *arg, t_env *env_head)
 			break ;
 		i++;
 		create_env_key(arg, var, i);
-		env = env_head;
-		search_env_value(var, env);
+		search_env_value(var, env_head);
 		if (!var->value)
 			var->value = ft_strdup("");
 		new_arg = make_new_arg(arg, var);

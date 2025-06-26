@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 15:28:33 by nando             #+#    #+#             */
-/*   Updated: 2025/06/21 19:31:03 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/26 20:57:57 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,6 @@ typedef struct s_exit
 {
 	int		exit_status;
 }			t_exit;
-
-static int	count_args(char **args)
-{
-	int	count;
-
-	count = 0;
-	while (args[count])
-		count++;
-	return (count);
-}
 
 static int	is_numeric(const char *str)
 {
