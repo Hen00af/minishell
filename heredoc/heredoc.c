@@ -6,11 +6,10 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/06/25 23:28:14 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/26 15:04:49 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
 #include "heredoc.h"
 
 static char	*generate_tmpfile_path(void)
@@ -49,6 +48,7 @@ char	*run_heredoc(const char *delimiter, bool need_expand, t_env *env)
 	int		fd;
 	char	*line;
 
+	g_ack_status = 0;
 	while (1)
 	{
 		path = generate_tmpfile_path();
@@ -62,6 +62,14 @@ char	*run_heredoc(const char *delimiter, bool need_expand, t_env *env)
 	while (1)
 	{
 		line = readline("> ");
+		if (g_ack_status == 1)
+		{
+			free(line);
+			unlink(path);
+			free(path);
+			path = NULL;
+			break ;
+		}
 		if (!line)
 			break ;
 		if (strcmp(line, delimiter) == 0)
