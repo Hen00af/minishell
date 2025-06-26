@@ -76,9 +76,11 @@ int	builtin_echo(char **args, t_env *list_head)
 	return (OK);
 }
 
-// int	main(int argc, char **argv)
-// {
-// 	(void)argc;
-// 	builtin_echo(argv);
-// 	return (0);
-// }
+int	main(int argc, char **argv,char **envp)
+{
+	t_env *env;
+	env = init_env(envp);
+	(void)argc;
+	builtin_echo(argv,env);
+	return (0);
+}
