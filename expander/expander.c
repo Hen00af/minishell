@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 14:30:21 by nando             #+#    #+#             */
-/*   Updated: 2025/06/26 21:01:22 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/29 15:42:50 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ char	*expand_string(char *arg, t_env *env, t_expand *ctx, t_list *node)
 {
 	char			*cleaned_quote;
 	char			*before;
+	char			*after;
 	t_redirection	*redir;
 
 	redir = (t_redirection *)node->content;
@@ -34,11 +35,9 @@ char	*expand_string(char *arg, t_env *env, t_expand *ctx, t_list *node)
 	}
 	redir->need_expand = false;
 	before = ft_strdup(arg);
-	expand_all_type(arg, env);
-	if (strcmp(before, arg) != 0)
-		ctx->wild_flag = 1;
+	after = expand_all_type(arg, env, ctx);
 	free(before);
-	return (ft_strdup(arg));
+	return (ft_strdup(after));
 }
 
 void	expand_command_args(t_command *cmd, t_env *env, t_list *cmd_list)
@@ -46,7 +45,7 @@ void	expand_command_args(t_command *cmd, t_env *env, t_list *cmd_list)
 	t_expand	ctx;
 	int			i;
 
-	i = 0;
+	i = 1;
 	if (cmd && cmd->argv[i])
 	{
 		while (cmd->argv && cmd->argv[i])

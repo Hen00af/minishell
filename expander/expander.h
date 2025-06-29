@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 20:20:02 by nando             #+#    #+#             */
-/*   Updated: 2025/06/26 20:51:29 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/29 15:46:03 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ typedef struct s_expand
 t_var						*init_var(void);
 t_file_node					*create_new_node(char *file_name);
 bool						has_wildcard(char *arg);
-void						expand_all_type(char *arg, t_env *env);
+char						*expand_all_type(char *arg, t_env *env,
+								t_expand *ctx);
 void						free_args(char **argv);
 void						swap_name(t_file_node *current, t_file_node *next);
 void						free_file_list(t_file_node *head);
@@ -70,7 +71,7 @@ char						*remove_quote(bool need_expand, char *arg);
 char						*make_new_arg(char *arg, t_var *var);
 char						*expand_variables(char *arg, t_env *env_head);
 char						*expand_tilda(char *arg, t_env *env);
-char						*expand_wild_card(char *arg);
+char						*expand_wild_card(char *arg, t_expand *ctx);
 bool						is_match(const char *pattern, const char *str,
 								int i, int j);
 bool						append_file_node(t_file_node **head,

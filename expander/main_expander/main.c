@@ -15,7 +15,7 @@ int	main(int ac, char **av, char **envp)
 	// print_ast(ast, 0);
 	linearized_ast = linearizer(ast);
 	env = init_env(envp);
-	expand_andor_arguments(linearized_ast, env);
+	expand_andor_arguments(linearized_ast, t_env *env)
 	print_linerlized_ast(linearized_ast, 0);
 	return (0);
 }
