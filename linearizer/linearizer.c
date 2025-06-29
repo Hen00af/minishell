@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:37 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/29 17:03:47 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/29 22:40:51 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,15 @@ void	flatten_pipeline(t_ast *node, t_pipeline *pipeline)
 	{
 		flatten_pipeline(node->left, pipeline);
 		flatten_pipeline(node->right, pipeline);
+	}
+	else if (node->type == NODE_SUBSHELL)
+	{
+		cmd = malloc(sizeof(t_command));
+		cmd->argv = NULL;
+		cmd->redirections = NULL;
+		cmd->subshell_ast = linearizer(node->left);
+		new_node = ft_lstnew(cmd);
+		ft_lstadd_back(&pipeline->commands, new_node);
 	}
 	else
 	{
