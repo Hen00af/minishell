@@ -1,6 +1,5 @@
-# ====== コンパイラ・フラグ ======
 CC      := cc
-CFLAGS  := -O2 
+CFLAGS  := -O2 -Wall -Wextra -Werror
 INCLUDES := -Iinclude
 
 NAME    := minishell
@@ -14,7 +13,7 @@ SRC_DIRS := \
 	./builtin \
 	./utils \
 	./signal \
-	./
+	./executor/exec_test
 
 SRCS := $(foreach dir, $(SRC_DIRS), $(wildcard $(dir)/*.c))
 

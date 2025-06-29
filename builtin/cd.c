@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 15:02:10 by nando             #+#    #+#             */
-/*   Updated: 2025/06/22 19:12:00 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/29 16:36:03 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	set_key_value(char **key_value, char *pwd, char *cwd)
 
 int	set_pwd(t_env *list_head, char *pwd, int num)
 {
-	t_env	*new;
 	char	cwd[1000];
 	char	*key_value[2];
 

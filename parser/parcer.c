@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 20:21:45 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/23 15:21:28 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/29 16:37:10 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,30 +23,25 @@ static int	is_redirection_token(t_token *tok)
 t_ast	*parse_simple_command(t_token **cur)
 {
 	t_token	*tok;
-	int		argc;
 	t_ast	*cmd;
 	int		i;
+	int		argc;
 
-	tok = *cur;
+	i = 0;
 	argc = 0;
-	while (tok && tok->type == TOK_WORD)
-	{
-		argc++;
+	tok = *cur;
+	while (tok && tok->type == TOK_WORD && argc++ >= 0)
 		tok = tok->next;
-	}
 	if (argc == 0)
 		return (NULL);
-	cmd = calloc(1, sizeof(t_ast));
+	cmd = ft_calloc(1, sizeof(t_ast));
 	cmd->type = NODE_COMMAND;
-	cmd->argv = calloc(argc + 1, sizeof(char *));
-	i = 0;
+	cmd->argv = ft_calloc(argc + 1, sizeof(char *));
 	while (i < argc)
 	{
-		cmd->argv[i] = ft_strdup((*cur)->text);
+		cmd->argv[i++] = ft_strdup((*cur)->text);
 		*cur = (*cur)->next;
-		i++;
 	}
-	cmd->argv[argc] = NULL;
 	return (cmd);
 }
 

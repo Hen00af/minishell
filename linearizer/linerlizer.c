@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:37 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/22 19:33:17 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/29 16:51:02 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ t_andor	*linearize_andor(t_ast *ast)
 	node = malloc(sizeof(t_andor));
 	if (!node)
 		return (NULL);
-	node->type = (ast->type == NODE_AND) ? ANDOR_AND : ANDOR_OR;
+	if (ast->type == NODE_AND)
+		node->type = ANDOR_AND;
+	else
+		node->type = ANDOR_OR;
 	node->left = linearizer(ast->left);
 	node->right = linearizer(ast->right);
 	return (node);
@@ -150,84 +153,83 @@ t_andor	*linearizer(t_ast *ast)
 	return (linearize_simple_command(ast));
 }
 
-// ====== PRINT TEST ======
-void	print_redirections(t_list *redir_list, int indent)
-{
-	t_redirection	*redir;
+// void	print_redirections(t_list *redir_list, int indent)
+// {
+// 	t_redirection	*redir;
 
-	while (redir_list)
-	{
-		redir = (t_redirection *)redir_list->content;
-		for (int i = 0; i < indent; i++)
-			printf("  ");
-		printf("REDIR: ");
-		if (redir->type == REDIR_IN)
-			printf("< ");
-		else if (redir->type == REDIR_OUT)
-			printf("> ");
-		else if (redir->type == REDIR_APPEND)
-			printf(">> ");
-		else if (redir->type == REDIR_HEREDOC)
-			printf("<< ");
-		printf("%s\n", redir->filename);
-		redir_list = redir_list->next;
-	}
-}
+// 	while (redir_list)
+// 	{
+// 		redir = (t_redirection *)redir_list->content;
+// 		for (int i = 0; i < indent; i++)
+// 			printf("  ");
+// 		printf("REDIR: ");
+// 		if (redir->type == REDIR_IN)
+// 			printf("< ");
+// 		else if (redir->type == REDIR_OUT)
+// 			printf("> ");
+// 		else if (redir->type == REDIR_APPEND)
+// 			printf(">> ");
+// 		else if (redir->type == REDIR_HEREDOC)
+// 			printf("<< ");
+// 		printf("%s\n", redir->filename);
+// 		redir_list = redir_list->next;
+// 	}
+// }
 
-void	print_commands(t_pipeline *pipeline, int indent)
-{
-	t_list		*cmd_list;
-	t_command	*cmd;
+// void	print_commands(t_pipeline *pipeline, int indent)
+// {
+// 	t_list		*cmd_list;
+// 	t_command	*cmd;
 
-	cmd_list = pipeline->commands;
-	while (cmd_list)
-	{
-		cmd = (t_command *)cmd_list->content;
-		for (int i = 0; i < indent; i++)
-			printf("  ");
-		if (cmd->argv)
-		{
-			printf("COMMAND:");
-			for (int i = 0; cmd->argv[i]; i++)
-				printf(" %s", cmd->argv[i]);
-			printf("\n");
-		}
-		else
-		{
-			printf("SUBSHELL:\n");
-			print_linerlized_ast(cmd->subshell_ast, indent + 1);
-		}
-		if (cmd->redirections)
-			print_redirections(cmd->redirections, indent + 1);
-		cmd_list = cmd_list->next;
-	}
-}
+// 	cmd_list = pipeline->commands;
+// 	while (cmd_list)
+// 	{
+// 		cmd = (t_command *)cmd_list->content;
+// 		for (int i = 0; i < indent; i++)
+// 			printf("  ");
+// 		if (cmd->argv)
+// 		{
+// 			printf("COMMAND:");
+// 			for (int i = 0; cmd->argv[i]; i++)
+// 				printf(" %s", cmd->argv[i]);
+// 			printf("\n");
+// 		}
+// 		else
+// 		{
+// 			printf("SUBSHELL:\n");
+// 			print_linerlized_ast(cmd->subshell_ast, indent + 1);
+// 		}
+// 		if (cmd->redirections)
+// 			print_redirections(cmd->redirections, indent + 1);
+// 		cmd_list = cmd_list->next;
+// 	}
+// }
 
-void	print_linerlized_ast(t_andor *tree, int indent)
-{
-	if (!tree)
-		return ;
-	for (int i = 0; i < indent; i++)
-		printf("  ");
-	if (tree->type == ANDOR_AND)
-	{
-		printf("AND\n");
-		if (tree->left)
-			print_linerlized_ast(tree->left, indent + 1);
-		if (tree->right)
-			print_linerlized_ast(tree->right, indent + 1);
-	}
-	else if (tree->type == ANDOR_OR)
-	{
-		printf("OR\n");
-		if (tree->left)
-			print_linerlized_ast(tree->left, indent + 1);
-		if (tree->right)
-			print_linerlized_ast(tree->right, indent + 1);
-	}
-	else if (tree->type == ANDOR_PIPELINE)
-	{
-		printf("PIPELINE\n");
-		print_commands(tree->pipeline, indent + 1);
-	}
-}
+// void	print_linerlized_ast(t_andor *tree, int indent)
+// {
+// 	if (!tree)
+// 		return ;
+// 	for (int i = 0; i < indent; i++)
+// 		printf("  ");
+// 	if (tree->type == ANDOR_AND)
+// 	{
+// 		printf("AND\n");
+// 		if (tree->left)
+// 			print_linerlized_ast(tree->left, indent + 1);
+// 		if (tree->right)
+// 			print_linerlized_ast(tree->right, indent + 1);
+// 	}
+// 	else if (tree->type == ANDOR_OR)
+// 	{
+// 		printf("OR\n");
+// 		if (tree->left)
+// 			print_linerlized_ast(tree->left, indent + 1);
+// 		if (tree->right)
+// 			print_linerlized_ast(tree->right, indent + 1);
+// 	}
+// 	else if (tree->type == ANDOR_PIPELINE)
+// 	{
+// 		printf("PIPELINE\n");
+// 		print_commands(tree->pipeline, indent + 1);
+// 	}
+// }
