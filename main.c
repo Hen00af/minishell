@@ -34,7 +34,14 @@ t_andor	*make_linearized_ast(char *cmd)
 	return (linearized_ast);
 }
 
-int	prompt(t_env *env)
+void	expand_and_execute(t_andor *linearized_ast, t_shell *shell)
+{
+	expand_andor_arguments(linearized_ast, shell->env);
+	handle_heredoc(linearized_ast, shell->env);
+	executor(linearized_ast, shell);
+}
+
+int	prompt(t_shell *shell)
 {
 	char	*cmd;
 	t_andor	*linearized_ast;
@@ -46,29 +53,25 @@ int	prompt(t_env *env)
 		free(cmd);
 		return (0);
 	}
-	expand_and_execute(linearized_ast, env);
+	expand_and_execute(linearized_ast, shell);
 	free(cmd);
 	return (1);
 }
 
-void	expand_and_execute(t_andor *linearized_ast, t_env *env)
-{
-	expand_andor_arguments(linearized_ast, env);
-	handle_heredoc(linearized_ast, env);
-	executor(linearized_ast, env);
-}
-
 int	main(int ac, char **av, char **envp)
 {
-	t_env	*env;
+	t_shell	shell;
 
 	(void)ac;
 	(void)av;
 	init_signal();
-	env = init_env(envp);
+	shell.env = init_env(envp);
+	shell.exit_status = 0;
 	while (1)
 	{
-		if (!prompt(env))
+		if (g_ack_status == 1)
+			shell.exit_status = 130;
+		if (!prompt(&shell))
 			continue ;
 	}
 	return (0);
