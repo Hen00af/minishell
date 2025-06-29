@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   linerlizer.h                                       :+:      :+:    :+:   */
+/*   linearizer.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:13 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/29 16:41:28 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/29 17:01:44 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LINELIZER_H
-# define LINELIZER_H
+#ifndef LINEARIZER_H
+# define LINEARIZER_H
 
 # include "../minishell.h"
 # include <stdbool.h>
@@ -76,4 +76,4 @@ void						print_linerlized_ast(t_andor *tree, int indent);
 void						print_commands(t_pipeline *pipeline, int indent);
 void						print_redirections(t_list *redir_list, int indent);
 
-#endif // LINELIZER_H
+#endif // LINEARIZER

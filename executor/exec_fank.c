@@ -6,14 +6,13 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/26 16:20:41 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/29 18:39:56 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
 int			g_exit_status = 0;
-// ---------- redirection handler ----------
 static void	handle_redirections(t_list *redir_list)
 {
 	t_redirection	*redir;
@@ -31,7 +30,6 @@ static void	handle_redirections(t_list *redir_list)
 			fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		else if (redir->type == REDIR_HEREDOC)
 		{
-			// TODO: heredoc対応（後でやる）
 			redir_list = redir_list->next;
 			continue ;
 		}
@@ -56,7 +54,6 @@ int	is_builtin(const char *cmd)
 		|| !ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "exit"));
 }
 
-// ---------- command executor ----------
 static void	exec_command(t_command *cmd, t_env *env)
 {
 	char	*path;
@@ -87,7 +84,6 @@ static void	exec_command(t_command *cmd, t_env *env)
 	exit(1);
 }
 
-// run builtin
 int	exec_builtin(char **argv, t_env *env)
 {
 	if (!argv || !argv[0])
@@ -109,7 +105,6 @@ int	exec_builtin(char **argv, t_env *env)
 	return (1);
 }
 
-// ---------- pipeline executor ----------
 static int	exec_pipeline(t_pipeline *pipeline, t_env *env)
 {
 	int			prev_fd;
@@ -165,7 +160,6 @@ static int	exec_pipeline(t_pipeline *pipeline, t_env *env)
 	return (WEXITSTATUS(status));
 }
 
-// ---------- and/or executor ----------
 static int	exec_andor(t_andor *node, t_env *env)
 {
 	int	left_status;
@@ -183,31 +177,6 @@ static int	exec_andor(t_andor *node, t_env *env)
 	return (left_status);
 }
 
-int	exec_subshell(t_andor *subtree, t_env *env)
-{
-	pid_t	pid;
-	int		status;
-	int		exit_status;
-
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("fork");
-		return (1);
-	}
-	if (pid == 0)
-	{
-		exit_status = executor(subtree, env);
-		exit(exit_status);
-	}
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	else
-		return (1);
-}
-
-// ---------- main dispatcher ----------
 int	executor(t_andor *node, t_env *env)
 {
 	if (!node)
@@ -216,12 +185,9 @@ int	executor(t_andor *node, t_env *env)
 		return (exec_andor(node, env));
 	if (node->type == ANDOR_PIPELINE)
 		return (exec_pipeline(node->pipeline, env));
-	if (node->type == NODE_SUBSHELL)
-		return (exec_subshell(node->left, env));
 	return (1);
 }
 
-// 検索して最初に見つけた実行可能ファイルのパスを返す
 char	*search_path(char *cmd, t_env *env)
 {
 	char	**paths;
@@ -229,7 +195,7 @@ char	*search_path(char *cmd, t_env *env)
 	char	*full_path;
 	int		i;
 
-	if (ft_strchr(cmd, '/')) // 絶対or相対パスならそのまま使う
+	if (ft_strchr(cmd, '/'))
 		return (ft_strdup(cmd));
 	path_var = get_env_value("PATH", env);
 	if (!path_var)
@@ -238,7 +204,7 @@ char	*search_path(char *cmd, t_env *env)
 	i = 0;
 	while (paths[i])
 	{
-		full_path = ft_strjoin_path(paths[i], cmd); // "/"を挿入する版のstrjoin
+		full_path = ft_strjoin_path(paths[i], cmd);
 		if (access(full_path, X_OK) == 0)
 			return (free_split(paths), full_path);
 		free(full_path);

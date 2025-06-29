@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/06/26 15:04:49 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/29 19:42:14 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,74 +133,74 @@ void	handle_heredoc(t_andor *node, t_env *env)
 	}
 }
 
-#include <fcntl.h>
-#include <readline/readline.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
+// #include <fcntl.h>
+// #include <readline/readline.h>
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <string.h>
+// #include <unistd.h>
 
-int	main(int argc, char **argv, char **envp)
-{
-	char	*path;
-	int		fd;
-	char	buf[1024];
-	ssize_t	n;
-	t_env	*env;
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	char	*path;
+// 	int		fd;
+// 	char	buf[1024];
+// 	ssize_t	n;
+// 	t_env	*env;
 
-	env = malloc(sizeof(t_env));
-	env = init_env(envp);
-	// ■ テスト１: need_expand = false
-	printf("=== heredoc without expansion (delimiter: END) ===\n");
-	path = run_heredoc("END", false, env);
-	if (!path)
-	{
-		fprintf(stderr, "run_heredoc failed\n");
-		return (1);
-	}
-	printf("→ saved to %s\n", path);
-	fd = open(path, O_RDONLY);
-	if (fd < 0)
-	{
-		perror("open");
-		free(path);
-		return (1);
-	}
-	printf("--- file content ---\n");
-	while ((n = read(fd, buf, sizeof(buf) - 1)) > 0)
-	{
-		buf[n] = '\0';
-		printf("%s", buf);
-	}
-	printf("--- end content ---\n");
-	close(fd);
-	unlink(path);
-	free(path);
-	// ■ テスト２: need_expand = true
-	printf("\n=== heredoc with expansion (delimiter: EXP) ===\n");
-	path = run_heredoc("EXP", true, env);
-	if (!path)
-	{
-		fprintf(stderr, "run_heredoc failed\n");
-		return (1);
-	}
-	printf("→ saved to %s\n", path);
-	fd = open(path, O_RDONLY);
-	if (fd < 0)
-	{
-		perror("open");
-		free(path);
-		return (1);
-	}
-	printf("--- file content ---\n");
-	while ((n = read(fd, buf, sizeof(buf) - 1)) > 0)
-	{
-		buf[n] = '\0';
-		printf("%s", buf);
-	}
-	printf("--- end content ---\n");
-	close(fd);
-	unlink(path);
-	free(path);
-	return (0);
-}
+// 	env = malloc(sizeof(t_env));
+// 	env = init_env(envp);
+// 	// ■ テスト１: need_expand = false
+// 	printf("=== heredoc without expansion (delimiter: END) ===\n");
+// 	path = run_heredoc("END", false, env);
+// 	if (!path)
+// 	{
+// 		fprintf(stderr, "run_heredoc failed\n");
+// 		return (1);
+// 	}
+// 	printf("→ saved to %s\n", path);
+// 	fd = open(path, O_RDONLY);
+// 	if (fd < 0)
+// 	{
+// 		perror("open");
+// 		free(path);
+// 		return (1);
+// 	}
+// 	printf("--- file content ---\n");
+// 	while ((n = read(fd, buf, sizeof(buf) - 1)) > 0)
+// 	{
+// 		buf[n] = '\0';
+// 		printf("%s", buf);
+// 	}
+// 	printf("--- end content ---\n");
+// 	close(fd);
+// 	unlink(path);
+// 	free(path);
+// 	// ■ テスト２: need_expand = true
+// 	printf("\n=== heredoc with expansion (delimiter: EXP) ===\n");
+// 	path = run_heredoc("EXP", true, env);
+// 	if (!path)
+// 	{
+// 		fprintf(stderr, "run_heredoc failed\n");
+// 		return (1);
+// 	}
+// 	printf("→ saved to %s\n", path);
+// 	fd = open(path, O_RDONLY);
+// 	if (fd < 0)
+// 	{
+// 		perror("open");
+// 		free(path);
+// 		return (1);
+// 	}
+// 	printf("--- file content ---\n");
+// 	while ((n = read(fd, buf, sizeof(buf) - 1)) > 0)
+// 	{
+// 		buf[n] = '\0';
+// 		printf("%s", buf);
+// 	}
+// 	printf("--- end content ---\n");
+// 	close(fd);
+// 	unlink(path);
+// 	free(path);
+// 	return (0);
+// }
