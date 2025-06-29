@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/29 18:39:56 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/29 20:19:29 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	is_builtin(const char *cmd)
 static void	exec_command(t_command *cmd, t_env *env)
 {
 	char	*path;
-	int		status;
+	// int		status;
 
 	if (cmd->redirections)
 		handle_redirections(cmd->redirections);
@@ -68,11 +68,6 @@ static void	exec_command(t_command *cmd, t_env *env)
 	}
 	if (!cmd->argv || !cmd->argv[0])
 		exit(0);
-	if (is_builtin(cmd->argv[0]))
-	{
-		status = exec_builtin(cmd->argv, env);
-		exit(status);
-	}
 	path = search_path(cmd->argv[0], env);
 	if (!path)
 	{
@@ -124,6 +119,11 @@ static int	exec_pipeline(t_pipeline *pipeline, t_env *env)
 		{
 			perror("pipe");
 			return (1);
+		}
+		if (is_builtin(cmd->argv[0]))
+		{
+			status = exec_builtin(cmd->argv, env);
+			return(status);
 		}
 		pid = fork();
 		if (pid == 0)
