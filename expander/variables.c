@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:40:45 by nando             #+#    #+#             */
-/*   Updated: 2025/06/26 16:57:06 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/26 22:18:00 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,9 @@ char	*expand_variables(char *arg, t_env *env_head)
 			break ;
 		i++;
 		create_env_key(arg, var, i);
+		printf("env_key = %s\n", var->key);
 		search_env_value(var, env_head);
+		printf("env_value = %s\n", var->value);
 		if (!var->value)
 			var->value = ft_strdup("");
 		new_arg = make_new_arg(arg, var);
