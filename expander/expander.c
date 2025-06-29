@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 14:30:21 by nando             #+#    #+#             */
-/*   Updated: 2025/06/29 15:42:50 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/29 22:12:18 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	expand_andor_arguments(t_andor *ast, t_env *env);
 char	*expand_string(char *arg, t_env *env, t_expand *ctx, t_list *node)
 {
 	char			*cleaned_quote;
-	char			*before;
 	char			*after;
 	t_redirection	*redir;
 
@@ -25,19 +24,19 @@ char	*expand_string(char *arg, t_env *env, t_expand *ctx, t_list *node)
 	if (arg[0] == '\'')
 	{
 		cleaned_quote = remove_quote(redir->need_expand, arg);
+		free(arg);
 		return (cleaned_quote);
 	}
 	else if (arg[0] == '\"')
 	{
 		cleaned_quote = remove_quote(redir->need_expand, arg);
+		free(arg);
 		cleaned_quote = expand_variables(cleaned_quote, env);
 		return (cleaned_quote);
 	}
 	redir->need_expand = false;
-	before = ft_strdup(arg);
 	after = expand_all_type(arg, env, ctx);
-	free(before);
-	return (ft_strdup(after));
+	return (after);
 }
 
 void	expand_command_args(t_command *cmd, t_env *env, t_list *cmd_list)
@@ -57,8 +56,8 @@ void	expand_command_args(t_command *cmd, t_env *env, t_list *cmd_list)
 				generate_wildcard_matches(&ctx, cmd, &i);
 				continue ;
 			}
-			free(cmd->argv[i]);
 			cmd->argv[i] = ft_strdup(ctx.expanded);
+			// cmd->argv[i] = ctx.expanded;
 			ctx.expanded = NULL;
 			i++;
 		}

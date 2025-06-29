@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:19:31 by nando             #+#    #+#             */
-/*   Updated: 2025/06/29 15:44:20 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/29 21:10:00 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,16 @@ t_var	*init_var(void)
 	var->value = NULL;
 	return (var);
 }
-
 char	*expand_all_type(char *arg, t_env *env, t_expand *ctx)
 {
-	arg = expand_variables(arg, env);
-	arg = expand_tilda(arg, env);
-	arg = expand_wild_card(arg, ctx);
-	return (arg);
+	char	*tmp;
+
+	tmp = expand_variables(arg, env);
+	arg = expand_tilda(tmp, env);
+	free(tmp);
+	tmp = expand_wild_card(arg, ctx);
+	free(arg);
+	return (tmp);
 }
 
 int	count_args(char **args)
