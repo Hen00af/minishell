@@ -18,24 +18,11 @@
 # define STDERROR_INT 2
 # define STDOUT_INT 1
 
-// typedef enum e_node_type
-// {
-// 	NODE_COMMAND,
-// 	NODE_PIPE,
-// 	NODE_REDIR_OUT,
-// 	NODE_REDIR_IN,
-// 	NODE_REDIR_APPEND,
-// 	NODE_HEREDOC
-// }					t_node_type;
-
-// typedef struct s_ast
-// {
-// 	t_node_type		type;
-// 	struct s_ast	*left;
-// 	struct s_ast	*right;
-// 	char			**argv;
-// 	int				argc;
-// }					t_ast;
+typedef struct s_shell
+{
+	t_env	*env;
+	int		exit_status;
+}			t_shell;
 
 typedef struct s_env
 {
@@ -52,5 +39,7 @@ typedef struct s_ctx
 	t_env	*node;
 	char	**key_value;
 }			t_ctx;
+
+void		expand_and_execute(t_andor *linearized_ast, t_shell *shell);
 
 #endif
