@@ -8,7 +8,7 @@
 # include "heredoc/heredoc.h"
 # include "lexer/lexer.h"
 # include "libft/libft.h"
-# include "linerlizer/linerlizer.h"
+# include "linearizer/linearizer.h"
 # include "parser/parser.h"
 # include "signal/signal.h"
 # include "utils/utils.h"

@@ -8,12 +8,13 @@ SRC_DIRS := \
 	./expander \
 	./parser \
 	./lexer \
-	./linerlizer \
+	./linearizer\
 	./executor \
 	./builtin \
 	./utils \
 	./signal \
-	./executor/exec_test
+	./heredoc\
+	./
 
 SRCS := $(foreach dir, $(SRC_DIRS), $(wildcard $(dir)/*.c))
 

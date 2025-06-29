@@ -7,8 +7,9 @@ int	main(int ac, char **av, char **envp)
 	t_andor	*linearized_ast;
 	t_env	*env;
 	char	*cmd;
-	t_token	*token_head;
 
+	(void)ac;
+	(void)av;
 	init_signal();
 	env = init_env(envp);
 	while (1)
@@ -26,6 +27,7 @@ int	main(int ac, char **av, char **envp)
 		add_history(cmd);
 		linearized_ast = linearizer(ast);
 		expand_andor_arguments(linearized_ast, env);
+		handle_heredoc(linearized_ast, env);
 		executor(linearized_ast, env);
 		free(cmd);
 	}
