@@ -6,42 +6,41 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:40:14 by nando             #+#    #+#             */
-/*   Updated: 2025/06/17 14:37:17 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/26 17:00:53 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
 
-char	*expand_tilda(char *arg, t_env *env)
+char	*get_home_value(t_env *env)
 {
-	char *home_value;
-	char *joined;
-
-	home_value = NULL;
-	if (arg[0] != '~')
-		return (ft_strdup(arg));
-
 	while (env)
 	{
 		if (strcmp(env->key, "HOME") == 0)
-		{
-			home_value = ft_strdup(env->value);
-			break ;
-		}
+			return (ft_strdup(env->value));
 		env = env->next;
 	}
-	if (!home_value)
+	return (NULL);
+}
+
+char	*expand_tilda(char *arg, t_env *env)
+{
+	char	*home;
+	char	*joined;
+
+	if (arg[0] != '~')
 		return (ft_strdup(arg));
-
+	home = get_home_value(env);
+	if (!home)
+		return (ft_strdup(arg));
 	if (arg[1] == '\0')
-		return (home_value);
-
+		return (home);
 	if (arg[1] == '/')
 	{
-		joined = ft_strjoin(home_value, &arg[1]);
-		free(home_value);
+		joined = ft_strjoin(home, &arg[1]);
+		free(home);
 		return (joined);
 	}
-	free(home_value);
+	free(home);
 	return (ft_strdup(arg));
 }

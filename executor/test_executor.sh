@@ -1,7 +1,7 @@
 #!/bin/bash
 
 run() {
-	cc -no-pie \
+	cc 	-no-pie \
 		../expander/*.c \
 		../parser/*.c \
 		../lexer/*.c \

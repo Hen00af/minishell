@@ -25,7 +25,9 @@ int	main(int ac, char **av, char **envp)
 			continue ;
 		add_history(cmd);
 		linearized_ast = linearizer(ast);
-		expander(linearized_ast, env);
+		printf("linerized\n");
+		expand_andor_arguments(linearized_ast, env);
+		printf("expanded\n");
 		executor(linearized_ast, env);
 		free(cmd);
 	}

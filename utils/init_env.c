@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 15:05:25 by nando             #+#    #+#             */
-/*   Updated: 2025/06/22 19:10:57 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/26 22:04:31 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,89 +14,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static char	*create_key(char const *s, char c)
-{
-	char	*new_string;
-	int		len;
-	int		i;
-
-	len = 0;
-	i = 0;
-	while (s[len] && s[len] != c)
-		len++;
-	new_string = malloc((len + 1) * sizeof(char));
-	if (!new_string)
-		return (NULL);
-	while (i < len)
-	{
-		new_string[i] = s[i];
-		i++;
-	}
-	new_string[i] = '\0';
-	return (new_string);
-}
-
-static char	*create_value(char const *s)
-{
-	char	*new_string;
-	int		len;
-	int		i;
-
-	len = 0;
-	i = 0;
-	while (s[len])
-		len++;
-	new_string = malloc((len + 1) * sizeof(char));
-	if (!new_string)
-		return (NULL);
-	while (i < len)
-	{
-		new_string[i] = s[i];
-		i++;
-	}
-	new_string[i] = '\0';
-	return (new_string);
-}
-
-static void	free_inserted_memory(char **result, int j)
-{
-	j = j - 1;
-	while (j >= 0)
-	{
-		free(result[j]);
-		j--;
-	}
-	free(result);
-}
-
-static char	**create_split(char const *s, char **result, char c)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	result[j] = create_key(&s[i], c);
-	if (!result[j])
-	{
-		free_inserted_memory(result, j);
-		return (NULL);
-	}
-	while (s[i] != '=')
-		i++;
-	i++;
-	result[++j] = create_value(&s[i]);
-	result[++j] = NULL;
-	return (result);
-}
-
 char	**env_split(char const *s, char c)
 {
 	char	**result;
 
 	if (!s)
 		return (NULL);
-	result = malloc(2 * sizeof(char *));
+	result = malloc(3 * sizeof(char *));
 	if (!result)
 		return (NULL);
 	result = create_split(s, result, c);
@@ -125,80 +49,40 @@ t_env	*create_env_node(char **key_value)
 	return (env_node);
 }
 
+bool	append_env_node(t_env **head, t_env **tail, char **key_value)
+{
+	t_env	*node;
+
+	node = create_env_node(key_value);
+	if (!node)
+		return (false);
+	if (!*head)
+		*head = node;
+	else
+		(*tail)->next = node;
+	*tail = node;
+	return (true);
+}
+
 t_env	*init_env(char **envp)
 {
-	t_ctx	ctx;
+	t_env	*head;
+	t_env	*tail;
+	char	**kv;
 	int		i;
 
+	head = NULL;
+	tail = NULL;
 	i = 0;
-	ctx.head = NULL;
-	ctx.tail = NULL;
 	while (envp[i])
 	{
-		ctx.key_value = env_split(envp[i], '=');
-		if (!ctx.key_value)
+		kv = env_split(envp[i++], '=');
+		if (!kv)
 			return (NULL);
-		if (ctx.key_value[1] == NULL)
-			ctx.key_value[1] = ft_strdup("");
-		ctx.node = create_env_node(ctx.key_value);
-		if (ctx.head == NULL)
-		{
-			ctx.head = ctx.node;
-			ctx.tail = ctx.node;
-		}
-		else
-		{
-			ctx.tail->next = ctx.node;
-			ctx.tail = ctx.node;
-		}
-		i++;
+		if (!kv[1])
+			kv[1] = ft_strdup("");
+		if (!append_env_node(&head, &tail, kv))
+			return (NULL);
 	}
-	return (ctx.head);
+	return (head);
 }
-
-void	print_env_list(t_env *head)
-{
-	t_env	*cur;
-
-	cur = head;
-	while (cur)
-	{
-		printf("%s=%s\n", cur->key, cur->value);
-		cur = cur->next;
-	}
-}
-
-static void	print_env(char **envp)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (envp[i])
-	{
-		printf("%s\n", envp[i]);
-		i++;
-	}
-}
-
-// int	main(int argc, char **argv, char **envp)
-// {
-// 	t_env	*env_head;
-
-// 	(void)argc;
-// 	(void)argv;
-// 	print_env(envp);
-// 	//※　実際には、minishellのmainでこの下の1行を呼び出すと、minishell用の環境変数リストが作られるはず！
-// 	env_head = init_env(envp);
-// 	if (!env_head)
-// 	{
-// 		ft_fprintf(stderr, "Failed to initialize environment list\n");
-// 		return (1);
-// 	}
-// 	printf("============= ENV LIST CONTENTS ===========\n");
-// 	print_env_list(env_head);
-// 	return (0);
-// }
-
-// TEST OK

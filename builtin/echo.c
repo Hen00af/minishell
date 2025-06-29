@@ -3,25 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 21:05:26 by nando             #+#    #+#             */
-/*   Updated: 2025/06/21 14:40:19 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/26 20:58:46 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "builtin.h"
-
-static int	count_args(char **args)
-{
-	int	count;
-
-	count = 0;
-	while (args[count])
-		count++;
-	return (count);
-}
 
 int	is_option(char *arg)
 {
@@ -76,11 +66,11 @@ int	builtin_echo(char **args, t_env *list_head)
 	return (OK);
 }
 
-int	main(int argc, char **argv,char **envp)
-{
-	t_env *env;
-	env = init_env(envp);
-	(void)argc;
-	builtin_echo(argv,env);
-	return (0);
-}
+//int	main(int argc, char **argv,char **envp)
+//{
+//	t_env *env;
+//	env = init_env(envp);
+//	(void)argc;
+//	builtin_echo(argv,env);
+//	return (0);
+//}
