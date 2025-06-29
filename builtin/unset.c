@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:28:29 by nando             #+#    #+#             */
-/*   Updated: 2025/06/21 17:11:04 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/29 16:36:09 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	delete_env_node(t_env *prev, const char *target_key)
 int	builtin_unset(char **args, t_env **list_head)
 {
 	int		i;
-	t_env	*current;
 	t_env	*prev;
 	int		status;
 

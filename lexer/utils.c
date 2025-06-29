@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:18:47 by nando             #+#    #+#             */
-/*   Updated: 2025/06/22 19:10:08 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/29 16:35:56 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	quate_error(t_lexer *ctx)
 {
-	t_token	*token;
 
 	ft_printf("quate not closed.\n");
 	free_buf(&ctx->buf);

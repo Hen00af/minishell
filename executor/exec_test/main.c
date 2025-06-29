@@ -7,8 +7,9 @@ int	main(int ac, char **av, char **envp)
 	t_andor	*linearized_ast;
 	t_env	*env;
 	char	*cmd;
-	t_token	*token_head;
 
+	(void)ac;
+	(void)av;
 	init_signal();
 	env = init_env(envp);
 	while (1)

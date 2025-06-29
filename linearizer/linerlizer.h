@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   linerlizer.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:13 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/25 23:03:24 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/29 16:41:28 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LINERIZER_H
-# define LINERIZER_H
+#ifndef LINELIZER_H
+# define LINELIZER_H
 
 # include "../minishell.h"
 # include <stdbool.h>
@@ -72,10 +72,8 @@ void						flatten_pipeline(t_ast *node, t_pipeline *pipeline);
 t_andor						*linearize_simple_command(t_ast *ast);
 t_andor						*linearizer(t_ast *ast);
 t_redir_type				map_redir_type(t_node_type type);
-
-//テスト用関数
 void						print_linerlized_ast(t_andor *tree, int indent);
 void						print_commands(t_pipeline *pipeline, int indent);
 void						print_redirections(t_list *redir_list, int indent);
 
-#endif
+#endif // LINELIZER_H

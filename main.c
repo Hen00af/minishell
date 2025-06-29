@@ -1,27 +1,33 @@
-#include "minishell.h"
+#include "./minishell.h"
 
-static void	prompt(void);
-
-int	main(void)
+int	main(int ac, char **av, char **envp)
 {
-	while (1)
-		prompt();
-	exit(0);
-}
-
-static void	prompt(void)
-{
+	t_token	*lex;
+	t_ast	*ast;
+	t_andor	*linearized_ast;
+	t_env	*env;
 	char	*cmd;
 	t_token	*token_head;
 
-	cmd = readline("minishell#");
-	if (!cmd)
-		exit(0);
-	add_history(cmd);
-	// token_head = lexer(cmd);
-	// parser(token_head);
-	// expander(tokens);
-	// executor(tokens);
-	// free_cmd(tokens);
-	free(cmd);
+	init_signal();
+	env = init_env(envp);
+	while (1)
+	{
+		cmd = readline("minishell# ");
+		if (!cmd)
+		{
+			ft_printf("exit\n");
+			exit(0);
+		}
+		lex = lexer(cmd);
+		ast = start_parse(lex);
+		if (!ast)
+			continue ;
+		add_history(cmd);
+		linearized_ast = linearizer(ast);
+		expand_andor_arguments(linearized_ast, env);
+		executor(linearized_ast, env);
+		free(cmd);
+	}
+	return (0);
 }
