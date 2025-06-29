@@ -53,4 +53,6 @@ typedef struct s_ctx
 	char	**key_value;
 }			t_ctx;
 
+void		expand_and_execute(t_andor *linearized_ast, t_env *env);
+
 #endif

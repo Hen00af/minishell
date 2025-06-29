@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/29 20:19:29 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/29 20:37:15 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ int	is_builtin(const char *cmd)
 static void	exec_command(t_command *cmd, t_env *env)
 {
 	char	*path;
-	// int		status;
 
+	// int		status;
 	if (cmd->redirections)
 		handle_redirections(cmd->redirections);
 	if (cmd->subshell_ast)
@@ -123,7 +123,7 @@ static int	exec_pipeline(t_pipeline *pipeline, t_env *env)
 		if (is_builtin(cmd->argv[0]))
 		{
 			status = exec_builtin(cmd->argv, env);
-			return(status);
+			return (status);
 		}
 		pid = fork();
 		if (pid == 0)
@@ -175,17 +175,6 @@ static int	exec_andor(t_andor *node, t_env *env)
 	}
 	g_exit_status = left_status;
 	return (left_status);
-}
-
-int	executor(t_andor *node, t_env *env)
-{
-	if (!node)
-		return (0);
-	if (node->type == ANDOR_AND || node->type == ANDOR_OR)
-		return (exec_andor(node, env));
-	if (node->type == ANDOR_PIPELINE)
-		return (exec_pipeline(node->pipeline, env));
-	return (1);
 }
 
 char	*search_path(char *cmd, t_env *env)
@@ -281,4 +270,15 @@ char	*ft_strjoin_3(char *s1, char *s2, char *s3)
 	res = ft_strjoin(tmp, s3);
 	free(tmp);
 	return (res);
+}
+
+int	executor(t_andor *node, t_env *env)
+{
+	if (!node)
+		return (0);
+	if (node->type == ANDOR_AND || node->type == ANDOR_OR)
+		return (exec_andor(node, env));
+	if (node->type == ANDOR_PIPELINE)
+		return (exec_pipeline(node->pipeline, env));
+	return (1);
 }
