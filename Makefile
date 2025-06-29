@@ -1,36 +1,47 @@
-CC = cc
-CFLAGS = -O2 -Wall -Wextra -Werror 
-OBJDIR = object
-# sub dir
-DIRS = lexer parser expander builtin \
-	   executor utils
-# transfer .c to .o
-SRCS := $(wildcard main.c $(foreach dir, $(DIRS),$(dir)/*.c))
-OBJS := $(SRCS:.c=.o)
-OBJS := $(patsubst %.o, $(OBJDIR)/%.o, $(OBJS))
-# header
-INCLUDES = -Iinclude
-#name of exe file
-NAME = minishell
+# ====== コンパイラ・フラグ ======
+CC      := cc
+CFLAGS  := -O2 
+INCLUDES := -Iinclude
 
-# rules
-all : $(NAME)
+NAME    := minishell
+OBJDIR  := object
+SRC_DIRS := \
+	./expander \
+	./parser \
+	./lexer \
+	./linerlizer \
+	./executor \
+	./builtin \
+	./utils \
+	./signal \
+	./
+
+SRCS := $(foreach dir, $(SRC_DIRS), $(wildcard $(dir)/*.c))
+
+OBJS := $(patsubst %.c, $(OBJDIR)/%.o, $(SRCS))
+
+LIBS := ./utils/fprintf/fprintf.a ./libft/libft.a -lreadline
+
+.PHONY: all clean fclean re run
+
+all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^ $(INCLUDES) -lreadline 
+	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $^ $(LIBS)
 
 $(OBJDIR)/%.o: %.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES)
-	
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+run: all
+	./$(NAME) $(HOME)
+
 clean:
 	@rm -rf $(OBJDIR)
-	@echo "All object files are deleted !!"
+	@echo "🧹 Object files removed"
 
 fclean: clean
 	@rm -f $(NAME)
-	@echo "Exe file is deleted !!"
+	@echo "🗑️ Executable removed"
 
 re: fclean all
-
-.PHONY: all clean fclean re
