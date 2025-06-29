@@ -6,13 +6,13 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:46:12 by nando             #+#    #+#             */
-/*   Updated: 2025/06/07 16:19:16 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/26 21:20:11 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_fprintf.h"
 
-int	ft_put_str_fd(int fd ,char *str)
+int	ft_put_str_fd(int fd, char *str)
 {
 	int	i;
 
