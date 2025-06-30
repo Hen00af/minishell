@@ -1,4 +1,4 @@
-#include "../linerlizer.h"
+#include "../linearizer.h"
 
 // ====== MAIN ======
 int	main(int ac, char **av)

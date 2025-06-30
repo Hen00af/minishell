@@ -6,15 +6,15 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 14:30:21 by nando             #+#    #+#             */
-/*   Updated: 2025/06/30 18:11:54 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/30 19:11:10 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
 
-void	expand_andor_arguments(t_andor *ast, t_env *env);
+void	expand_andor_arguments(t_andor *ast, t_shell *shell);
 
-char	*expand_string(char *arg, t_env *env, t_expand *ctx, t_list *node)
+char	*expand_string(char *arg, t_shell *shell, t_expand *ctx, t_list *node)
 {
 	char			*cleaned_quote;
 	char			*after;
@@ -24,22 +24,20 @@ char	*expand_string(char *arg, t_env *env, t_expand *ctx, t_list *node)
 	if (arg[0] == '\'')
 	{
 		cleaned_quote = remove_quote(redir->need_expand, arg);
-		free(arg);
 		return (cleaned_quote);
 	}
 	else if (arg[0] == '\"')
 	{
 		cleaned_quote = remove_quote(redir->need_expand, arg);
-		free(arg);
-		cleaned_quote = expand_variables(cleaned_quote, env);
+		cleaned_quote = expand_variables(cleaned_quote, shell);
 		return (cleaned_quote);
 	}
 	redir->need_expand = false;
-	after = expand_all_type(arg, env, ctx);
+	after = expand_all_type(arg, shell, ctx);
 	return (after);
 }
 
-void	expand_command_args(t_command *cmd, t_env *env, t_list *cmd_list)
+void	expand_command_args(t_command *cmd, t_shell *shell, t_list *cmd_list)
 {
 	t_expand	ctx;
 	int			i;
@@ -50,21 +48,20 @@ void	expand_command_args(t_command *cmd, t_env *env, t_list *cmd_list)
 		while (cmd->argv && cmd->argv[i])
 		{
 			ctx.wild_flag = 0;
-			ctx.expanded = expand_string(cmd->argv[i], env, &ctx, cmd_list);
+			ctx.expanded = expand_string(cmd->argv[i], shell, &ctx, cmd_list);
 			if (ctx.wild_flag)
 			{
 				generate_wildcard_matches(&ctx, cmd, &i);
 				continue ;
 			}
 			cmd->argv[i] = ft_strdup(ctx.expanded);
-			// cmd->argv[i] = ctx.expanded;
 			ctx.expanded = NULL;
 			i++;
 		}
 	}
 }
 
-void	expander(t_andor *ast, t_env *env)
+void	expander(t_andor *ast, t_shell *shell)
 {
 	t_list		*cmd_node;
 	t_command	*cmd;
@@ -78,22 +75,22 @@ void	expander(t_andor *ast, t_env *env)
 	{
 		cmd = (t_command *)cmd_node->content;
 		if (cmd->argv && cmd->argv[0])
-			expand_command_args(cmd, env, ast->pipeline->commands);
+			expand_command_args(cmd, shell, ast->pipeline->commands);
 		if (cmd->subshell_ast)
-			expand_andor_arguments(cmd->subshell_ast, env);
+			expand_andor_arguments(cmd->subshell_ast, shell);
 		cmd_node = cmd_node->next;
 	}
 }
 
-void	expand_andor_arguments(t_andor *ast, t_env *env)
+void	expand_andor_arguments(t_andor *ast, t_shell *shell)
 {
 	if (!ast)
 		return ;
 	if (ast->type == ANDOR_PIPELINE)
-		expander(ast, env);
+		expander(ast, shell);
 	else if (ast->type == ANDOR_AND || ast->type == ANDOR_OR)
 	{
-		expand_andor_arguments(ast->left, env);
-		expand_andor_arguments(ast->right, env);
+		expand_andor_arguments(ast->left, shell);
+		expand_andor_arguments(ast->right, shell);
 	}
 }

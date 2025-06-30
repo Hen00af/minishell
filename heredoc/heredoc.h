@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 12:54:02 by nando             #+#    #+#             */
-/*   Updated: 2025/06/26 15:00:31 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/30 19:11:39 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define HEREDOC_H
 
 # include "../minishell.h"
+# include <stdbool.h>
 
-void	handle_heredoc(t_andor *node, t_env *env);
+char	*run_heredoc(const char *delimiter, bool need_expand, t_shell *shell);
 
 #endif

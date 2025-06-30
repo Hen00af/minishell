@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:40:32 by nando             #+#    #+#             */
-/*   Updated: 2025/06/29 15:44:03 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/30 18:17:56 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ t_file_node	*get_files_in_cwd(void)
 	while (entry)
 	{
 		if (entry->d_name[0] == '.')
+		{
+			entry = readdir(dir);
 			continue ;
+		}
 		if (!append_file_node(&head, &tail, entry->d_name))
 		{
 			free_file_list(head);
@@ -114,6 +117,8 @@ char	*expand_wild_card(char *arg, t_expand *ctx)
 	free_file_list(files);
 	if (!match_files)
 		return (ft_strdup(arg));
+	if (match_files->next == NULL)
+		return (match_files->name);
 	ctx->wild_flag = 1;
 	sort_files(match_files);
 	joined = join_files(match_files);

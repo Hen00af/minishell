@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/06/29 19:42:14 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/30 19:00:05 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static char	*generate_tmpfile_path(void)
 	return (path);
 }
 
-char	*run_heredoc(const char *delimiter, bool need_expand, t_env *env)
+char	*run_heredoc(const char *delimiter, bool need_expand, t_shell *shell)
 {
 	char	*path;
 	int		fd;
@@ -78,7 +78,7 @@ char	*run_heredoc(const char *delimiter, bool need_expand, t_env *env)
 			break ;
 		}
 		if (need_expand)
-			line = expand_variables(line, env);
+			line = expand_variables(line, shell);
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free(line);
@@ -87,51 +87,51 @@ char	*run_heredoc(const char *delimiter, bool need_expand, t_env *env)
 	return (path);
 }
 
-void	process_heredoc(t_command *cmd, t_env *env)
-{
-	t_list			*node;
-	t_redirection	*redir;
-	char			*tmpfile;
+// void	process_heredoc(t_command *cmd, t_env *env)
+// {
+// 	t_list			*node;
+// 	t_redirection	*redir;
+// 	char			*tmpfile;
 
-	if (!cmd || !cmd->redirections)
-		return ;
-	node = cmd->redirections;
-	while (node)
-	{
-		redir = (t_redirection *)node->content;
-		if (redir->type == REDIR_HEREDOC)
-		{
-			tmpfile = run_heredoc(redir->filename, redir->need_expand, env);
-			free(redir->filename);
-			redir->filename = tmpfile;
-		}
-		node = node->next;
-	}
-}
+// 	if (!cmd || !cmd->redirections)
+// 		return ;
+// 	node = cmd->redirections;
+// 	while (node)
+// 	{
+// 		redir = (t_redirection *)node->content;
+// 		if (redir->type == REDIR_HEREDOC)
+// 		{
+// 			tmpfile = run_heredoc(redir->filename, redir->need_expand, env);
+// 			free(redir->filename);
+// 			redir->filename = tmpfile;
+// 		}
+// 		node = node->next;
+// 	}
+// }
 
-void	handle_heredoc(t_andor *node, t_env *env)
-{
-	t_list		*cmds;
-	t_command	*cmd;
+// void	handle_heredoc(t_andor *node, t_env *env)
+// {
+// 	t_list		*cmds;
+// 	t_command	*cmd;
 
-	if (!node)
-		return ;
-	if (node->type == ANDOR_PIPELINE)
-	{
-		cmds = node->pipeline->commands;
-		while (cmds)
-		{
-			cmd = (t_command *)cmds->content;
-			process_heredoc(cmd, env);
-			cmds = cmds->next;
-		}
-	}
-	else
-	{
-		handle_heredoc(node->left, env);
-		handle_heredoc(node->right, env);
-	}
-}
+// 	if (!node)
+// 		return ;
+// 	if (node->type == ANDOR_PIPELINE)
+// 	{
+// 		cmds = node->pipeline->commands;
+// 		while (cmds)
+// 		{
+// 			cmd = (t_command *)cmds->content;
+// 			process_heredoc(cmd, env);
+// 			cmds = cmds->next;
+// 		}
+// 	}
+// 	else
+// 	{
+// 		handle_heredoc(node->left, env);
+// 		handle_heredoc(node->right, env);
+// 	}
+// }
 
 // #include <fcntl.h>
 // #include <readline/readline.h>
