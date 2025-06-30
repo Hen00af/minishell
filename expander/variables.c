@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:40:45 by nando             #+#    #+#             */
-/*   Updated: 2025/06/26 22:18:00 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/30 18:17:15 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,15 @@ void	create_env_key(char *arg, t_var *var, int i)
 	ft_strlcpy(var->key, &arg[var->start], var->len + 1);
 }
 
-void	search_env_value(t_var *var, t_env *env)
+void	search_env_value(t_var *var, t_shell *shell)
 {
-	int	g_exit_status;
+	t_env	*env;
 
-	g_exit_status = 0;
+	env = shell->env;
 	var->value = NULL;
 	if (strcmp(var->key, "?") == 0)
 	{
-		var->value = ft_itoa(g_exit_status);
+		var->value = ft_itoa(shell->exit_status);
 		return ;
 	}
 	while (env)
@@ -85,7 +85,7 @@ char	*make_new_arg(char *arg, t_var *var)
 	return (new_arg);
 }
 
-char	*expand_variables(char *arg, t_env *env_head)
+char	*expand_variables(char *arg, t_shell *shell)
 {
 	int		i;
 	t_var	*var;
@@ -101,9 +101,7 @@ char	*expand_variables(char *arg, t_env *env_head)
 			break ;
 		i++;
 		create_env_key(arg, var, i);
-		printf("env_key = %s\n", var->key);
-		search_env_value(var, env_head);
-		printf("env_value = %s\n", var->value);
+		search_env_value(var, shell);
 		if (!var->value)
 			var->value = ft_strdup("");
 		new_arg = make_new_arg(arg, var);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 15:02:10 by nando             #+#    #+#             */
-/*   Updated: 2025/06/29 16:36:03 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/30 18:19:22 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ int	builtin_cd(char **args, t_env *list_head)
 		}
 		if (set_pwd(list_head, "PWD", 3) == NG)
 			return (NG);
-		printf("changed directory\n");
 		return (OK);
 	}
 	else

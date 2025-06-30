@@ -37,7 +37,7 @@ t_andor	*make_linearized_ast(char *cmd)
 void	expand_and_execute(t_andor *linearized_ast, t_shell *shell)
 {
 	expand_andor_arguments(linearized_ast, shell);
-	handle_heredoc(linearized_ast, shell->env);
+	// handle_heredoc(linearized_ast, shell->env);
 	executor(linearized_ast, shell);
 }
 

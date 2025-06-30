@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:19:31 by nando             #+#    #+#             */
-/*   Updated: 2025/06/29 22:03:10 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/30 18:18:20 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,16 @@ t_var	*init_var(void)
 	return (var);
 }
 
-char	*expand_all_type(char *arg, t_env *env, t_expand *ctx)
+char	*expand_all_type(char *arg, t_shell *shell, t_expand *ctx)
 {
-	arg = expand_variables(arg, env);
-	arg = expand_tilda(arg, env);
-	arg = expand_wild_card(arg, ctx);
-	return (arg);
+	char	*tmp;
+
+	tmp = expand_variables(arg, shell);
+	arg = expand_tilda(tmp, shell->env);
+	free(tmp);
+	tmp = expand_wild_card(arg, ctx);
+	free(arg);
+	return (tmp);
 }
 
 int	count_args(char **args)

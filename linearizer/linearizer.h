@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linearizer.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:13 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/29 17:01:44 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/30 18:48:46 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct s_redirection
 {
 	t_redir_type			type;
 	char					*filename;
-	bool					need_expand;
+	int						need_expand;
 }							t_redirection;
 
 typedef struct s_command

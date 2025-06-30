@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec_fank.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/29 22:12:28 by shattori         ###   ########.fr       */
+/*   Updated: 2025/06/30 19:07:32 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-static void	handle_redirections(t_list *redir_list)
+static void	handle_redirections(t_list *redir_list, t_shell *shell)
 {
 	t_redirection	*redir;
 	int				fd;
@@ -29,15 +29,15 @@ static void	handle_redirections(t_list *redir_list)
 			fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		else if (redir->type == REDIR_HEREDOC)
 		{
-			redir_list = redir_list->next;
-			continue ;
+			fd = open(run_heredoc(redir->filename, redir->need_expand, shell),
+					O_RDONLY);
 		}
 		if (fd < 0)
 		{
 			perror("redirection");
 			exit(1);
 		}
-		if (redir->type == REDIR_IN)
+		if (redir->type == REDIR_IN || redir->type == REDIR_HEREDOC)
 			dup2(fd, STDIN_FILENO);
 		else
 			dup2(fd, STDOUT_FILENO);
@@ -152,7 +152,7 @@ static void	exec_command(t_command *cmd, t_shell *shell)
 	int		status;
 
 	if (cmd->redirections)
-		handle_redirections(cmd->redirections);
+		handle_redirections(cmd->redirections, shell);
 	if (cmd->subshell_ast)
 	{
 		status = executor(cmd->subshell_ast, shell);
