@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/06/30 19:00:05 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/30 21:52:51 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,27 +87,34 @@ char	*run_heredoc(const char *delimiter, bool need_expand, t_shell *shell)
 	return (path);
 }
 
-// void	process_heredoc(t_command *cmd, t_env *env)
-// {
-// 	t_list			*node;
-// 	t_redirection	*redir;
-// 	char			*tmpfile;
+char	*process_heredoc(t_list *redir_list, t_shell *shell)
+{
+	t_redirection	*redir;
+	char			*tmpfile;
+	bool			flag;
 
-// 	if (!cmd || !cmd->redirections)
-// 		return ;
-// 	node = cmd->redirections;
-// 	while (node)
-// 	{
-// 		redir = (t_redirection *)node->content;
-// 		if (redir->type == REDIR_HEREDOC)
-// 		{
-// 			tmpfile = run_heredoc(redir->filename, redir->need_expand, env);
-// 			free(redir->filename);
-// 			redir->filename = tmpfile;
-// 		}
-// 		node = node->next;
-// 	}
-// }
+	if (!redir_list)
+		return (NULL);
+	tmpfile = NULL;
+	flag = false;
+	while (redir_list)
+	{
+		redir = (t_redirection *)redir_list->content;
+		if (redir->type == REDIR_HEREDOC)
+		{
+			if (flag)
+				unlink(tmpfile);
+			tmpfile = run_heredoc(redir->filename, redir->need_expand, shell);
+			if (!tmpfile)
+				return (NULL);
+			free(redir->filename);
+			redir->filename = tmpfile;
+			flag = true;
+		}
+		redir_list = redir_list->next;
+	}
+	return (redir->filename);
+}
 
 // void	handle_heredoc(t_andor *node, t_env *env)
 // {
