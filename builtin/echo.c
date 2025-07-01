@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 21:05:26 by nando             #+#    #+#             */
-/*   Updated: 2025/06/26 20:58:46 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/01 20:00:11 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,16 @@ void	n_flag_or_print(t_echo *e, char *arg)
 int	builtin_echo(char **args, t_env *list_head)
 {
 	t_echo	*e;
+	int		i;
 
+	i = 0;
 	(void)list_head;
-	e = malloc(sizeof(e));
+	e = malloc(sizeof(t_echo));
+	if (!e)
+	{
+		perror("malloc");
+		return (NG);
+	}
 	e->option_flag = 0;
 	e->print_flag = 0;
 	e->count = count_args(args);
@@ -65,12 +72,3 @@ int	builtin_echo(char **args, t_env *list_head)
 		printf("\n");
 	return (OK);
 }
-
-//int	main(int argc, char **argv,char **envp)
-//{
-//	t_env *env;
-//	env = init_env(envp);
-//	(void)argc;
-//	builtin_echo(argv,env);
-//	return (0);
-//}

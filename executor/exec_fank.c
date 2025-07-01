@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/30 22:08:40 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/01 20:04:55 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ static void	handle_redirections(t_list *redir_list, t_shell *shell)
 {
 	t_redirection	*redir;
 	int				fd;
+	char			*last_tmpfile;
 
-	// char			*last_tmpfile;
-	// last_tmpfile = process_heredoc(redir_list, shell);
+	last_tmpfile = process_heredoc(redir_list, shell);
 	while (redir_list)
 	{
 		redir = redir_list->content;
@@ -30,8 +30,7 @@ static void	handle_redirections(t_list *redir_list, t_shell *shell)
 		else if (redir->type == REDIR_APPEND)
 			fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		else if (redir->type == REDIR_HEREDOC)
-			// fd = open(last_tmpfile, O_RDONLY);
-			fd = open(process_heredoc(redir_list, shell), O_RDONLY);//↑のコメントアウト外すときは、この行はコメントアウトしてほしいです。
+			fd = open(last_tmpfile, O_RDONLY);
 		if (fd < 0)
 		{
 			perror("redirection");

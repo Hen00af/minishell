@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:40:32 by nando             #+#    #+#             */
-/*   Updated: 2025/06/30 18:17:56 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/01 19:58:33 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,15 @@ void	sort_files(t_file_node *head)
 	{
 		swap_flag = 0;
 		current = head;
-		while (current && current->next)
+		while (current)
 		{
-			if (strcmp(current->name, current->next->name) > 0)
+			if (current->next != NULL)
 			{
-				swap_name(current, current->next);
-				swap_flag = 1;
+				if (strcmp(current->name, current->next->name) > 0)
+				{
+					swap_name(current, current->next);
+					swap_flag = 1;
+				}
 			}
 			current = current->next;
 		}
