@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 17:59:17 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/01 15:30:04 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/01 15:57:59 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,21 @@ void	xfree(void **ptr)
 	*ptr = NULL;
 }
 
-int	xopen(char *file, int oflag, mode_t mode)
+int	xopen(char *file, int oflag, mode_t mode, int *fd)
 {
-	int	fd;
-
-	fd = open(file, oflag, mode);
-	if (fd == -1)
+	*fd = open(file, oflag, mode);
+	if (*fd == -1)
 	{
-		perror("open failed");
+		perror("open error");
 		return (-1);
 	}
-	return (fd);
+	return (*fd);
 }
+
+// int	main(void)
+// {
+// 	int	fd;
+
+// 	fd = xopen("out", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+// 	return (0);
+// }
