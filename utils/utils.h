@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 21:19:52 by nando             #+#    #+#             */
-/*   Updated: 2025/06/26 21:35:12 by nando            ###   ########.fr       */
+/*   Updated: 2025/06/30 20:26:47 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ t_env					*create_env_node(char **key_value);
 t_env					*init_env(char **envp);
 char					**env_to_array(t_env *list_head);
 void					assign_shell_var(char *var_str, t_env *list_head);
+int						xclose(int *fd);
 
 #endif // UTILS_H
