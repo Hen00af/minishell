@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:37 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/03 21:00:24 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/03 20:59:51 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,3 +163,4 @@ t_andor	*linearizer(t_ast *ast, t_shell *shell)
 		return (linearize_subshell(ast, shell));
 	return (linearize_simple_command(ast, shell));
 }
+

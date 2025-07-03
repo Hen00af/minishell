@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/03 19:38:23 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/03 20:59:43 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,9 +149,9 @@ static void	exec_command(t_command *cmd, t_shell *shell)
 {
 	char	*path;
 	int		status;
-	
-	if (cmd->redirections){
-		printf("heredoc \n");
+
+	if (cmd->redirections)
+	{
 		handle_redirections(cmd->redirections, shell);
 	}
 	if (cmd->subshell_ast)
