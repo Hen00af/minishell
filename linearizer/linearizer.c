@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   linearizer.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:37 by shattori          #+#    #+#             */
 /*   Updated: 2025/07/03 20:59:51 by shattori         ###   ########.fr       */
