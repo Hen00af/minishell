@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_fank.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/01 20:04:55 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/03 19:38:23 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,9 +149,11 @@ static void	exec_command(t_command *cmd, t_shell *shell)
 {
 	char	*path;
 	int		status;
-
-	if (cmd->redirections)
+	
+	if (cmd->redirections){
+		printf("heredoc \n");
 		handle_redirections(cmd->redirections, shell);
+	}
 	if (cmd->subshell_ast)
 	{
 		status = executor(cmd->subshell_ast, shell);

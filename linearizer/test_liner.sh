@@ -1,7 +1,7 @@
 #!/bin/bash
 
 run() {
-	cc ../lexer/*.c ../parser/*.c ./*.c  ../libft/libft.a  ./main_line/main.c ../utils/fprintf/fprintf.a
+	cc -lreadline ../lexer/*.c ../parser/*.c ./*.c  ./main_line/main.c ../utils/*.c ../heredoc/*.c ../signal/signal.c ../expander/*.c  ../utils/fprintf/fprintf.a ../libft/libft.a 
 	input="$1"
 	# leak_check=(valgrind -q --leak-check=full)
 	#if you want to check leaking, add this command "${leak_check[0]}" to head of ↓
