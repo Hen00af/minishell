@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linearizer.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:13 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/03 20:11:55 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/03 23:21:39 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_redirection
 typedef struct s_command
 {
 	char					**argv;
+	char					*heredoc_filename;
 	t_list					*redirections;
 	struct s_andor			*subshell_ast;
 }							t_command;
