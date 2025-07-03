@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:13 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/30 18:48:46 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/02 16:43:24 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct s_redirection
 {
 	t_redir_type			type;
 	char					*filename;
-	int						need_expand;
+	bool					need_expand;
 }							t_redirection;
 
 typedef struct s_command

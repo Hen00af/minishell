@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:59:39 by nando             #+#    #+#             */
-/*   Updated: 2025/06/29 16:36:15 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/02 15:24:39 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,25 +36,3 @@ void	init_signal(void)
 	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
 }
-
-// static void	prompt(void)
-// {
-// 	char	*cmd;
-
-// 	cmd = readline("minishell$ ");
-// 	if (!cmd)
-// 	{
-// 		ft_printf("exit\n");
-// 		exit(0);
-// 	}
-// 	add_history(cmd);
-// 	free(cmd);
-// }
-
-// int	main(void)
-// {
-// 	init_signal();
-// 	while (1)
-// 		prompt();
-// 	exit(0);
-// }

@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 14:30:21 by nando             #+#    #+#             */
-/*   Updated: 2025/07/01 20:03:06 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/02 16:28:58 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ char	*expand_string(char *arg, t_shell *shell, t_expand *ctx, t_list *node)
 	t_redirection	*redir;
 
 	redir = (t_redirection *)node->content;
+	redir->need_expand = false;
 	if (arg[0] == '\'')
 	{
 		cleaned_quote = remove_quote(redir->need_expand, arg);
@@ -32,7 +33,6 @@ char	*expand_string(char *arg, t_shell *shell, t_expand *ctx, t_list *node)
 		cleaned_quote = expand_variables(cleaned_quote, shell);
 		return (cleaned_quote);
 	}
-	redir->need_expand = false;
 	after = expand_all_type(arg, shell, ctx);
 	return (after);
 }

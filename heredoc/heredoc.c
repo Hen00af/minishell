@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/06/30 21:52:51 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/03 17:16:17 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ char	*process_heredoc(t_list *redir_list, t_shell *shell)
 	while (redir_list)
 	{
 		redir = (t_redirection *)redir_list->content;
+		printf("redir->need_expand = %s\n",
+			redir->need_expand ? "true" : "false");
 		if (redir->type == REDIR_HEREDOC)
 		{
 			if (flag)
@@ -115,99 +117,3 @@ char	*process_heredoc(t_list *redir_list, t_shell *shell)
 	}
 	return (redir->filename);
 }
-
-// void	handle_heredoc(t_andor *node, t_env *env)
-// {
-// 	t_list		*cmds;
-// 	t_command	*cmd;
-
-// 	if (!node)
-// 		return ;
-// 	if (node->type == ANDOR_PIPELINE)
-// 	{
-// 		cmds = node->pipeline->commands;
-// 		while (cmds)
-// 		{
-// 			cmd = (t_command *)cmds->content;
-// 			process_heredoc(cmd, env);
-// 			cmds = cmds->next;
-// 		}
-// 	}
-// 	else
-// 	{
-// 		handle_heredoc(node->left, env);
-// 		handle_heredoc(node->right, env);
-// 	}
-// }
-
-// #include <fcntl.h>
-// #include <readline/readline.h>
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <string.h>
-// #include <unistd.h>
-
-// int	main(int argc, char **argv, char **envp)
-// {
-// 	char	*path;
-// 	int		fd;
-// 	char	buf[1024];
-// 	ssize_t	n;
-// 	t_env	*env;
-
-// 	env = malloc(sizeof(t_env));
-// 	env = init_env(envp);
-// 	// ■ テスト１: need_expand = false
-// 	printf("=== heredoc without expansion (delimiter: END) ===\n");
-// 	path = run_heredoc("END", false, env);
-// 	if (!path)
-// 	{
-// 		fprintf(stderr, "run_heredoc failed\n");
-// 		return (1);
-// 	}
-// 	printf("→ saved to %s\n", path);
-// 	fd = open(path, O_RDONLY);
-// 	if (fd < 0)
-// 	{
-// 		perror("open");
-// 		free(path);
-// 		return (1);
-// 	}
-// 	printf("--- file content ---\n");
-// 	while ((n = read(fd, buf, sizeof(buf) - 1)) > 0)
-// 	{
-// 		buf[n] = '\0';
-// 		printf("%s", buf);
-// 	}
-// 	printf("--- end content ---\n");
-// 	close(fd);
-// 	unlink(path);
-// 	free(path);
-// 	// ■ テスト２: need_expand = true
-// 	printf("\n=== heredoc with expansion (delimiter: EXP) ===\n");
-// 	path = run_heredoc("EXP", true, env);
-// 	if (!path)
-// 	{
-// 		fprintf(stderr, "run_heredoc failed\n");
-// 		return (1);
-// 	}
-// 	printf("→ saved to %s\n", path);
-// 	fd = open(path, O_RDONLY);
-// 	if (fd < 0)
-// 	{
-// 		perror("open");
-// 		free(path);
-// 		return (1);
-// 	}
-// 	printf("--- file content ---\n");
-// 	while ((n = read(fd, buf, sizeof(buf) - 1)) > 0)
-// 	{
-// 		buf[n] = '\0';
-// 		printf("%s", buf);
-// 	}
-// 	printf("--- end content ---\n");
-// 	close(fd);
-// 	unlink(path);
-// 	free(path);
-// 	return (0);
-// }
