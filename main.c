@@ -19,7 +19,7 @@ char	*run_readline(void)
 	return (cmd);
 }
 
-t_andor	*make_linearized_ast(char *cmd)
+t_andor	*make_linearized_ast(char *cmd, t_shell *shell)
 {
 	t_token	*lex;
 	t_ast	*ast;
@@ -30,14 +30,13 @@ t_andor	*make_linearized_ast(char *cmd)
 	if (!ast)
 		return (NULL);
 	add_history(cmd);
-	linearized_ast = linearizer(ast);
+	linearized_ast = linearizer(ast, shell);
 	return (linearized_ast);
 }
 
 void	expand_and_execute(t_andor *linearized_ast, t_shell *shell)
 {
 	expand_andor_arguments(linearized_ast, shell);
-	// handle_heredoc(linearized_ast, shell->env);
 	executor(linearized_ast, shell);
 }
 
@@ -47,7 +46,7 @@ int	prompt(t_shell *shell)
 	t_andor	*linearized_ast;
 
 	cmd = run_readline();
-	linearized_ast = make_linearized_ast(cmd);
+	linearized_ast = make_linearized_ast(cmd, shell);
 	if (!linearized_ast)
 	{
 		free(cmd);

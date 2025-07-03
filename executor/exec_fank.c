@@ -6,22 +6,22 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/03 20:59:43 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/03 23:30:18 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-static void	handle_redirections(t_list *redir_list, t_shell *shell)
+static void	handle_redirections(t_list *redir_list)
 {
 	t_redirection	*redir;
 	int				fd;
 	char			*last_tmpfile;
 
-	last_tmpfile = process_heredoc(redir_list, shell);
 	while (redir_list)
 	{
 		redir = redir_list->content;
+		last_tmpfile = redir->filename;
 		fd = -1;
 		if (redir->type == REDIR_IN)
 			fd = open(redir->filename, O_RDONLY);
@@ -85,6 +85,7 @@ char	*get_env_value(const char *name, t_env *env)
 	}
 	return (NULL);
 }
+
 int	env_size(t_env *env)
 {
 	int	i;
@@ -145,33 +146,6 @@ char	*search_path(char *cmd, t_env *env)
 	free_split(paths);
 	return (NULL);
 }
-static void	exec_command(t_command *cmd, t_shell *shell)
-{
-	char	*path;
-	int		status;
-
-	if (cmd->redirections)
-	{
-		handle_redirections(cmd->redirections, shell);
-	}
-	if (cmd->subshell_ast)
-	{
-		status = executor(cmd->subshell_ast, shell);
-		shell->exit_status = status;
-		exit(status);
-	}
-	if (!cmd->argv || !cmd->argv[0])
-		exit(0);
-	path = search_path(cmd->argv[0], shell->env);
-	if (!path)
-	{
-		perror("command not found");
-		exit(127);
-	}
-	execve(path, cmd->argv, convert_env(shell->env));
-	perror("execve");
-	exit(1);
-}
 
 int	exec_builtin(char **argv, t_env *env)
 {
@@ -193,66 +167,104 @@ int	exec_builtin(char **argv, t_env *env)
 		return (builtin_exit(argv));
 	return (1);
 }
+static int	exec_subshell(t_command *cmd, t_shell *shell)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid == -1)
+		return (perror("fork"), 1);
+	if (pid == 0)
+		exit(executor(cmd->subshell_ast, shell));
+	wait(&status);
+	return (WEXITSTATUS(status));
+}
+
+int	exec_simple_command(t_command *cmd, t_shell *shell)
+{
+	char	*path;
+	char	**envp;
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid == -1)
+		return (perror("fork"), 1);
+	if (pid == 0)
+	{
+		handle_redirections(cmd->redirections);
+		envp = convert_env(shell->env);
+		path = search_path(cmd->argv[0], shell->env);
+		if (!path)
+			exit(127);
+		execve(path, cmd->argv, envp);
+		perror("execve");
+		exit(1);
+	}
+	waitpid(pid, &status, 0);
+	return (WEXITSTATUS(status));
+}
 
 static int	exec_pipeline(t_pipeline *pipeline, t_shell *shell)
 {
-	int			prev_fd;
 	int			pipefd[2];
+	int			prev_fd;
 	pid_t		pid;
 	t_list		*cmd_list;
-	int			status;
 	t_command	*cmd;
 
 	prev_fd = -1;
 	cmd_list = pipeline->commands;
-	status = 0;
-	while (cmd_list)
+	if (!cmd_list->next)
 	{
 		cmd = cmd_list->content;
 		if (is_builtin(cmd->argv[0]))
 		{
+			handle_redirections(cmd->redirections);
 			shell->exit_status = exec_builtin(cmd->argv, shell->env);
 			return (shell->exit_status);
 		}
+	}
+	while (cmd_list)
+	{
+		cmd = cmd_list->content;
 		if (cmd_list->next && pipe(pipefd) == -1)
-		{
-			perror("pipe");
-			return (1);
-		}
+			return (perror("pipe"), 1);
 		pid = fork();
-		if (pid == 0)
+		if (pid == -1)
+			return (perror("fork"), 1);
+		else if (pid == 0)
 		{
 			if (prev_fd != -1)
-			{
 				dup2(prev_fd, STDIN_FILENO);
+			if (cmd_list->next)
+				dup2(pipefd[1], STDOUT_FILENO);
+			if (prev_fd != -1)
 				close(prev_fd);
-			}
 			if (cmd_list->next)
 			{
 				close(pipefd[0]);
-				dup2(pipefd[1], STDOUT_FILENO);
 				close(pipefd[1]);
 			}
-			exec_command(cmd, shell);
-		}
-		else if (pid < 0)
-		{
-			perror("fork");
-			return (1);
+			handle_redirections(cmd->redirections);
+			if (cmd->subshell_ast)
+				exit(exec_subshell(cmd, shell));
+			else if (is_builtin(cmd->argv[0]))
+				exit(exec_builtin(cmd->argv, shell->env));
+			else
+				exit(exec_simple_command(cmd, shell));
 		}
 		if (prev_fd != -1)
 			close(prev_fd);
 		if (cmd_list->next)
-		{
 			close(pipefd[1]);
-			prev_fd = pipefd[0];
-		}
+		prev_fd = cmd_list->next ? pipefd[0] : -1;
 		cmd_list = cmd_list->next;
 	}
-	while (wait(&status) > 0)
+	while (wait(&shell->exit_status) > 0)
 		;
-	shell->exit_status = WEXITSTATUS(status);
-	return (shell->exit_status);
+	return (WEXITSTATUS(shell->exit_status));
 }
 
 static int	exec_andor(t_andor *node, t_shell *shell)
