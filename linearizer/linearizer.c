@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:37 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/03 20:26:37 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/03 20:59:51 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ t_command	*linearize_simple_command_to_command(t_ast *ast, t_shell *shell)
 		redir->type = map_redir_type(ast->type);
 		redir_node = ft_lstnew(redir);
 		ft_lstadd_back(&child->redirections, redir_node);
+		redir->filename = ast->filename;
 		if (ast->type == NODE_HEREDOC)
 			redir->filename = process_heredoc(redir_node, shell);
-		redir->filename = ast->filename;
 		free(cmd);
 		return (child);
 	}
@@ -163,3 +163,4 @@ t_andor	*linearizer(t_ast *ast, t_shell *shell)
 		return (linearize_subshell(ast, shell));
 	return (linearize_simple_command(ast, shell));
 }
+
