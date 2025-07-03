@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linearizer.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:13 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/02 16:43:24 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/03 20:11:55 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,11 @@ typedef struct s_andor
 	};
 }							t_andor;
 
-void						flatten_pipeline(t_ast *node, t_pipeline *pipeline);
-t_andor						*linearize_simple_command(t_ast *ast);
-t_andor						*linearizer(t_ast *ast);
+void						flatten_pipeline(t_ast *node, t_pipeline *pipeline,
+								t_shell *shell);
+t_andor						*linearize_simple_command(t_ast *ast,
+								t_shell *shell);
+t_andor						*linearizer(t_ast *ast, t_shell *shell);
 t_redir_type				map_redir_type(t_node_type type);
 void						print_linerlized_ast(t_andor *tree, int indent);
 void						print_commands(t_pipeline *pipeline, int indent);
