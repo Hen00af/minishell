@@ -27,6 +27,7 @@ t_andor	*make_linearized_ast(char *cmd, t_shell *shell)
 
 	lex = lexer(cmd);
 	ast = start_parse(lex);
+	free_tokens(lex);
 	if (!ast)
 		return (NULL);
 	add_history(cmd);
@@ -53,6 +54,8 @@ int	prompt(t_shell *shell)
 		return (0);
 	}
 	expand_and_execute(linearized_ast, shell);
+	free_env_list(shell->env);
+	free(shell);
 	free(cmd);
 	return (1);
 }

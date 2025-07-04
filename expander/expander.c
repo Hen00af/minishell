@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 14:30:21 by nando             #+#    #+#             */
-/*   Updated: 2025/07/04 18:52:32 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/05 02:24:29 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	expand_command_args(t_command *cmd, t_shell *shell, t_list *cmd_list)
 				continue ;
 			}
 			cmd->argv[i] = ft_strdup(ctx.expanded);
-			ctx.expanded = NULL;
+			free(ctx.expanded);
 			i++;
 		}
 	}

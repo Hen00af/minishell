@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 21:19:52 by nando             #+#    #+#             */
-/*   Updated: 2025/06/30 20:26:47 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/05 02:44:49 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 typedef struct s_env	t_env;
 typedef struct s_ctx	t_ctx;
 
+void					free_env_list(t_env *env_list);
 void					free_inserted_memory(char **result, int j);
 char					*create_key(char const *s, char c);
 char					*create_value(char const *s);

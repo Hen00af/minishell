@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buf.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:31:47 by nando             #+#    #+#             */
-/*   Updated: 2025/06/22 20:21:06 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/05 02:30:11 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,24 @@ void	buf_add(t_buf *buf, char c)
 {
 	char	*new_word;
 	size_t	new_capa;
+	size_t	need;
 
-	if (buf->capa <= (buf->len + 1))
+	need = buf->len + 2;
+	if (need > buf->capa)
 	{
 		new_capa = buf->capa * 2;
+		if (new_capa < need)
+			new_capa = need;
 		new_word = malloc(new_capa);
 		if (!new_word)
 			return ;
-		ft_memcpy(new_word, buf->word, buf->len);
+		memcpy(new_word, buf->word, buf->len);
 		free(buf->word);
 		buf->word = new_word;
 		buf->capa = new_capa;
 	}
-	buf->word[buf->len++] = c;
+	buf->word[buf->len] = c;
+	buf->len++;
 	buf->word[buf->len] = '\0';
 }
 

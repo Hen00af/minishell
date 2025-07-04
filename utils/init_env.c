@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 15:05:25 by nando             #+#    #+#             */
-/*   Updated: 2025/06/26 22:04:31 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/05 02:47:31 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,9 @@ t_env	*init_env(char **envp)
 			kv[1] = ft_strdup("");
 		if (!append_env_node(&head, &tail, kv))
 			return (NULL);
+		free(kv[0]);
+		free(kv[1]);
+		free(kv);
 	}
 	return (head);
 }
