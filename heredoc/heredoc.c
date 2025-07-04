@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/07/03 20:44:10 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/03 23:24:28 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,33 +87,36 @@ char	*run_heredoc(const char *delimiter, bool need_expand, t_shell *shell)
 	return (path);
 }
 
-char	*process_heredoc(t_list *redir_list, t_shell *shell)
+void	process_heredoc(t_command *cmd, t_shell *shell)
 {
+	t_list			*redir_list;
 	t_redirection	*redir;
 	char			*tmpfile;
-	bool			flag;
+	int				flag;
 
-	if (!redir_list)
-		return (NULL);
+	if (!cmd || !cmd->redirections)
+		return ;
+	redir_list = cmd->redirections;
 	tmpfile = NULL;
-	flag = false;
+	flag = 0;
 	while (redir_list)
 	{
 		redir = (t_redirection *)redir_list->content;
-		printf("redir->need_expand = %s\n",
-			redir->need_expand ? "true" : "false");
+		// printf("redir->need_expand = %s\n",
+		// 	redir->need_expand ? "true" : "false");
 		if (redir->type == REDIR_HEREDOC)
 		{
-			if (flag)
+			printf("flag is %d\n", flag);
+			if (flag == 1)
 				unlink(tmpfile);
 			tmpfile = run_heredoc(redir->filename, redir->need_expand, shell);
 			if (!tmpfile)
-				return (NULL);
+				return ;
 			free(redir->filename);
-			redir->filename = tmpfile;
-			flag = true;
+			cmd->heredoc_filename = ft_strdup(tmpfile);
+			printf("heredoc_filename = %s\n", cmd->heredoc_filename);
+			flag = 1;
 		}
 		redir_list = redir_list->next;
 	}
-	return (redir->filename);
 }
