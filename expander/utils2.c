@@ -6,18 +6,17 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 17:12:10 by nando             #+#    #+#             */
-/*   Updated: 2025/07/01 20:00:34 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/04 18:52:48 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
 
-char	*remove_quote(bool need_expand, char *arg)
+char	*remove_quote(char *arg)
 {
 	size_t	strlen;
 	char	*result;
 
-	need_expand = true;
 	strlen = ft_strlen(arg);
 	if (strlen < 2)
 		return (ft_strdup(arg));
