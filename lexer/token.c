@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:16:10 by nando             #+#    #+#             */
-/*   Updated: 2025/06/22 18:53:52 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/04 20:39:27 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_token	*create_token(t_tokentype type, char *word)
 {
 	t_token	*tok;
 
-	tok = malloc(sizeof * tok);
+	tok = malloc(sizeof *tok);
 	if (!tok)
 		return (NULL);
 	tok->type = type;
@@ -52,6 +52,10 @@ void	append_tok_and_reset_state(t_lexer *ctx, t_tokentype type)
 	ctx->state = STA_DEFAULT;
 	if (type == TOK_HEREDOC || type == TOK_REDIR_APP || type == TOK_OR)
 		ctx->move = 2;
+	if (type == TOK_LPAREN)
+		ctx->left_p_count++;
+	if (type == TOK_RPAREN)
+		ctx->right_p_count++;
 }
 
 void	free_tokens(t_token *head)
