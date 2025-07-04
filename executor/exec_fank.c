@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/03 23:30:18 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/04 17:05:28 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,8 @@ static int	exec_pipeline(t_pipeline *pipeline, t_shell *shell)
 	if (!cmd_list->next)
 	{
 		cmd = cmd_list->content;
+		if (cmd->subshell_ast)
+			return(exec_subshell(cmd, shell));
 		if (is_builtin(cmd->argv[0]))
 		{
 			handle_redirections(cmd->redirections);
@@ -249,7 +251,9 @@ static int	exec_pipeline(t_pipeline *pipeline, t_shell *shell)
 			}
 			handle_redirections(cmd->redirections);
 			if (cmd->subshell_ast)
+			{
 				exit(exec_subshell(cmd, shell));
+			}
 			else if (is_builtin(cmd->argv[0]))
 				exit(exec_builtin(cmd->argv, shell->env));
 			else
