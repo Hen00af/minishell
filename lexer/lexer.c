@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 20:23:45 by nando             #+#    #+#             */
-/*   Updated: 2025/06/22 18:47:53 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/04 20:40:52 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int	init_lexer(t_lexer *ctx, char *input)
 	ctx->prev_state = STA_DEFAULT;
 	ctx->posi = 0;
 	ctx->assignment_flag = 0;
+	ctx->left_p_count = 0;
+	ctx->right_p_count = 0;
 	ctx->head = create_token(TOK_NUL, NULL);
 	if (!ctx->head)
 		return (ERROR);
@@ -105,6 +107,11 @@ t_token	*lexer(char *input)
 	if (ctx.state == STA_IN_SQUOTE || ctx.state == STA_IN_DQUOTE)
 	{
 		quate_error(&ctx);
+		return (NULL);
+	}
+	if (ctx.left_p_count != ctx.right_p_count)
+	{
+		parent_error(&ctx);
 		return (NULL);
 	}
 	token_head = finish_lexing(&ctx);

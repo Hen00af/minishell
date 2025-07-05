@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 18:51:48 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/29 16:08:03 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/04 20:41:06 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ typedef struct s_lexer
 	size_t			move;
 	t_statetype		state;
 	t_statetype		prev_state;
+	int				left_p_count;
+	int				right_p_count;
 	int				assignment_flag;
 }					t_lexer;
 
@@ -95,6 +97,7 @@ void				append_tok_and_set_state(t_lexer *ctx, t_statetype state);
 void				append_tok_and_reset_state(t_lexer *ctx, t_tokentype type);
 void				free_tokens(t_token *head);
 void				quate_error(t_lexer *ctx);
+void				parent_error(t_lexer *ctx);
 int					ft_isspace(int c);
 int					is_valid_var_name(char *buf_word);
 void				lexer_default(t_lexer *ctx, char c);
@@ -107,6 +110,5 @@ void				run_lexer(t_lexer *ctx);
 t_token				*finish_lexing(t_lexer *ctx);
 t_token				*lexer(char *input);
 void				lexer_word2(t_lexer *ctx, char c);
-
 
 #endif
