@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/07/03 23:24:28 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/04 19:18:47 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,29 @@ static char	*generate_tmpfile_path(void)
 	return (path);
 }
 
-char	*run_heredoc(const char *delimiter, bool need_expand, t_shell *shell)
+int	is_include_quote(char *delimiter)
+{
+	int	need_expand;
+	int	len;
+
+	len = ft_strlen(delimiter);
+	if (delimiter[0] == '\"' && delimiter[len - 1] == '\"'
+		|| delimiter[0] == '\'' && delimiter[len - 1] == '\'')
+		return (0);
+	return (1);
+}
+
+char	*run_heredoc(char *delimiter, t_shell *shell)
 {
 	char	*path;
 	int		fd;
 	char	*line;
+	char	*clean_delimiter;
+	int		need_expand;
 
 	g_ack_status = 0;
+	need_expand = is_include_quote(delimiter);
+	clean_delimiter = remove_quote(delimiter);
 	while (1)
 	{
 		path = generate_tmpfile_path();
@@ -72,7 +88,7 @@ char	*run_heredoc(const char *delimiter, bool need_expand, t_shell *shell)
 		}
 		if (!line)
 			break ;
-		if (strcmp(line, delimiter) == 0)
+		if (strcmp(line, clean_delimiter) == 0)
 		{
 			free(line);
 			break ;
@@ -83,6 +99,7 @@ char	*run_heredoc(const char *delimiter, bool need_expand, t_shell *shell)
 		write(fd, "\n", 1);
 		free(line);
 	}
+	free(clean_delimiter);
 	close(fd);
 	return (path);
 }
@@ -102,14 +119,12 @@ void	process_heredoc(t_command *cmd, t_shell *shell)
 	while (redir_list)
 	{
 		redir = (t_redirection *)redir_list->content;
-		// printf("redir->need_expand = %s\n",
-		// 	redir->need_expand ? "true" : "false");
 		if (redir->type == REDIR_HEREDOC)
 		{
 			printf("flag is %d\n", flag);
 			if (flag == 1)
 				unlink(tmpfile);
-			tmpfile = run_heredoc(redir->filename, redir->need_expand, shell);
+			tmpfile = run_heredoc(redir->filename, shell);
 			if (!tmpfile)
 				return ;
 			free(redir->filename);

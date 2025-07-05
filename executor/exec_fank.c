@@ -3,25 +3,61 @@
 /*                                                        :::      ::::::::   */
 /*   exec_fank.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/04 17:05:28 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/04 19:24:26 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-static void	handle_redirections(t_list *redir_list)
+// static void	handle_redirections(t_list *redir_list)
+//{
+//	t_redirection	*redir;
+//	int				fd;
+//	char			*last_tmpfile;
+
+//	while (redir_list)
+//	{
+//		redir = redir_list->content;
+//		printf("redir->filename = %s\n", redir->filename);
+//		last_tmpfile = redir->filename;
+//		fd = -1;
+//		if (redir->type == REDIR_IN)
+//			fd = open(redir->filename, O_RDONLY);
+//		else if (redir->type == REDIR_OUT)
+//			fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+//		else if (redir->type == REDIR_APPEND)
+//			fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+//		else if (redir->type == REDIR_HEREDOC)
+//			fd = open(last_tmpfile, O_RDONLY);
+//		if (fd < 0)
+//		{
+//			perror("redirection");
+//			exit(1);
+//		}
+//		if (redir->type == REDIR_IN || redir->type == REDIR_HEREDOC)
+//			dup2(fd, STDIN_FILENO);
+//		else
+//			dup2(fd, STDOUT_FILENO);
+//		close(fd);
+//		redir_list = redir_list->next;
+//	}
+//}
+
+static void	handle_redirections(t_command *cmd)
 {
+	t_list			*redir_list;
 	t_redirection	*redir;
 	int				fd;
 	char			*last_tmpfile;
 
+	redir_list = cmd->redirections;
 	while (redir_list)
 	{
 		redir = redir_list->content;
-		last_tmpfile = redir->filename;
+		last_tmpfile = cmd->heredoc_filename;
 		fd = -1;
 		if (redir->type == REDIR_IN)
 			fd = open(redir->filename, O_RDONLY);
@@ -193,7 +229,8 @@ int	exec_simple_command(t_command *cmd, t_shell *shell)
 		return (perror("fork"), 1);
 	if (pid == 0)
 	{
-		handle_redirections(cmd->redirections);
+		// handle_redirections(cmd->redirections);
+		handle_redirections(cmd);
 		envp = convert_env(shell->env);
 		path = search_path(cmd->argv[0], shell->env);
 		if (!path)
@@ -220,7 +257,7 @@ static int	exec_pipeline(t_pipeline *pipeline, t_shell *shell)
 	{
 		cmd = cmd_list->content;
 		if (cmd->subshell_ast)
-			return(exec_subshell(cmd, shell));
+			return (exec_subshell(cmd, shell));
 		if (is_builtin(cmd->argv[0]))
 		{
 			handle_redirections(cmd->redirections);
