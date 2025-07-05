@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/04 19:24:26 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/05 19:48:08 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,7 +260,8 @@ static int	exec_pipeline(t_pipeline *pipeline, t_shell *shell)
 			return (exec_subshell(cmd, shell));
 		if (is_builtin(cmd->argv[0]))
 		{
-			handle_redirections(cmd->redirections);
+			//handle_redirections(cmd->redirections);
+			handle_redirections(cmd);
 			shell->exit_status = exec_builtin(cmd->argv, shell->env);
 			return (shell->exit_status);
 		}
@@ -286,7 +287,8 @@ static int	exec_pipeline(t_pipeline *pipeline, t_shell *shell)
 				close(pipefd[0]);
 				close(pipefd[1]);
 			}
-			handle_redirections(cmd->redirections);
+			//handle_redirections(cmd->redirections);
+			handle_redirections(cmd);
 			if (cmd->subshell_ast)
 			{
 				exit(exec_subshell(cmd, shell));
