@@ -54,8 +54,6 @@ int	prompt(t_shell *shell)
 		return (0);
 	}
 	expand_and_execute(linearized_ast, shell);
-	free_env_list(shell->env);
-	free(shell);
 	free(cmd);
 	return (1);
 }
@@ -76,6 +74,7 @@ int	main(int ac, char **av, char **envp)
 		if (!prompt(&shell))
 			continue ;
 	}
+	free_env_list(shell.env);
 	return (0);
 }
 

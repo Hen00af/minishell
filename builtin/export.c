@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:30:31 by nando             #+#    #+#             */
-/*   Updated: 2025/06/21 16:50:19 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/05 20:48:36 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,18 @@ void	print_env_array(char **array)
 void	sort_and_print_environ(t_env *list_head)
 {
 	char	**env_array;
+	int		i;
 
+	i = 0;
 	env_array = env_to_array(list_head);
 	sort_array(env_array);
 	print_env_array(env_array);
+	while (env_array[i])
+	{
+		free(env_array[i]);
+		i++;
+	}
+	free(env_array);
 }
 
 int	is_valid_initial(char c)

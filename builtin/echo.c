@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 21:05:26 by nando             #+#    #+#             */
-/*   Updated: 2025/07/01 20:00:11 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/05 20:13:21 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	builtin_echo(char **args, t_env *list_head)
 	if (e->count == 1)
 	{
 		printf("\n");
+		free(e);
 		return (OK);
 	}
 	e->i = 1;
@@ -70,5 +71,6 @@ int	builtin_echo(char **args, t_env *list_head)
 		n_flag_or_print(e, args[e->i]);
 	if (e->option_flag == 0)
 		printf("\n");
+	free(e);
 	return (OK);
 }
