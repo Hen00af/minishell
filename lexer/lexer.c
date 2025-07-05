@@ -6,15 +6,11 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 20:23:45 by nando             #+#    #+#             */
-/*   Updated: 2025/07/04 20:40:52 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/05 01:47:45 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
-
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <string.h>
 
 void	handle_meta(t_lexer *ctx, char c)
 {
