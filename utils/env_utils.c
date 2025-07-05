@@ -6,11 +6,25 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 21:31:05 by nando             #+#    #+#             */
-/*   Updated: 2025/06/26 21:35:46 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/05 02:44:40 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
+
+void	free_env_list(t_env *env_list)
+{
+	t_env	*next;
+
+	while (env_list)
+	{
+		next = env_list->next;
+		free(env_list->key);
+		free(env_list->value);
+		free(env_list);
+		env_list = next;
+	}
+}
 
 void	free_inserted_memory(char **result, int j)
 {
