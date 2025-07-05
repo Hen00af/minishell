@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 15:02:10 by nando             #+#    #+#             */
-/*   Updated: 2025/06/30 18:19:22 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/05 20:40:05 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,26 +76,37 @@ int	builtin_cd(char **args, t_env *list_head)
 	if (stat(path, &dir_stat) == -1)
 	{
 		printf("minishell: cd: %s: No such file or directory\n", path);
+		free(path);
 		return (NG);
 	}
 	if (S_ISDIR(dir_stat.st_mode))
 	{
 		if (set_pwd(list_head, "OLDPWD", 6) == NG)
+		{
+			free(path);
 			return (NG);
+		}
 		if (chdir(path) == NG)
 		{
 			printf("minishell: cd: %s:chdir error\n", path);
+			free(path);
 			return (NG);
 		}
 		if (set_pwd(list_head, "PWD", 3) == NG)
+		{
+			free(path);
 			return (NG);
+		}
+		free(path);
 		return (OK);
 	}
 	else
 	{
 		printf("minishell: cd: %s: Not a directory\n", path);
+		free(path);
 		return (NG);
 	}
+	free(path);
 	return (OK);
 }
 

@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/07/04 19:18:47 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/05 20:33:15 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,16 +122,24 @@ void	process_heredoc(t_command *cmd, t_shell *shell)
 		if (redir->type == REDIR_HEREDOC)
 		{
 			printf("flag is %d\n", flag);
-			if (flag == 1)
+			if (flag)
+			{
 				unlink(tmpfile);
+				free(tmpfile);
+				free(cmd->heredoc_filename);
+			}
 			tmpfile = run_heredoc(redir->filename, shell);
 			if (!tmpfile)
 				return ;
 			free(redir->filename);
 			cmd->heredoc_filename = ft_strdup(tmpfile);
-			printf("heredoc_filename = %s\n", cmd->heredoc_filename);
 			flag = 1;
 		}
 		redir_list = redir_list->next;
+	}
+	if (flag)
+	{
+		unlink(tmpfile);
+		free(tmpfile);
 	}
 }

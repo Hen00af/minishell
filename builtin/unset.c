@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:28:29 by nando             #+#    #+#             */
-/*   Updated: 2025/06/29 16:36:09 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/05 20:56:12 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	delete_list_head(t_env **list_head)
 
 	tmp = *list_head;
 	*list_head = (*list_head)->next;
+	free(tmp->key);
+	free(tmp->value);
 	free(tmp);
 }
 
@@ -45,6 +47,8 @@ void	delete_env_node(t_env *prev, const char *target_key)
 		if (ft_strcmp(target_key, current->key) == 0)
 		{
 			prev->next = current->next;
+			free(current->key);
+			free(current->value);
 			free(current);
 			return ;
 		}
