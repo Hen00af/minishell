@@ -23,6 +23,8 @@
 		"ft_fprintf.h": "c",
 		"stdarg.h": "c",
 		"limits.h": "c",
-		"ctype.h": "c"
+		"ctype.h": "c",
+		"linearizer.h": "c",
+		"unistd.h": "c"
 	}
 }

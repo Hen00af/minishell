@@ -5,14 +5,16 @@ run() {
 		../expander/*.c \
 		../parser/*.c \
 		../lexer/*.c \
-		../linerlizer/*.c \
-		./*.c \
+		../linearizer/*.c \
+		./exec_fank.c \
+		./exec_util.c \
 		../builtin/*.c \
-		../utils/*.c \
 		../utils/fprintf/fprintf.a \
-		../libft/libft.a \
 		./exec_test/main.c \
 		../signal/*.c \
+		../heredoc/*.c \
+		../utils/*.c \
+		../libft/libft.a \
 		-lreadline
 
 	if [ $? -ne 0 ]; then
@@ -28,6 +30,7 @@ run() {
 	}
 
 	./exec_test/a.out "$input"
+	wait
 }
 
 run "$HOME"
