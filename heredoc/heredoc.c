@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/07/05 20:33:15 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/06 14:47:22 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ static char	*generate_tmpfile_path(void)
 
 int	is_include_quote(char *delimiter)
 {
-	int	need_expand;
 	int	len;
 
+	// int	need_expand;
 	len = ft_strlen(delimiter);
-	if (delimiter[0] == '\"' && delimiter[len - 1] == '\"'
-		|| delimiter[0] == '\'' && delimiter[len - 1] == '\'')
+	if ((delimiter[0] == '\"' && delimiter[len - 1] == '\"')
+		|| (delimiter[0] == '\'' && delimiter[len - 1] == '\''))
 		return (0);
 	return (1);
 }
