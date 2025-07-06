@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:40:45 by nando             #+#    #+#             */
-/*   Updated: 2025/07/04 20:19:49 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/06 20:07:04 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	search_env_value(t_var *var, t_shell *shell)
 	var->value = NULL;
 	if (strcmp(var->key, "?") == 0)
 	{
-		printf("shell->exit_status = %d\n", shell->exit_status);
 		var->value = ft_itoa(shell->exit_status);
 		return ;
 	}
@@ -98,6 +97,8 @@ char	*expand_variables(char *arg, t_shell *shell)
 	while (1)
 	{
 		i = search_variable(arg);
+		if (arg[1] == '\0')
+			return (arg);
 		if (i == NOTHING)
 			break ;
 		i++;

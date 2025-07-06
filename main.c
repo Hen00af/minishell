@@ -70,7 +70,10 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		if (g_ack_status == 1)
+			// {
+			// 	g_ack_status = 0;
 			shell.exit_status = 130;
+		// }
 		if (!prompt(&shell))
 			continue ;
 	}
