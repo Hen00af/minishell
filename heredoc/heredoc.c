@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/07/06 14:47:22 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/06 15:11:48 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,8 +138,5 @@ void	process_heredoc(t_command *cmd, t_shell *shell)
 		redir_list = redir_list->next;
 	}
 	if (flag)
-	{
-		unlink(tmpfile);
 		free(tmpfile);
-	}
 }
