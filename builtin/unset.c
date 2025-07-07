@@ -6,11 +6,20 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:28:29 by nando             #+#    #+#             */
-/*   Updated: 2025/07/05 20:56:12 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/07 21:16:11 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
+
+int	is_valid_initial(char c)
+{
+	if (c == '_')
+		return (OK);
+	else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		return (OK);
+	return (NG);
+}
 
 int	ft_strcmp(const char *string1, const char *string2)
 {
