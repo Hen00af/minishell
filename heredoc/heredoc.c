@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/07/06 15:11:48 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/07 20:41:29 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ void	process_heredoc(t_command *cmd, t_shell *shell)
 		redir = (t_redirection *)redir_list->content;
 		if (redir->type == REDIR_HEREDOC)
 		{
-			printf("flag is %d\n", flag);
 			if (flag)
 			{
 				unlink(tmpfile);

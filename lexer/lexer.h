@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 18:51:48 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/05 02:35:22 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/07 20:28:19 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,10 @@ void				quate_error(t_lexer *ctx);
 void				parent_error(t_lexer *ctx);
 int					ft_isspace(int c);
 int					is_valid_var_name(char *buf_word);
+void				adjust_assign_word(t_token *token_head);
 void				lexer_default(t_lexer *ctx, char c);
 void				lexer_word(t_lexer *ctx, char c);
+void				lexer_word2(t_lexer *ctx, char c);
 void				lexer_squate(t_lexer *ctx, char c);
 void				lexer_dquate(t_lexer *ctx, char c);
 void				handle_meta(t_lexer *ctx, char c);
@@ -109,6 +111,5 @@ int					init_lexer(t_lexer *ctx, char *input);
 void				run_lexer(t_lexer *ctx);
 t_token				*finish_lexing(t_lexer *ctx);
 t_token				*lexer(char *input);
-void				lexer_word2(t_lexer *ctx, char c);
 
 #endif
