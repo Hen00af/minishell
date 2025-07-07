@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:30:31 by nando             #+#    #+#             */
-/*   Updated: 2025/07/05 20:48:36 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/07 21:20:28 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,20 @@ void	sort_and_print_environ(t_env *list_head)
 	free(env_array);
 }
 
-int	is_valid_initial(char c)
+int	is_valid_key(char *key)
 {
-	if (c == '_')
-		return (0);
-	else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (0);
-	return (1);
+	int	i;
+
+	if (!key || !(ft_isalpha(key[0]) || key[0] == '_'))
+		return (NG);
+	i = 1;
+	while (key[i])
+	{
+		if (!ft_isalnum(key[i]) && key[i] != '_')
+			return (NG);
+		i++;
+	}
+	return (OK);
 }
 
 t_env	*create_env_node_only_key(char *key)
@@ -172,46 +179,39 @@ void	check_and_register_env(char *env, t_env *current)
 }
 int	builtin_export(char **args, t_env **list_head)
 {
-	int	i;
-	int	status;
+	int		i;
+	int		status;
+	char	*key;
+	char	*keybuf;
+	size_t	len;
 
 	i = 1;
-	status = 0;
+	status = OK;
 	if (args[i] == NULL)
+	{
 		sort_and_print_environ(*list_head);
+		return (status);
+	}
 	while (args[i])
 	{
-		if (is_valid_initial(args[i][0]) == 1)
+		key = ft_strchr(args[i], '=');
+		if (key)
+			len = (key - args[i]);
+		else
+			len = ft_strlen(args[i]);
+		keybuf = malloc(sizeof(char) * (len + 1));
+		ft_strlcpy(keybuf, args[i], len + 1);
+		if (is_valid_key(keybuf) == NG)
 		{
-			status = 1;
-			i++;
-			continue ;
+			ft_putstr_fd("export: `", 2);
+			ft_putstr_fd(args[i], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			status = NG;
 		}
-		check_and_register_env(args[i], *list_head);
+		else
+			check_and_register_env(args[i], *list_head);
+		free(keybuf);
 		i++;
 	}
-	if (status == 1)
-		return (NG);
-	return (OK);
+	return (status);
 }
-
-// int main(void)
-// {
-//     char *env[] = {
-//         "PATH=/usr/bin",
-//         "HOME=/home/user",
-//         "LANG=en_US.UTF-8",
-//         "SHELL=/bin/bash",
-//         NULL
-//     };
-
-//     printf("=== Before Sort ===\n");
-//     print_env_array(env);
-
-//     sort_array(env);
-
-//     printf("=== After Sort ===\n");
-//     print_env_array(env);
-
-//     return (0);
-// }

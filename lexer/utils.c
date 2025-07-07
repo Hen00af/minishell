@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:18:47 by nando             #+#    #+#             */
-/*   Updated: 2025/07/05 02:35:28 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/07 20:37:11 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,27 @@ int	is_valid_var_name(char *buf_word)
 		i++;
 	}
 	return (1);
+}
+
+void	adjust_assign_word(t_token *head)
+{
+	t_token	*current;
+	int		count;
+
+	count = 0;
+	current = head;
+	while (current && current->type != TOK_EOF)
+	{
+		count++;
+		current = current->next;
+	}
+	if (count == 1 && head->type == TOK_ASSIGN_WORD)
+		return ;
+	current = head;
+	while (current && current->type != TOK_EOF)
+	{
+		if (current->type == TOK_ASSIGN_WORD)
+			current->type = TOK_WORD;
+		current = current->next;
+	}
 }

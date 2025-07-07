@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 20:23:45 by nando             #+#    #+#             */
-/*   Updated: 2025/07/05 01:47:45 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/07 20:27:16 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ t_token	*finish_lexing(t_lexer *ctx)
 	token_head = ctx->head->next;
 	free_buf(&ctx->buf);
 	free(ctx->head);
+	adjust_assign_word(token_head);
 	return (token_head);
 }
 
