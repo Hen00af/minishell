@@ -45,13 +45,60 @@ t_ast	*parse_simple_command(t_token **cur)
 	return (cmd);
 }
 
+t_ast *create_empty_command(t_token *cur)
+{
+	t_ast *cmd;
+
+	cmd = ft_calloc(1,sizeof(t_ast));
+	if(!cmd)
+		return (NULL);
+	cmd -> type = NODE_COMMAND;
+	cmd -> argv = ft_calloc(1,sizeof(char *));
+	if(!cmd->argv)
+	{
+		free(cmd);
+		return(NULL);
+	}
+	cmd -> argv[0] = NULL;
+	return(cmd);
+	
+}
+t_ast *first_redirection(t_token **cur)
+{
+	t_ast *cmd;
+
+	if (!(*cur) || !(*cur)->next)
+		return NULL;
+	cmd = create_empty_command((*cur));
+	if (!cmd)
+		return NULL;
+	cmd = parse_redirection(cur, cmd);
+	if (!cmd)
+		return NULL;
+	if (*cur && (*cur)->type == TOK_WORD)
+	{
+		free(cmd->argv);
+		cmd->argv = ft_calloc(2, sizeof(char *));
+		if (!cmd->argv)
+		{
+			free(cmd);
+			return NULL;
+		}
+		cmd->argv[0] = ft_strdup((*cur)->text);
+		cmd->argv[1] = NULL;
+		*cur = (*cur)->next;
+	}
+
+	return cmd;
+}
+
 t_ast	*parse_command(t_token **cur)
 {
 	t_ast	*cmd;
 
 	cmd = parse_simple_command(cur);
-	if (!cmd)
-		return (NULL);
+	if(!cmd && is_redirection_token(*cur))
+		cmd = first_redirection(cur);
 	while (*cur && is_redirection_token(*cur))
 	{
 		cmd = parse_redirection(cur, cmd);
