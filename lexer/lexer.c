@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 20:23:45 by nando             #+#    #+#             */
-/*   Updated: 2025/07/07 20:27:16 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/08 14:14:40 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,12 @@ t_token	*finish_lexing(t_lexer *ctx)
 	t_token	*token_head;
 
 	if (ctx->buf.len > 0)
-		append_token(ctx, TOK_WORD, buf_flush(&ctx->buf));
+	{
+		if (ctx->assignment_flag == 0)
+			append_token(ctx, TOK_WORD, buf_flush(&ctx->buf));
+		else
+			append_token(ctx, TOK_ASSIGN_WORD, buf_flush(&ctx->buf));
+	}
 	append_token(ctx, TOK_EOF, NULL);
 	token_head = ctx->head->next;
 	free_buf(&ctx->buf);

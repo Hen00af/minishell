@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 15:28:33 by nando             #+#    #+#             */
-/*   Updated: 2025/07/04 20:11:53 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/09 14:02:17 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	builtin_exit(char **args)
 	{
 		fprintf(stderr, "minishell: exit: %s: numeric argument required\n",
 			args[1]);
-		exit(255);
+		exit(2);
 	}
 	status = ft_atoi(args[1]) % 256;
 	if (status < 0)
