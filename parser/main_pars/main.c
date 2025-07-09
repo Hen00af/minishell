@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 20:34:25 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/09 14:44:15 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:38:14 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,49 +16,35 @@
 
 // parser main
 
-void	print_ast(t_ast *node, int indent)
+void	print_ast(t_ast *ast, int depth)
 {
-	if (!node)
-		return ;
-	for (int i = 0; i < indent; i++)
+	if (!ast)
+		return;
+	for (int i = 0; i < depth; i++)
 		printf("  ");
-	switch (node->type)
+	switch (ast->type)
 	{
-	case NODE_COMMAND:
-		ft_printf("COMMAND:");
-		for (int i = 0; node->argv && node->argv[i]; i++)
-			ft_printf(" %s", node->argv[i]);
-		ft_printf("\n");
-		break ;
-	case NODE_PIPE:
-		ft_printf("PIPE\n");
-		break ;
-	case NODE_AND:
-		ft_printf("AND\n");
-		break ;
-	case NODE_OR:
-		ft_printf("OR\n");
-		break ;
-	case NODE_SUBSHELL:
-		ft_printf("SUBSHELL\n");
-		break ;
-	case NODE_REDIR_IN:
-		ft_printf("REDIR_IN → %s\n", node->filename);
-		break ;
-	case NODE_REDIR_OUT:
-		ft_printf("REDIR_OUT → %s\n", node->filename);
-		break ;
-	case NODE_REDIR_APPEND:
-		ft_printf("REDIR_APPEND → %s\n", node->filename);
-		break ;
-	case NODE_HEREDOC:
-		ft_printf("HEREDOC → %s\n", node->filename);
-		break ;
+		case NODE_COMMAND:
+			printf("COMMAND:\n");
+			for (int i = 0; ast->argv && ast->argv[i]; i++)
+			{
+				for (int j = 0; j <= depth; j++)
+					printf("  ");
+				printf("argv[%d] = %s\n", i, ast->argv[i]);
+			}
+			break;
+		case NODE_HEREDOC:
+			printf("HEREDOC: %s\n", ast->filename);
+			print_ast(ast->left, depth + 1);
+			break;
+		case NODE_REDIR_OUT:
+			printf("REDIR_OUT: %s\n", ast->filename);
+			print_ast(ast->left, depth + 1);
+			break;
+		// 他のNODE_*も必要に応じて追加
+		default:
+			printf("UNKNOWN NODE TYPE\n");
 	}
-	if (node->left)
-		print_ast(node->left, indent + 1);
-	if (node->right)
-		print_ast(node->right, indent + 1);
 }
 
 int	main(int argc, char **argv)

@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 20:21:45 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/09 15:03:21 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:15:52 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ t_ast	*create_empty_command(t_token *cur)
 {
 	t_ast	*cmd;
 
+	(void)cur;
 	cmd = ft_calloc(1, sizeof(t_ast));
 	if (!cmd)
 		return (NULL);
@@ -62,65 +63,48 @@ t_ast	*create_empty_command(t_token *cur)
 	cmd->argv[0] = NULL;
 	return (cmd);
 }
-t_ast	*first_redirection(t_token **cur)
-{
-	t_ast	*cmd;
-
-	if (!(*cur) || !(*cur)->next)
-		return (NULL);
-	cmd = create_empty_command((*cur));
-	if (!cmd)
-		return (NULL);
-	cmd = parse_redirection(cur, cmd);
-	if (!cmd)
-		return (NULL);
-	printf("\nenter frider\n");
-	if (*cur && (*cur)->type == TOK_WORD)
-	{
-		free(cmd->argv);
-		cmd->argv = ft_calloc(2, sizeof(char *));
-		if (!cmd->argv)
-		{
-			free(cmd);
-			return (NULL);
-		}
-		cmd->argv[0] = ft_strdup((*cur)->text);
-		cmd->argv[1] = NULL;
-		*cur = (*cur)->next;
-	}
-	return (cmd);
-}
 
 int	append_argv(t_ast *cmd, char *word)
 {
 	int		argc;
 	char	**new_argv;
+	int		i;
 
 	argc = 0;
-	printf("enter funk");
+	i = 0;
 	while (cmd->argv && cmd->argv[argc])
 		argc++;
 	new_argv = ft_calloc(argc + 2, sizeof(char *));
 	if (!new_argv)
 		return (1);
-	for (int i = 0; i < argc; i++)
+	while (i < argc)
+	{
 		new_argv[i] = ft_strdup(cmd->argv[i]);
+		i++;
+	}
+	i = 0;
 	new_argv[argc] = ft_strdup(word);
 	new_argv[argc + 1] = NULL;
-	for (int i = 0; i < argc; i++)
+	while (i < argc)
+	{
 		free(cmd->argv[i]);
+		i++;
+	}
 	free(cmd->argv);
 	cmd->argv = new_argv;
+	cmd->type = NODE_COMMAND;
 	return (0);
 }
 
 t_ast	*parse_command(t_token **cur)
 {
 	t_ast	*cmd;
+	t_ast	*cmd_leaf;
 
 	cmd = create_empty_command(*cur);
 	if (!cmd)
 		return (NULL);
+	cmd_leaf = cmd;
 	while (*cur && is_redirection_token(*cur))
 	{
 		cmd = parse_redirection(cur, cmd);
@@ -129,7 +113,7 @@ t_ast	*parse_command(t_token **cur)
 	}
 	while (*cur && (*cur)->type == TOK_WORD)
 	{
-		if (append_argv(cmd, (*cur)->text))
+		if (append_argv(cmd_leaf, (*cur)->text))
 			return (NULL);
 		*cur = (*cur)->next;
 	}
