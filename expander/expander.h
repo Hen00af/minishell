@@ -6,13 +6,14 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 20:20:02 by nando             #+#    #+#             */
-/*   Updated: 2025/07/07 20:53:20 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/09 11:33:32 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXPANDER_H
 # define EXPANDER_H
 
+# include "../lexer/lexer.h"
 # include "../minishell.h"
 # include <dirent.h>
 # include <stdbool.h>
@@ -29,6 +30,13 @@ typedef struct s_andor		t_andor;
 typedef struct s_env		t_env;
 typedef struct s_command	t_command;
 typedef struct s_shell		t_shell;
+
+typedef enum e_qstate
+{
+	STA_NONE_Q,
+	STA_DOUBLE_Q,
+	STA_SINGLE_Q
+}							t_qstate;
 
 typedef struct s_file_node
 {
@@ -53,6 +61,9 @@ typedef struct s_expand
 	int						count_sw;
 	int						expand_point;
 	int						wild_flag;
+	t_buf					buf;
+	t_qstate				state;
+	char					*output;
 }							t_expand;
 
 t_var						*init_var(void);
@@ -67,13 +78,12 @@ bool						append_file_node(t_file_node **head,
 								t_file_node **tail, char *name);
 void						swap_name(t_file_node *current, t_file_node *next);
 char						*expand_wild_card(char *arg, t_expand *ctx);
-int							search_variable(char *arg);
+int							search_variable(char *arg, int start);
 void						create_env_key(char *arg, t_var *var, int i);
 void						search_env_value(t_var *var, t_shell *shell);
 char						*make_new_arg(char *arg, t_var *var);
 char						*expand_variables(char *arg, t_shell *shell);
 char						*expand_tilda(char *arg, t_env *env);
-
 char						*remove_quote(char *arg);
 char						*expand_all_type(char *arg, t_shell *shell,
 								t_expand *ctx);
@@ -83,7 +93,7 @@ void						expand_andor_arguments(t_andor *ast,
 void						expand_command_args(t_command *cmd, t_shell *shell,
 								t_list *cmd_list);
 char						*expand_string(char *arg, t_shell *shell,
-								t_expand *ctx, t_list *node);
+								t_expand *ctx);
 bool						is_match(const char *pattern, const char *str,
 								int i, int j);
 

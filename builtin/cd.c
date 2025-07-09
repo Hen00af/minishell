@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 15:02:10 by nando             #+#    #+#             */
-/*   Updated: 2025/07/05 20:40:05 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/09 10:48:27 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,21 +61,31 @@ int	builtin_cd(char **args, t_env *list_head)
 {
 	struct stat	dir_stat;
 	char		*path;
+	char		*home;
+	char		*cwd_old;
+	char		*cwd_new;
 
+	if (args[1] && args[2])
+	{
+		fprintf(stderr, " too many arguments\n");
+		return (1);
+	}
 	if (!args[1])
 	{
-		path = getenv("HOME");
-		if (!path)
+		home = getenv("HOME");
+		if (!home)
 		{
-			printf("minishell: cd: HOME not set\n");
+			fprintf(stderr, "minishell: cd: HOME not set\n");
 			return (NG);
 		}
 	}
 	else
 		path = ft_strdup(args[1]);
+	if (!path)
+		return (NG);
 	if (stat(path, &dir_stat) == -1)
 	{
-		printf("minishell: cd: %s: No such file or directory\n", path);
+		fprintf(stderr, " No such file or directory\n");
 		free(path);
 		return (NG);
 	}
@@ -88,7 +98,7 @@ int	builtin_cd(char **args, t_env *list_head)
 		}
 		if (chdir(path) == NG)
 		{
-			printf("minishell: cd: %s:chdir error\n", path);
+			fprintf(stderr, " chdir error\n");
 			free(path);
 			return (NG);
 		}
@@ -102,51 +112,8 @@ int	builtin_cd(char **args, t_env *list_head)
 	}
 	else
 	{
-		printf("minishell: cd: %s: Not a directory\n", path);
+		fprintf(stderr, " Not a directory\n");
 		free(path);
 		return (NG);
 	}
-	free(path);
-	return (OK);
 }
-
-// int	main(int argc, char **argv, char **envp)
-// {
-// 	t_env	*env_head;
-// 	char	*args1[] = {"cd", "/tmp", NULL};
-// 	char	*args2[] = {"cd", "/nonexistent", NULL};
-// 	char	*args3[] = {"cd", "/etc/hosts", NULL};
-// 	char	*args4[] = {"cd", "/home/nando", NULL};
-
-// 	(void)argc;
-// 	(void)argv;
-// 	// 1️⃣ 環境変数リストを初期化
-// 	env_head = init_env(envp);
-// 	if (!env_head)
-// 	{
-// 		fprintf(stderr, "Failed to initialize environment list\n");
-// 		return (1);
-// 	}
-// 	// 2️⃣ 実行前の環境変数表示
-// 	printf("========================== Before cd ====================\n");
-// 	print_env_list(env_head);
-// 	// 3️⃣ テスト: cd /tmp
-// 	printf("\n--------------------- Test 1: cd /tmp -------------------\n");
-// 	builtin_cd(args1, env_head);
-// 	print_env_list(env_head);
-// 	// 4️⃣ テスト: cd /nonexistent
-// 	printf("\n--------------------- Test 2: cd/nonexistent -------------------\n");
-// 	builtin_cd(args2, env_head);
-// 	print_env_list(env_head);
-// 	// 5️⃣ テスト: cd /etc/hosts (ファイル)
-// 	printf("\n--------------------- Test 3: cd/etc/hosts ---------------------\n");
-// 	builtin_cd(args3, env_head);
-// 	print_env_list(env_head);
-// 	// ⑥ テスト: cd /bin/ls
-// 	printf("\n--------------------- Test 4: cd
-// home / nando-- -----------------\n ");
-// 	builtin_cd(args4, env_head);
-// 	print_env_list(env_head);
-// 	// 6️⃣ メモリ解放（省略、必要なら実装）
-// 	return (0);
-// }
