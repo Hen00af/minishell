@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 20:21:45 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/29 16:37:10 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:03:21 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	is_redirection_token(t_token *tok)
 	if (!tok)
 		return (0);
 	return (tok->type == TOK_REDIR_IN || tok->type == TOK_REDIR_OUT
-		|| tok->type == TOK_REDIR_APPEND || tok->type == TOK_HEREDOC);
+		|| tok->type == TOK_REDIR_APP || tok->type == TOK_HEREDOC);
 }
 
 t_ast	*parse_simple_command(t_token **cur)
@@ -45,13 +45,94 @@ t_ast	*parse_simple_command(t_token **cur)
 	return (cmd);
 }
 
+t_ast	*create_empty_command(t_token *cur)
+{
+	t_ast	*cmd;
+
+	cmd = ft_calloc(1, sizeof(t_ast));
+	if (!cmd)
+		return (NULL);
+	cmd->type = NODE_COMMAND;
+	cmd->argv = ft_calloc(1, sizeof(char *));
+	if (!cmd->argv)
+	{
+		free(cmd);
+		return (NULL);
+	}
+	cmd->argv[0] = NULL;
+	return (cmd);
+}
+t_ast	*first_redirection(t_token **cur)
+{
+	t_ast	*cmd;
+
+	if (!(*cur) || !(*cur)->next)
+		return (NULL);
+	cmd = create_empty_command((*cur));
+	if (!cmd)
+		return (NULL);
+	cmd = parse_redirection(cur, cmd);
+	if (!cmd)
+		return (NULL);
+	printf("\nenter frider\n");
+	if (*cur && (*cur)->type == TOK_WORD)
+	{
+		free(cmd->argv);
+		cmd->argv = ft_calloc(2, sizeof(char *));
+		if (!cmd->argv)
+		{
+			free(cmd);
+			return (NULL);
+		}
+		cmd->argv[0] = ft_strdup((*cur)->text);
+		cmd->argv[1] = NULL;
+		*cur = (*cur)->next;
+	}
+	return (cmd);
+}
+
+int	append_argv(t_ast *cmd, char *word)
+{
+	int		argc;
+	char	**new_argv;
+
+	argc = 0;
+	printf("enter funk");
+	while (cmd->argv && cmd->argv[argc])
+		argc++;
+	new_argv = ft_calloc(argc + 2, sizeof(char *));
+	if (!new_argv)
+		return (1);
+	for (int i = 0; i < argc; i++)
+		new_argv[i] = ft_strdup(cmd->argv[i]);
+	new_argv[argc] = ft_strdup(word);
+	new_argv[argc + 1] = NULL;
+	for (int i = 0; i < argc; i++)
+		free(cmd->argv[i]);
+	free(cmd->argv);
+	cmd->argv = new_argv;
+	return (0);
+}
+
 t_ast	*parse_command(t_token **cur)
 {
 	t_ast	*cmd;
 
-	cmd = parse_simple_command(cur);
+	cmd = create_empty_command(*cur);
 	if (!cmd)
 		return (NULL);
+	while (*cur && is_redirection_token(*cur))
+	{
+		cmd = parse_redirection(cur, cmd);
+		if (!cmd)
+			return (NULL);
+	}
+	while (*cur && (*cur)->type == TOK_WORD)
+	{
+		if (append_argv(cmd, (*cur)->text))
+			return (NULL);
+		*cur = (*cur)->next;
+	}
 	while (*cur && is_redirection_token(*cur))
 	{
 		cmd = parse_redirection(cur, cmd);
