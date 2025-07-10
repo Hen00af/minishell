@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/07/07 20:41:29 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/10 17:09:21 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	is_include_quote(char *delimiter)
 {
 	int	len;
 
-	// int	need_expand;
 	len = ft_strlen(delimiter);
 	if ((delimiter[0] == '\"' && delimiter[len - 1] == '\"')
 		|| (delimiter[0] == '\'' && delimiter[len - 1] == '\''))
@@ -130,7 +129,7 @@ void	process_heredoc(t_command *cmd, t_shell *shell)
 			tmpfile = run_heredoc(redir->filename, shell);
 			if (!tmpfile)
 				return ;
-			free(redir->filename);
+			//free(redir->filename);
 			cmd->heredoc_filename = ft_strdup(tmpfile);
 			flag = 1;
 		}
