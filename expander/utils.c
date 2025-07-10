@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:19:31 by nando             #+#    #+#             */
-/*   Updated: 2025/07/01 19:56:00 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/08 15:46:46 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,6 @@ t_var	*init_var(void)
 	var->key = NULL;
 	var->value = NULL;
 	return (var);
-}
-
-char	*expand_all_type(char *arg, t_shell *shell, t_expand *ctx)
-{
-	char	*tmp1;
-	char	*tmp2;
-	char	*result;
-
-	tmp1 = expand_variables(arg, shell);
-	tmp2 = expand_tilda(tmp1, shell->env);
-	free(tmp1);
-	result = expand_wild_card(tmp2, ctx);
-	free(tmp2);
-	return (result);
 }
 
 int	count_args(char **args)

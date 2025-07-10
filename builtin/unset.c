@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:28:29 by nando             #+#    #+#             */
-/*   Updated: 2025/07/07 21:16:11 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/09 14:09:02 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,18 @@ int	builtin_unset(char **args, t_env **list_head)
 	int		status;
 
 	i = 1;
-	status = 0;
+	status = OK;
 	if (!*list_head)
-		return (0);
+		return (OK);
 	while (args[i])
 	{
-		if (is_valid_initial(args[i][0]) == 1)
+		if (is_valid_initial(args[i][0]) == NG)
 		{
-			status = 1;
+			status = NG;
 			i++;
 			continue ;
 		}
-		if (ft_strcmp(args[i], (*list_head)->key) == 0)
+		if (ft_strcmp(args[i], (*list_head)->key) == OK)
 		{
 			delete_list_head(list_head);
 			i++;
@@ -95,7 +95,5 @@ int	builtin_unset(char **args, t_env **list_head)
 		delete_env_node(prev, args[i]);
 		i++;
 	}
-	if (status == 1)
-		return (NG);
-	return (OK);
+	return (status);
 }

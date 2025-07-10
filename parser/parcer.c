@@ -45,6 +45,7 @@ t_ast	*parse_simple_command(t_token **cur)
 	return (cmd);
 }
 
+
 t_ast	*create_empty_command(t_token *cur)
 {
 	t_ast	*cmd;
@@ -100,6 +101,7 @@ t_ast	*parse_command(t_token **cur)
 {
 	t_ast	*cmd;
 	t_ast	*cmd_leaf;
+
 
 	cmd = create_empty_command(*cur);
 	if (!cmd)

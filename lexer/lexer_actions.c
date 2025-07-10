@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:22:25 by nando             #+#    #+#             */
-/*   Updated: 2025/06/26 15:23:14 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/08 14:14:44 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,14 @@ void	lexer_default(t_lexer *ctx, char c)
 		append_tok_and_set_state(ctx, STA_DEFAULT);
 	else if (c == '\'')
 	{
-		append_tok_and_set_state(ctx, STA_IN_SQUOTE);
+		// append_tok_and_set_state(ctx, STA_IN_SQUOTE);
+		ctx->state = STA_IN_SQUOTE;
 		buf_add(&ctx->buf, c);
 	}
 	else if (c == '\"')
 	{
-		append_tok_and_set_state(ctx, STA_IN_DQUOTE);
+		// append_tok_and_set_state(ctx, STA_IN_DQUOTE);
+		ctx->state = STA_IN_DQUOTE;
 		buf_add(&ctx->buf, c);
 	}
 	else if (c == '<' || c == '>' || c == '&' || c == '|' || c == '('
@@ -50,7 +52,7 @@ void	lexer_word(t_lexer *ctx, char c)
 		handle_meta(ctx, c);
 		return ;
 	}
-	else if (ft_isspace(c))
+	else if (ft_isspace(c) || c == '\0')
 	{
 		if (ctx->assignment_flag == 1)
 		{
@@ -68,12 +70,14 @@ void	lexer_word2(t_lexer *ctx, char c)
 {
 	if (c == '\'')
 	{
-		append_tok_and_set_state(ctx, STA_IN_SQUOTE);
+		// append_tok_and_set_state(ctx, STA_IN_SQUOTE);
+		ctx->state = STA_IN_SQUOTE;
 		buf_add(&ctx->buf, c);
 	}
 	else if (c == '\"')
 	{
-		append_tok_and_set_state(ctx, STA_IN_DQUOTE);
+		// append_tok_and_set_state(ctx, STA_IN_DQUOTE);
+		ctx->state = STA_IN_DQUOTE;
 		buf_add(&ctx->buf, c);
 	}
 	else if (c == ')')
@@ -88,7 +92,13 @@ void	lexer_squate(t_lexer *ctx, char c)
 	if (c == '\'')
 	{
 		buf_add(&ctx->buf, c);
-		append_tok_and_set_state(ctx, STA_DEFAULT);
+		//// append_tok_and_set_state(ctx, STA_DEFAULT);
+		// if (ctx->assignment_flag)
+		//	append_token(ctx, TOK_ASSIGN_WORD, buf_flush(&ctx->buf));
+		// else
+		//	append_token(ctx, TOK_WORD, buf_flush(&ctx->buf));
+		ctx->state = STA_DEFAULT;
+		ctx->assignment_flag = 0;
 	}
 	else
 		buf_add(&ctx->buf, c);
@@ -100,7 +110,13 @@ void	lexer_dquate(t_lexer *ctx, char c)
 	if (c == '\"')
 	{
 		buf_add(&ctx->buf, c);
-		append_tok_and_set_state(ctx, STA_DEFAULT);
+		// append_tok_and_set_state(ctx, STA_DEFAULT);
+		// if (ctx->assignment_flag)
+		//	append_token(ctx, TOK_ASSIGN_WORD, buf_flush(&ctx->buf));
+		// else
+		//	append_token(ctx, TOK_WORD, buf_flush(&ctx->buf));
+		ctx->state = STA_DEFAULT;
+		ctx->assignment_flag = 0;
 	}
 	else
 		buf_add(&ctx->buf, c);

@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 17:12:10 by nando             #+#    #+#             */
-/*   Updated: 2025/07/04 18:52:48 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/09 09:44:56 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,32 @@
 
 char	*remove_quote(char *arg)
 {
-	size_t	strlen;
-	char	*result;
+	size_t	len;
+	char	*res;
 
-	strlen = ft_strlen(arg);
-	if (strlen < 2)
-		return (ft_strdup(arg));
-	if ((arg[0] == '\'' && arg[strlen - 1] == '\'') || (arg[0] == '\"'
-			&& arg[strlen - 1] == '\"'))
+	len = ft_strlen(arg);
+	if (len < 2)
 	{
-		result = malloc(sizeof(char) * (strlen - 1));
-		if (!result)
-			return (NULL);
-		ft_strlcpy(result, arg + 1, strlen - 1);
-		return (result);
+		res = ft_strdup(arg);
+		free(arg);
+		return (res);
 	}
-	return (ft_strdup(arg));
+	if ((arg[0] == '\'' && arg[len - 1] == '\'') || (arg[0] == '\"' && arg[len
+			- 1] == '\"'))
+	{
+		res = malloc(len - 1);
+		if (!res)
+		{
+			free(arg);
+			return (NULL);
+		}
+		ft_strlcpy(res, arg + 1, len - 1);
+		free(arg);
+		return (res);
+	}
+	res = ft_strdup(arg);
+	free(arg);
+	return (res);
 }
 
 void	create_new_args(t_expand *ctx, t_command *cmd, int i)

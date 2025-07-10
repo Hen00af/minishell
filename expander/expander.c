@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 14:30:21 by nando             #+#    #+#             */
-/*   Updated: 2025/07/07 20:53:14 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/09 11:07:38 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,93 @@
 
 void	expand_andor_arguments(t_andor *ast, t_shell *shell);
 
-char	*expand_string(char *arg, t_shell *shell, t_expand *ctx, t_list *node)
+char	*expand_all_type(char *arg, t_shell *shell, t_expand *ctx)
 {
-	char			*cleaned_quote;
-	char			*after;
-	t_redirection	*redir;
+	char	*tmp1;
+	char	*tmp2;
+	char	*result;
 
-	redir = (t_redirection *)node->content;
-	if (arg[0] == '\'')
+	tmp1 = expand_variables(arg, shell);
+	tmp2 = expand_tilda(tmp1, shell->env);
+	free(tmp1);
+	result = expand_wild_card(tmp2, ctx);
+	free(tmp2);
+	return (result);
+}
+
+void	run_expand(char c, t_shell *shell, t_expand *ctx)
+{
+	char	*expanded;
+	char	*old_out;
+	char	*cleaned;
+
+	if (ctx->state == STA_NONE_Q && c == '\"')
 	{
-		cleaned_quote = remove_quote(arg);
-		return (cleaned_quote);
+		expanded = expand_all_type(buf_flush(&ctx->buf), shell, ctx);
+		old_out = ctx->output;
+		ctx->output = ft_strjoin(old_out, expanded);
+		free(old_out);
+		free(expanded);
+		ctx->state = STA_DOUBLE_Q;
 	}
-	else if (arg[0] == '\"')
+	else if (ctx->state == STA_NONE_Q && c == '\'')
 	{
-		cleaned_quote = remove_quote(arg);
-		cleaned_quote = expand_variables(cleaned_quote, shell);
-		return (cleaned_quote);
+		expanded = expand_all_type(buf_flush(&ctx->buf), shell, ctx);
+		old_out = ctx->output;
+		ctx->output = ft_strjoin(old_out, expanded);
+		free(old_out);
+		free(expanded);
+		ctx->state = STA_SINGLE_Q;
 	}
-	after = expand_all_type(arg, shell, ctx);
-	return (after);
+	else if (ctx->state == STA_DOUBLE_Q && c == '\"')
+	{
+		expanded = expand_variables(remove_quote(buf_flush(&ctx->buf)), shell);
+		old_out = ctx->output;
+		ctx->output = ft_strjoin(old_out, expanded);
+		free(old_out);
+		free(expanded);
+		ctx->state = STA_NONE_Q;
+	}
+	else if (ctx->state == STA_SINGLE_Q && c == '\'')
+	{
+		cleaned = remove_quote(buf_flush(&ctx->buf));
+		old_out = ctx->output;
+		ctx->output = ft_strjoin(old_out, cleaned);
+		free(old_out);
+		free(cleaned);
+		ctx->state = STA_NONE_Q;
+	}
+	else
+		buf_add(&ctx->buf, c);
+}
+
+char	*expand_string(char *arg, t_shell *shell, t_expand *ctx)
+{
+	int		i;
+	char	*tail;
+	char	*expanded_tail;
+	char	*old_out;
+
+	buf_init(&ctx->buf);
+	ctx->output = ft_strdup("");
+	i = 0;
+	while (arg[i])
+		run_expand(arg[i++], shell, ctx);
+	tail = buf_flush(&ctx->buf);
+	if (ctx->state == STA_NONE_Q)
+		expanded_tail = expand_all_type(tail, shell, ctx);
+	else if (ctx->state == STA_DOUBLE_Q)
+	{
+		tail = remove_quote(tail);
+		expanded_tail = expand_variables(tail, shell);
+	}
+	else
+		expanded_tail = remove_quote(tail);
+	old_out = ctx->output;
+	ctx->output = ft_strjoin(old_out, expanded_tail);
+	free(old_out);
+	free(expanded_tail);
+	return (ctx->output);
 }
 
 void	expand_command_args(t_command *cmd, t_shell *shell, t_list *cmd_list)
@@ -41,13 +108,15 @@ void	expand_command_args(t_command *cmd, t_shell *shell, t_list *cmd_list)
 	t_expand	ctx;
 	int			i;
 
+	ctx.output = NULL;
+	ctx.state = STA_NONE_Q;
 	i = 1;
 	if (cmd && cmd->argv[i])
 	{
 		while (cmd->argv && cmd->argv[i])
 		{
 			ctx.wild_flag = 0;
-			ctx.expanded = expand_string(cmd->argv[i], shell, &ctx, cmd_list);
+			ctx.expanded = expand_string(cmd->argv[i], shell, &ctx);
 			if (ctx.wild_flag)
 			{
 				generate_wildcard_matches(&ctx, cmd, &i);

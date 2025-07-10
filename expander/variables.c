@@ -6,22 +6,19 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:40:45 by nando             #+#    #+#             */
-/*   Updated: 2025/07/06 20:07:04 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/09 11:34:12 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
 
-int	search_variable(char *arg)
+int	search_variable(char *arg, int start)
 {
-	int	i;
-
-	i = 0;
-	while (arg[i] && arg[i] != '$')
-		i++;
-	if (!arg[i])
+	while (arg[start] && arg[start] != '$')
+		start++;
+	if (!arg[start])
 		return (NOTHING);
-	return (i);
+	return (start);
 }
 
 void	create_env_key(char *arg, t_var *var, int i)
@@ -88,19 +85,26 @@ char	*make_new_arg(char *arg, t_var *var)
 char	*expand_variables(char *arg, t_shell *shell)
 {
 	int		i;
+	int		start;
 	t_var	*var;
 	char	*new_arg;
 
 	var = init_var();
+	start = 0;
 	if (!var)
 		return (NULL);
 	while (1)
 	{
-		i = search_variable(arg);
-		if (arg[1] == '\0')
+		i = search_variable(arg, start);
+		if (arg[i + 1] == '\0')
 			return (arg);
 		if (i == NOTHING)
 			break ;
+		if ((!ft_isalpha(arg[i + 1]) && arg[i + 1] != '_' && arg[i + 1] != '?'))
+		{
+			start = i + 1;
+			continue ;
+		}
 		i++;
 		create_env_key(arg, var, i);
 		search_env_value(var, shell);

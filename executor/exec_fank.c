@@ -83,6 +83,7 @@ static void	handle_redirections(t_command *cmd)
 
 int	is_builtin(const char *cmd)
 {
+
 	if (!cmd)
 		return (0);
 	return (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd") || !ft_strcmp(cmd,
