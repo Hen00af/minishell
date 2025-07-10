@@ -7,6 +7,7 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
 /*   Updated: 2025/07/11 01:03:34 by nando            ###   ########.fr       */
+=======
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +43,7 @@ int	open_heredoc_file(char **path)
 {
 	char	*tmp_path;
 	int		fd;
+
 
 	tmp_path = generate_tmpfile_path();
 	if (!tmp_path)

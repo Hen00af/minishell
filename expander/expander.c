@@ -7,6 +7,7 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 14:30:21 by nando             #+#    #+#             */
 /*   Updated: 2025/07/10 23:28:01 by nando            ###   ########.fr       */
+
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +72,7 @@ void	expand_command_args(t_command *cmd, t_shell *shell, t_list *cmd_list)
 		{
 			ctx.wild_flag = 0;
 			ctx.expanded = expand_string(cmd->argv[i], shell, &ctx);
+			free_buf(&ctx.buf);
 			if (ctx.wild_flag)
 			{
 				generate_wildcard_matches(&ctx, cmd, &i);
