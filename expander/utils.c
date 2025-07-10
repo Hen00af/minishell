@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 17:19:31 by nando             #+#    #+#             */
-/*   Updated: 2025/07/08 15:46:46 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/10 23:42:57 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,10 @@ void	free_file_list(t_file_node *head)
 		free(head);
 		head = tmp;
 	}
+}
+
+void	get_value(char *arg, t_var *var, t_shell *shell, int i)
+{
+	create_env_key(arg, var, i);
+	search_env_value(var, shell);
 }

@@ -6,68 +6,36 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:28:29 by nando             #+#    #+#             */
-/*   Updated: 2025/07/09 14:09:02 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/10 19:39:29 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-int	is_valid_initial(char c)
+int	process_unset_arg(char *arg, t_env **env, int *status)
 {
-	if (c == '_')
+	t_env	*prev;
+
+	if (!*env)
 		return (OK);
-	else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+	if (is_valid_initial(arg[0]) == NG)
+		return (NG);
+	if (ft_strcmp(arg, (*env)->key) == OK)
+	{
+		delete_list_head(env);
 		return (OK);
-	return (NG);
-}
-
-int	ft_strcmp(const char *string1, const char *string2)
-{
-	size_t	s;
-
-	s = 0;
-	while (string1[s] && string2[s])
-	{
-		if ((int)((string1[s] != string2[s])))
-			return ((unsigned char)string1[s] - (unsigned char)string2[s]);
-		s++;
 	}
-	return ((unsigned char)string1[s] - (unsigned char)string2[s]);
-}
-
-void	delete_list_head(t_env **list_head)
-{
-	t_env	*tmp;
-
-	tmp = *list_head;
-	*list_head = (*list_head)->next;
-	free(tmp->key);
-	free(tmp->value);
-	free(tmp);
-}
-
-void	delete_env_node(t_env *prev, const char *target_key)
-{
-	t_env	*current;
-
-	current = prev->next;
-	while (current)
+	prev = *env;
+	while (prev && prev->next)
 	{
-		if (ft_strcmp(target_key, current->key) == 0)
-		{
-			prev->next = current->next;
-			free(current->key);
-			free(current->value);
-			free(current);
-			return ;
-		}
-		prev = current;
-		current = current->next;
+		if (delete_env_node(prev, arg))
+			return (OK);
+		prev = prev->next;
 	}
-	return ;
+	return (OK);
 }
 
-int	builtin_unset(char **args, t_env **list_head)
+int	builtin_unset(char **args, t_env **env)
 {
 	int		i;
 	t_env	*prev;
@@ -75,24 +43,12 @@ int	builtin_unset(char **args, t_env **list_head)
 
 	i = 1;
 	status = OK;
-	if (!*list_head)
-		return (OK);
+	if (!*env)
+		return (status);
 	while (args[i])
 	{
-		if (is_valid_initial(args[i][0]) == NG)
-		{
+		if (process_unset_arg(args[i], env, &status) == NG)
 			status = NG;
-			i++;
-			continue ;
-		}
-		if (ft_strcmp(args[i], (*list_head)->key) == OK)
-		{
-			delete_list_head(list_head);
-			i++;
-			continue ;
-		}
-		prev = *list_head;
-		delete_env_node(prev, args[i]);
 		i++;
 	}
 	return (status);

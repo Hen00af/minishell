@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:40:32 by nando             #+#    #+#             */
-/*   Updated: 2025/07/05 02:15:54 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/10 23:50:36 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,20 @@
 
 t_file_node	*get_files_in_cwd(void)
 {
-	DIR				*dir;
-	struct dirent	*entry;
-	t_file_node		*head;
-	t_file_node		*tail;
+	DIR			*dir;
+	t_file_node	*head;
+	t_file_node	*tail;
 
 	head = NULL;
 	tail = NULL;
 	dir = opendir(".");
 	if (!dir)
 		return (NULL);
-	entry = readdir(dir);
-	while (entry)
+	if (!process_entries(dir, &head, &tail))
 	{
-		if (entry->d_name[0] == '.')
-		{
-			entry = readdir(dir);
-			continue ;
-		}
-		if (!append_file_node(&head, &tail, entry->d_name))
-		{
-			free_file_list(head);
-			closedir(dir);
-			return (NULL);
-		}
-		entry = readdir(dir);
+		free_file_list(head);
+		closedir(dir);
+		return (NULL);
 	}
 	closedir(dir);
 	return (head);

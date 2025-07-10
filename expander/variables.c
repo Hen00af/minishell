@@ -6,20 +6,11 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:40:45 by nando             #+#    #+#             */
-/*   Updated: 2025/07/09 11:34:12 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/10 23:43:55 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
-
-int	search_variable(char *arg, int start)
-{
-	while (arg[start] && arg[start] != '$')
-		start++;
-	if (!arg[start])
-		return (NOTHING);
-	return (start);
-}
 
 void	create_env_key(char *arg, t_var *var, int i)
 {
@@ -82,32 +73,25 @@ char	*make_new_arg(char *arg, t_var *var)
 	return (new_arg);
 }
 
-char	*expand_variables(char *arg, t_shell *shell)
+static char	*expand_variable_loop(char *arg, t_shell *shell, t_var *var)
 {
 	int		i;
 	int		start;
-	t_var	*var;
 	char	*new_arg;
 
-	var = init_var();
 	start = 0;
-	if (!var)
-		return (NULL);
 	while (1)
 	{
 		i = search_variable(arg, start);
-		if (arg[i + 1] == '\0')
-			return (arg);
-		if (i == NOTHING)
+		if (arg[i + 1] == '\0' || i == NOTHING)
 			break ;
-		if ((!ft_isalpha(arg[i + 1]) && arg[i + 1] != '_' && arg[i + 1] != '?'))
+		if (!ft_isalpha(arg[i + 1]) && arg[i + 1] != '_' && arg[i + 1] != '?')
 		{
 			start = i + 1;
 			continue ;
 		}
 		i++;
-		create_env_key(arg, var, i);
-		search_env_value(var, shell);
+		get_value(arg, var, shell, i);
 		if (!var->value)
 			var->value = ft_strdup("");
 		new_arg = make_new_arg(arg, var);
@@ -115,6 +99,18 @@ char	*expand_variables(char *arg, t_shell *shell)
 		free(arg);
 		arg = new_arg;
 	}
-	free(var);
 	return (arg);
+}
+
+char	*expand_variables(char *arg, t_shell *shell)
+{
+	t_var	*var;
+	char	*result;
+
+	var = init_var();
+	if (!var)
+		return (NULL);
+	result = expand_variable_loop(arg, shell, var);
+	free(var);
+	return (result);
 }

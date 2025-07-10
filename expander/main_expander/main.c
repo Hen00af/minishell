@@ -1,4 +1,16 @@
-#include "../expander.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/10 23:32:35 by nando             #+#    #+#             */
+/*   Updated: 2025/07/10 23:33:13 by nando            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "expander.h"
 
 // ====== MAIN ======
 int	main(int ac, char **av, char **envp)
@@ -11,7 +23,7 @@ int	main(int ac, char **av, char **envp)
 
 	if (ac < 2)
 		return (0);
-	shell = malloc(sizeof *shell);
+	shell = malloc(sizeof * shell);
 	shell->env = init_env(envp);
 	lex = lexer(av[1]);
 	ast = start_parse(lex);

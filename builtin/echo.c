@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 21:05:26 by nando             #+#    #+#             */
-/*   Updated: 2025/07/09 10:19:25 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/10 18:02:15 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ void	n_flag_or_print(t_echo *e, char *arg)
 	e->i++;
 }
 
-int	builtin_echo(char **args, t_env *list_head)
+int	builtin_echo(char **args, t_env *env)
 {
 	t_echo	e;
 	int		i;
 
 	i = 0;
-	(void)list_head;
+	(void)env;
 	e.option_flag = 0;
 	e.print_flag = 0;
 	e.count = count_args(args);
