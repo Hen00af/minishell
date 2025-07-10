@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 14:30:21 by nando             #+#    #+#             */
-/*   Updated: 2025/07/09 11:07:38 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/10 23:28:01 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,62 +14,16 @@
 
 void	expand_andor_arguments(t_andor *ast, t_shell *shell);
 
-char	*expand_all_type(char *arg, t_shell *shell, t_expand *ctx)
-{
-	char	*tmp1;
-	char	*tmp2;
-	char	*result;
-
-	tmp1 = expand_variables(arg, shell);
-	tmp2 = expand_tilda(tmp1, shell->env);
-	free(tmp1);
-	result = expand_wild_card(tmp2, ctx);
-	free(tmp2);
-	return (result);
-}
-
 void	run_expand(char c, t_shell *shell, t_expand *ctx)
 {
-	char	*expanded;
-	char	*old_out;
-	char	*cleaned;
-
 	if (ctx->state == STA_NONE_Q && c == '\"')
-	{
-		expanded = expand_all_type(buf_flush(&ctx->buf), shell, ctx);
-		old_out = ctx->output;
-		ctx->output = ft_strjoin(old_out, expanded);
-		free(old_out);
-		free(expanded);
-		ctx->state = STA_DOUBLE_Q;
-	}
+		expand_and_add_to_output(ctx, shell, STA_DOUBLE_Q, 1);
 	else if (ctx->state == STA_NONE_Q && c == '\'')
-	{
-		expanded = expand_all_type(buf_flush(&ctx->buf), shell, ctx);
-		old_out = ctx->output;
-		ctx->output = ft_strjoin(old_out, expanded);
-		free(old_out);
-		free(expanded);
-		ctx->state = STA_SINGLE_Q;
-	}
+		expand_and_add_to_output(ctx, shell, STA_SINGLE_Q, 2);
 	else if (ctx->state == STA_DOUBLE_Q && c == '\"')
-	{
-		expanded = expand_variables(remove_quote(buf_flush(&ctx->buf)), shell);
-		old_out = ctx->output;
-		ctx->output = ft_strjoin(old_out, expanded);
-		free(old_out);
-		free(expanded);
-		ctx->state = STA_NONE_Q;
-	}
+		expand_and_add_to_output(ctx, shell, STA_NONE_Q, 3);
 	else if (ctx->state == STA_SINGLE_Q && c == '\'')
-	{
-		cleaned = remove_quote(buf_flush(&ctx->buf));
-		old_out = ctx->output;
-		ctx->output = ft_strjoin(old_out, cleaned);
-		free(old_out);
-		free(cleaned);
-		ctx->state = STA_NONE_Q;
-	}
+		expand_and_add_to_output(ctx, shell, STA_NONE_Q, 4);
 	else
 		buf_add(&ctx->buf, c);
 }

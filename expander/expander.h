@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 20:20:02 by nando             #+#    #+#             */
-/*   Updated: 2025/07/09 11:33:32 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/10 23:57:24 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,11 @@ char						*expand_string(char *arg, t_shell *shell,
 								t_expand *ctx);
 bool						is_match(const char *pattern, const char *str,
 								int i, int j);
+void						get_value(char *arg, t_var *var, t_shell *shell,
+								int i);
+int							process_entries(DIR *dir, t_file_node **head,
+								t_file_node **tail);
+void						expand_and_add_to_output(t_expand *ctx,
+								t_shell *shell, int state, int num);
 
 #endif // EXPANDER_H

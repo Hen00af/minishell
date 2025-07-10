@@ -1,88 +1,59 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils2.c                                           :+:      :+:    :+:   */
+/*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/26 17:12:10 by nando             #+#    #+#             */
-/*   Updated: 2025/07/09 09:44:56 by nando            ###   ########.fr       */
+/*   Created: 2025/06/26 20:23:19 by nando             #+#    #+#             */
+/*   Updated: 2025/07/10 23:43:57 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
 
-char	*remove_quote(char *arg)
+int	search_variable(char *arg, int start)
 {
-	size_t	len;
-	char	*res;
-
-	len = ft_strlen(arg);
-	if (len < 2)
-	{
-		res = ft_strdup(arg);
-		free(arg);
-		return (res);
-	}
-	if ((arg[0] == '\'' && arg[len - 1] == '\'') || (arg[0] == '\"' && arg[len
-			- 1] == '\"'))
-	{
-		res = malloc(len - 1);
-		if (!res)
-		{
-			free(arg);
-			return (NULL);
-		}
-		ft_strlcpy(res, arg + 1, len - 1);
-		free(arg);
-		return (res);
-	}
-	res = ft_strdup(arg);
-	free(arg);
-	return (res);
+	while (arg[start] && arg[start] != '$')
+		start++;
+	if (!arg[start])
+		return (NOTHING);
+	return (start);
 }
 
-void	create_new_args(t_expand *ctx, t_command *cmd, int i)
+bool	has_wildcard(char *arg)
 {
-	int	j;
-	int	k;
-	int	l;
+	int	i;
 
-	j = 0;
-	k = 0;
-	while (j < i)
+	i = 0;
+	while (arg[i])
 	{
-		ctx->new_argv[j] = ft_strdup(cmd->argv[j]);
-		j++;
+		if (arg[i] == '*')
+			return (true);
+		i++;
 	}
-	while (k < ctx->count_sw)
-	{
-		ctx->new_argv[j + k] = ft_strdup(ctx->split_words[k]);
-		k++;
-	}
-	ctx->expand_point = j + k;
-	l = i + 1;
-	while (cmd->argv[l])
-	{
-		ctx->new_argv[j + k] = ft_strdup(cmd->argv[l]);
-		k++;
-		l++;
-	}
-	ctx->new_argv[j + k] = NULL;
+	return (false);
 }
 
-void	generate_wildcard_matches(t_expand *ctx, t_command *cmd, int *i)
+bool	is_match(const char *pattern, const char *str, int i, int j)
 {
-	ctx->split_words = ft_split(ctx->expanded, " ");
-	ctx->count_av = count_args(cmd->argv);
-	ctx->count_sw = count_args(ctx->split_words);
-	ctx->new_argv = malloc(sizeof(char *) * ((ctx->count_av + ctx->count_sw)
-				+ 1));
-	create_new_args(ctx, cmd, *i);
-	// free_args(cmd->argv);
-	*i = ctx->expand_point;
-	cmd->argv = ctx->new_argv;
-	free_args(ctx->split_words);
-	ctx->expanded = NULL;
-	return ;
+	if (pattern[i] == '\0' && str[j] == '\0')
+		return (true);
+	if (pattern[i] == '*')
+	{
+		return (is_match(pattern, str, i + 1, j) || (str[j] && is_match(pattern,
+					str, i, j + 1)));
+	}
+	if (pattern[i] == str[j])
+		return (is_match(pattern, str, i + 1, j + 1));
+	return (false);
+}
+
+void	swap_name(t_file_node *current, t_file_node *next)
+{
+	char	*tmp;
+
+	tmp = current->name;
+	current->name = next->name;
+	next->name = tmp;
 }

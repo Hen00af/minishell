@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:16:10 by nando             #+#    #+#             */
-/*   Updated: 2025/07/06 17:52:04 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/11 01:06:41 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_token	*create_token(t_tokentype type, char *word)
 {
 	t_token	*tok;
 
-	tok = malloc(sizeof *tok);
+	tok = malloc(sizeof * tok);
 	if (!tok)
 		return (NULL);
 	tok->type = type;
