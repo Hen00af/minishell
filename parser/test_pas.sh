@@ -10,4 +10,4 @@ run() {
 }
 
 
-run 'echo shattori'
+run '<< E cat > out > out1'

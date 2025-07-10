@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_fank.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/06 15:09:54 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/09 16:45:35 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ static void	handle_redirections(t_command *cmd)
 
 int	is_builtin(const char *cmd)
 {
-	if(!cmd)
+
+	if (!cmd)
 		return (0);
 	return (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd") || !ft_strcmp(cmd,
 			"pwd") || !ft_strcmp(cmd, "export") || !ft_strcmp(cmd, "unset")
@@ -238,9 +239,12 @@ static int	exec_pipeline(t_pipeline *pipeline, t_shell *shell)
 		prev_fd = cmd_list->next ? pipefd[0] : -1;
 		cmd_list = cmd_list->next;
 	}
+	// while (wait(&shell->exit_status) > 0)
+	//    ;
+	// return (WEXITSTATUS(shell->exit_status));
 	while (wait(&shell->exit_status) > 0)
-		;
-	return (WEXITSTATUS(shell->exit_status));
+		shell->exit_status = WEXITSTATUS(shell->exit_status);
+	return (shell->exit_status);
 }
 
 static int	exec_andor(t_andor *node, t_shell *shell)

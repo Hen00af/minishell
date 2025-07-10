@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:16:11 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/23 15:18:14 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:34:55 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_ast	*parse_redirection(t_token **cur, t_ast *cmd)
 		type = NODE_REDIR_IN;
 	else if ((*cur)->type == TOK_REDIR_OUT)
 		type = NODE_REDIR_OUT;
-	else if ((*cur)->type == TOK_REDIR_APPEND)
+	else if ((*cur)->type == TOK_REDIR_APP)
 		type = NODE_REDIR_APPEND;
 	else if ((*cur)->type == TOK_HEREDOC)
 		type = NODE_HEREDOC;
