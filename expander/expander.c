@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 14:30:21 by nando             #+#    #+#             */
-/*   Updated: 2025/07/11 10:27:19 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/11 15:24:34 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,10 @@ void	expand_command_args(t_command *cmd, t_shell *shell, t_list *cmd_list)
 
 void	expander(t_andor *ast, t_shell *shell)
 {
-	t_list		*cmd_node;
-	t_command	*cmd;
+	t_list			*cmd_node;
+	t_list			*redir_list;
+	t_redirection	*redirs;
+	t_command		*cmd;
 
 	if (!ast || ast->type != ANDOR_PIPELINE)
 		return ;
@@ -97,6 +99,14 @@ void	expander(t_andor *ast, t_shell *shell)
 	while (cmd_node)
 	{
 		cmd = (t_command *)cmd_node->content;
+		redir_list = cmd->redirections;
+		while(redir_list)
+		{
+			redirs = (t_redirection*)redir_list->content;
+			if(redirs->filename  != NULL)
+				redirs->filename = remove_quote(redirs->filename);
+			redir_list = redir_list->next;
+		}
 		if (cmd->argv && cmd->argv[0])
 			expand_command_args(cmd, shell, ast->pipeline->commands);
 		if (cmd->subshell_ast)
