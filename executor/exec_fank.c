@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/11 14:00:01 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/11 15:29:22 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ static void	handle_redirections(t_command *cmd)
 
 int	is_builtin(const char *cmd)
 {
-
 	if (!cmd)
 		return (0);
 	return (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd") || !ft_strcmp(cmd,
@@ -185,7 +184,7 @@ static int	exec_pipeline(t_pipeline *pipeline, t_shell *shell)
 	pid_t		pid;
 	t_list		*cmd_list;
 	t_command	*cmd;
-	int in;
+	int			in;
 
 	in = dup(STDIN_FILENO);
 	prev_fd = -1;
