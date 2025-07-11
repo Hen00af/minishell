@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_fank.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/09 16:45:35 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:00:01 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ int	exec_builtin(char **argv, t_env *env)
 		return (builtin_exit(argv));
 	return (1);
 }
+
 static int	exec_subshell(t_command *cmd, t_shell *shell)
 {
 	pid_t	pid;
@@ -184,7 +185,9 @@ static int	exec_pipeline(t_pipeline *pipeline, t_shell *shell)
 	pid_t		pid;
 	t_list		*cmd_list;
 	t_command	*cmd;
+	int in;
 
+	in = dup(STDIN_FILENO);
 	prev_fd = -1;
 	cmd_list = pipeline->commands;
 	if (!cmd_list->next)
@@ -197,6 +200,7 @@ static int	exec_pipeline(t_pipeline *pipeline, t_shell *shell)
 			// handle_redirections(cmd->redirections);
 			handle_redirections(cmd);
 			shell->exit_status = exec_builtin(cmd->argv, shell->env);
+			dup2(in, STDIN_FILENO);
 			return (shell->exit_status);
 		}
 	}

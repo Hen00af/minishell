@@ -6,11 +6,11 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 23:32:35 by nando             #+#    #+#             */
-/*   Updated: 2025/07/10 23:33:13 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/11 11:23:41 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expander.h"
+#include "../expander.h"
 
 // ====== MAIN ======
 int	main(int ac, char **av, char **envp)
