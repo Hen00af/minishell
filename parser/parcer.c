@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parcer.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 20:21:45 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/09 16:15:52 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/11 13:38:30 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ t_ast	*parse_simple_command(t_token **cur)
 	}
 	return (cmd);
 }
-
 
 t_ast	*create_empty_command(t_token *cur)
 {
@@ -102,28 +101,30 @@ t_ast	*parse_command(t_token **cur)
 	t_ast	*cmd;
 	t_ast	*cmd_leaf;
 
-
 	cmd = create_empty_command(*cur);
 	if (!cmd)
 		return (NULL);
 	cmd_leaf = cmd;
-	while (*cur && is_redirection_token(*cur))
+	while (*cur && (is_redirection_token(*cur) || (*cur)->type == TOK_WORD))
 	{
-		cmd = parse_redirection(cur, cmd);
-		if (!cmd)
-			return (NULL);
-	}
-	while (*cur && (*cur)->type == TOK_WORD)
-	{
-		if (append_argv(cmd_leaf, (*cur)->text))
-			return (NULL);
-		*cur = (*cur)->next;
-	}
-	while (*cur && is_redirection_token(*cur))
-	{
-		cmd = parse_redirection(cur, cmd);
-		if (!cmd)
-			return (NULL);
+		while (*cur && is_redirection_token(*cur))
+		{
+			cmd = parse_redirection(cur, cmd);
+			if (!cmd)
+				return (NULL);
+		}
+		while (*cur && (*cur)->type == TOK_WORD)
+		{
+			if (append_argv(cmd_leaf, (*cur)->text))
+				return (NULL);
+			*cur = (*cur)->next;
+		}
+		// while (*cur && is_redirection_token(*cur))
+		// {
+		// 	cmd = parse_redirection(cur, cmd);
+		// 	if (!cmd)
+		// 		return (NULL);
+		// }
 	}
 	return (cmd);
 }

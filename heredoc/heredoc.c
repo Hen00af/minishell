@@ -6,8 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/07/11 01:03:34 by nando            ###   ########.fr       */
-=======
+/*   Updated: 2025/07/11 11:25:11 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +43,9 @@ int	open_heredoc_file(char **path)
 	char	*tmp_path;
 	int		fd;
 
-
 	tmp_path = generate_tmpfile_path();
 	if (!tmp_path)
-		return (NULL);
+		return (-1);
 	while (1)
 	{
 		fd = open(tmp_path, O_CREAT | O_EXCL | O_WRONLY, 0600);
