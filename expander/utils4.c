@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 23:28:24 by nando             #+#    #+#             */
-/*   Updated: 2025/07/12 12:56:34 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/12 14:49:19 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,33 +30,37 @@ char	*remove_quote(char *arg)
 	return (ft_strdup(arg));
 }
 
-char	*remove_all_quotes(char *arg)
+char	*remove_all_quote(char *arg)
 {
-	size_t	len;
-	int		i;
-	int		quote_count;
 	char	*res;
-	char	*tmp;
+	size_t	len;
+	size_t	i;
+	size_t	count;
 
-	len = ft_strlen(arg);
-	if (len < 2)
-		return (ft_strdup(arg));
 	i = 0;
-	quote_count = 0;
-	tmp = NULL;
-	while (arg[i])
+	count = 0;
+	len = ft_strlen(arg);
+	while (i < len)
 	{
-		if (arg[i] == '\"' || arg[i] == '\'')
-		{
-			tmp = ft_strjoin(tmp, &arg[i + 1]);
-			i = i + 2;
-		}
-		else
-			tmp = ft_strjoin(tmp, &arg[i]);
+		if (arg[i] != '\'' && arg[i] != '\"')
+			count++;
+		i++;
 	}
-	free(arg);
-	arg = tmp;
-	return (ft_strdup(arg));
+	res = malloc(sizeof(char) * (count + 1));
+	memset(res, 0, count + 1);
+	i = 0;
+	count = 0;
+	while (i < len)
+	{
+		if (arg[i] != '\'' && arg[i] != '\"')
+		{
+			res[count] = arg[i];
+			count++;
+		}
+		i++;
+	}
+	res[count] = '\0';
+	return (res);
 }
 
 char	*expand_all_type(char *arg, t_shell *shell, t_expand *ctx)

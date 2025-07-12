@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 20:20:02 by nando             #+#    #+#             */
-/*   Updated: 2025/07/11 16:59:51 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/12 14:49:46 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char						*make_new_arg(char *arg, t_var *var);
 char						*expand_variables(char *arg, t_shell *shell);
 char						*expand_tilda(char *arg, t_env *env);
 char						*remove_quote(char *arg);
-char						*remove_all_quotes(char *arg);
+char						*remove_all_quote(char *arg);
 char						*expand_all_type(char *arg, t_shell *shell,
 								t_expand *ctx);
 void						expander(t_andor *ast, t_shell *shell);

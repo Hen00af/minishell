@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 14:30:21 by nando             #+#    #+#             */
-/*   Updated: 2025/07/11 17:00:35 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/12 14:49:28 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	expander(t_andor *ast, t_shell *shell)
 		{
 			redirs = (t_redirection*)redir_list->content;
 			if(redirs->filename  != NULL)
-				redirs->filename = remove_quote(redirs->filename);
+				redirs->filename = remove_all_quote(redirs->filename);
 			redir_list = redir_list->next;
 		}
 		if (cmd->argv && cmd->argv[0])
