@@ -6,25 +6,20 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 23:28:24 by nando             #+#    #+#             */
-/*   Updated: 2025/07/10 23:56:50 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/12 12:56:34 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
 
-static char	*clean_outer_quotes(const char *arg)
+char	*remove_quote(char *arg)
 {
 	size_t	len;
-	char	start;
-	char	end;
 	char	*res;
 
 	len = ft_strlen(arg);
-	if (len < 2)
-		return (ft_strdup(arg));
-	start = arg[0];
-	end = arg[len - 1];
-	if ((start == '\'' && end == '\'') || (start == '\"' && end == '\"'))
+	if (len >= 2 && ((arg[0] == '\'' && arg[len - 1] == '\'') || (arg[0] == '\"'
+				&& arg[len - 1] == '\"')))
 	{
 		res = malloc(len - 1);
 		if (!res)
@@ -35,13 +30,33 @@ static char	*clean_outer_quotes(const char *arg)
 	return (ft_strdup(arg));
 }
 
-char	*remove_quote(char *arg)
+char	*remove_all_quotes(char *arg)
 {
+	size_t	len;
+	int		i;
+	int		quote_count;
 	char	*res;
+	char	*tmp;
 
-	res = clean_outer_quotes(arg);
+	len = ft_strlen(arg);
+	if (len < 2)
+		return (ft_strdup(arg));
+	i = 0;
+	quote_count = 0;
+	tmp = NULL;
+	while (arg[i])
+	{
+		if (arg[i] == '\"' || arg[i] == '\'')
+		{
+			tmp = ft_strjoin(tmp, &arg[i + 1]);
+			i = i + 2;
+		}
+		else
+			tmp = ft_strjoin(tmp, &arg[i]);
+	}
 	free(arg);
-	return (res);
+	arg = tmp;
+	return (ft_strdup(arg));
 }
 
 char	*expand_all_type(char *arg, t_shell *shell, t_expand *ctx)
