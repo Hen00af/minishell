@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   exec_fank.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
 /*   Updated: 2025/07/12 12:36:50 by nando            ###   ########.fr       */
@@ -66,7 +66,14 @@ static void	handle_redirections(t_command *cmd)
 		else if (redir->type == REDIR_APPEND)
 			fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		else if (redir->type == REDIR_HEREDOC)
+		{
+			if (!last_tmpfile)
+			{
+				fprintf(stderr, "heredoc error: heredoc filename is NULL\n");
+				exit(1);
+			}
 			fd = open(last_tmpfile, O_RDONLY);
+		}
 		if (fd < 0)
 		{
 			perror("redirection");
@@ -103,12 +110,19 @@ char	*search_path(char *cmd, t_env *env)
 	if (!path_var)
 		return (NULL);
 	paths = ft_split(path_var, ":");
+	if (!paths)
+		return (NULL);
 	i = 0;
 	while (paths[i])
 	{
 		full_path = ft_strjoin_path(paths[i], cmd);
+		if (!full_path)
+			break ;
 		if (access(full_path, X_OK) == 0)
-			return (free_split(paths), full_path);
+		{
+			free_split(paths);
+			return (full_path);
+		}
 		free(full_path);
 		i++;
 	}
@@ -170,10 +184,13 @@ int	exec_simple_command(t_command *cmd, t_shell *shell)
 		if (!path)
 			exit(127);
 		execve(path, cmd->argv, envp);
+		free_split(envp);
 		perror("execve");
 		exit(1);
 	}
 	waitpid(pid, &status, 0);
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 127)
+		ft_fprintf(2, "%s: command not found\n", cmd->argv[0]);
 	return (WEXITSTATUS(status));
 }
 
@@ -185,8 +202,10 @@ static int	exec_pipeline(t_pipeline *pipeline, t_shell *shell)
 	t_list		*cmd_list;
 	t_command	*cmd;
 	int			in;
+	int			out;
 
 	in = dup(STDIN_FILENO);
+	out = dup(STDOUT_FILENO);
 	prev_fd = -1;
 	cmd_list = pipeline->commands;
 	if (!cmd_list->next)
@@ -200,12 +219,18 @@ static int	exec_pipeline(t_pipeline *pipeline, t_shell *shell)
 			handle_redirections(cmd);
 			shell->exit_status = exec_builtin(cmd->argv, shell->env);
 			dup2(in, STDIN_FILENO);
+			dup2(out, STDOUT_FILENO);
 			return (shell->exit_status);
 		}
 	}
 	while (cmd_list)
 	{
 		cmd = cmd_list->content;
+		if (!cmd || !cmd->argv || !cmd->argv[0])
+		{
+			cmd_list = cmd_list->next;
+			continue ;
+		}
 		if (cmd_list->next && pipe(pipefd) == -1)
 			return (perror("pipe"), 1);
 		pid = fork();
