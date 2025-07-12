@@ -6,11 +6,12 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/12 12:36:50 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/12 14:50:51 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
+#include <errno.h>
 
 // static void	handle_redirections(t_list *redir_list)
 //{
@@ -86,6 +87,49 @@ static void	handle_redirections(t_command *cmd)
 		close(fd);
 		redir_list = redir_list->next;
 	}
+}
+
+static int	handle_redirections_builtin(t_command *cmd)
+{
+	t_list			*redir_list;
+	t_redirection	*redir;
+	int				fd;
+	char			*last_tmpfile;
+
+	redir_list = cmd->redirections;
+	while (redir_list)
+	{
+		redir = redir_list->content;
+		last_tmpfile = cmd->heredoc_filename;
+		fd = -1;
+		if (redir->type == REDIR_IN)
+			fd = open(redir->filename, O_RDONLY);
+		else if (redir->type == REDIR_OUT)
+			fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		else if (redir->type == REDIR_APPEND)
+			fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		else if (redir->type == REDIR_HEREDOC)
+		{
+			if (!last_tmpfile)
+			{
+				fprintf(stderr, "heredoc error: heredoc filename is NULL\n");
+				return (1);
+			}
+			fd = open(last_tmpfile, O_RDONLY);
+		}
+		if (fd < 0)
+		{
+			perror("redirection");
+			return (1);
+		}
+		if (redir->type == REDIR_IN || redir->type == REDIR_HEREDOC)
+			dup2(fd, STDIN_FILENO);
+		else
+			dup2(fd, STDOUT_FILENO);
+		close(fd);
+		redir_list = redir_list->next;
+	}
+	return (0);
 }
 
 int	is_builtin(const char *cmd)
@@ -177,16 +221,22 @@ int	exec_simple_command(t_command *cmd, t_shell *shell)
 		return (perror("fork"), 1);
 	if (pid == 0)
 	{
-		// handle_redirections(cmd->redirections);
 		handle_redirections(cmd);
 		envp = convert_env(shell->env);
 		path = search_path(cmd->argv[0], shell->env);
 		if (!path)
 			exit(127);
-		execve(path, cmd->argv, envp);
-		free_split(envp);
-		perror("execve");
-		exit(1);
+		if (execve(path, cmd->argv, envp) == -1)
+		{
+			free_split(envp);
+			if (errno == ENOENT || errno == EISDIR)
+				exit(127);
+			else
+			{
+				ft_fprintf(2, " Is a directory");
+				exit(126);
+			}
+		}
 	}
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status) && WEXITSTATUS(status) == 127)
@@ -215,8 +265,13 @@ static int	exec_pipeline(t_pipeline *pipeline, t_shell *shell)
 			return (exec_subshell(cmd, shell));
 		if (is_builtin(cmd->argv[0]))
 		{
-			// handle_redirections(cmd->redirections);
-			handle_redirections(cmd);
+			if (handle_redirections_builtin(cmd))
+			{
+				shell->exit_status = 1;
+				dup2(in, STDIN_FILENO);
+				dup2(out, STDOUT_FILENO);
+				return (shell->exit_status);
+			}
 			shell->exit_status = exec_builtin(cmd->argv, shell->env);
 			dup2(in, STDIN_FILENO);
 			dup2(out, STDOUT_FILENO);
