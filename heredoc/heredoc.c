@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/07/11 11:25:11 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/12 13:07:24 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ static int	handle_heredoc(t_tmp *ctx, t_command *cmd, t_redirection *redir,
 	ctx->file = run_heredoc(redir->filename, shell);
 	if (!ctx->file)
 		return (0);
-	free(redir->filename);
 	cmd->heredoc_filename = ft_strdup(ctx->file);
 	ctx->flag = 1;
 	return (1);
