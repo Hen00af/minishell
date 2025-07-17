@@ -13,39 +13,29 @@
 #include "executor.h"
 #include <errno.h>
 
-// static void	handle_redirections(t_list *redir_list)
-//{
-//	t_redirection	*redir;
-//	int				fd;
-//	char			*last_tmpfile;
-
-//	while (redir_list)
-//	{
-//		redir = redir_list->content;
-//		printf("redir->filename = %s\n", redir->filename);
-//		last_tmpfile = redir->filename;
-//		fd = -1;
-//		if (redir->type == REDIR_IN)
-//			fd = open(redir->filename, O_RDONLY);
-//		else if (redir->type == REDIR_OUT)
-//			fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-//		else if (redir->type == REDIR_APPEND)
-//			fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-//		else if (redir->type == REDIR_HEREDOC)
-//			fd = open(last_tmpfile, O_RDONLY);
-//		if (fd < 0)
-//		{
-//			perror("redirection");
-//			exit(1);
-//		}
-//		if (redir->type == REDIR_IN || redir->type == REDIR_HEREDOC)
-//			dup2(fd, STDIN_FILENO);
-//		else
-//			dup2(fd, STDOUT_FILENO);
-//		close(fd);
-//		redir_list = redir_list->next;
-//	}
-//}
+static int open_files(int *fd, char *last_tmpfile,t_redirection *redir)
+{
+		if (redir->type == REDIR_IN)
+			*fd = open(redir->filename, O_RDONLY);
+		else if (redir->type == REDIR_OUT)
+			*fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		else if (redir->type == REDIR_APPEND)
+			*fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		else if (redir->type == REDIR_HEREDOC)
+		{
+			if (!last_tmpfile)
+			{
+				fprintf(stderr, "heredoc error: heredoc filename is NULL\n");
+				exit(1);
+			}
+			*fd = open(last_tmpfile, O_RDONLY);
+		}
+		if (*fd < 0)
+		{
+			perror("redirection");
+			exit(1);
+		}
+}
 
 static void	handle_redirections(t_command *cmd)
 {
@@ -60,26 +50,7 @@ static void	handle_redirections(t_command *cmd)
 		redir = redir_list->content;
 		last_tmpfile = cmd->heredoc_filename;
 		fd = -1;
-		if (redir->type == REDIR_IN)
-			fd = open(redir->filename, O_RDONLY);
-		else if (redir->type == REDIR_OUT)
-			fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		else if (redir->type == REDIR_APPEND)
-			fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		else if (redir->type == REDIR_HEREDOC)
-		{
-			if (!last_tmpfile)
-			{
-				fprintf(stderr, "heredoc error: heredoc filename is NULL\n");
-				exit(1);
-			}
-			fd = open(last_tmpfile, O_RDONLY);
-		}
-		if (fd < 0)
-		{
-			perror("redirection");
-			exit(1);
-		}
+		open_files(&fd,last_tmpfile,redir);
 		if (redir->type == REDIR_IN || redir->type == REDIR_HEREDOC)
 			dup2(fd, STDIN_FILENO);
 		else
@@ -102,26 +73,7 @@ static int	handle_redirections_builtin(t_command *cmd)
 		redir = redir_list->content;
 		last_tmpfile = cmd->heredoc_filename;
 		fd = -1;
-		if (redir->type == REDIR_IN)
-			fd = open(redir->filename, O_RDONLY);
-		else if (redir->type == REDIR_OUT)
-			fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		else if (redir->type == REDIR_APPEND)
-			fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		else if (redir->type == REDIR_HEREDOC)
-		{
-			if (!last_tmpfile)
-			{
-				fprintf(stderr, "heredoc error: heredoc filename is NULL\n");
-				return (1);
-			}
-			fd = open(last_tmpfile, O_RDONLY);
-		}
-		if (fd < 0)
-		{
-			perror("redirection");
-			return (1);
-		}
+		open_files(&fd,last_tmpfile,redir);
 		if (redir->type == REDIR_IN || redir->type == REDIR_HEREDOC)
 			dup2(fd, STDIN_FILENO);
 		else
@@ -304,7 +256,6 @@ static int	exec_pipeline(t_pipeline *pipeline, t_shell *shell)
 				close(pipefd[0]);
 				close(pipefd[1]);
 			}
-			// handle_redirections(cmd->redirections);
 			handle_redirections(cmd);
 			if (cmd->subshell_ast)
 			{
@@ -322,9 +273,6 @@ static int	exec_pipeline(t_pipeline *pipeline, t_shell *shell)
 		prev_fd = cmd_list->next ? pipefd[0] : -1;
 		cmd_list = cmd_list->next;
 	}
-	// while (wait(&shell->exit_status) > 0)
-	//    ;
-	// return (WEXITSTATUS(shell->exit_status));
 	while (wait(&shell->exit_status) > 0)
 		shell->exit_status = WEXITSTATUS(shell->exit_status);
 	return (shell->exit_status);
@@ -357,3 +305,4 @@ int	executor(t_andor *node, t_shell *shell)
 		return (exec_pipeline(node->pipeline, shell));
 	return (1);
 }
+ 

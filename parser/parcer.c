@@ -119,12 +119,7 @@ t_ast	*parse_command(t_token **cur)
 				return (NULL);
 			*cur = (*cur)->next;
 		}
-		// while (*cur && is_redirection_token(*cur))
-		// {
-		// 	cmd = parse_redirection(cur, cmd);
-		// 	if (!cmd)
-		// 		return (NULL);
-		// }
+
 	}
 	return (cmd);
 }
@@ -162,3 +157,4 @@ t_ast	*start_parse(t_token *tokens)
 	cur = tokens;
 	return (parse_and_or(&cur));
 }
+
