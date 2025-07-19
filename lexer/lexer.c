@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 20:23:45 by nando             #+#    #+#             */
-/*   Updated: 2025/07/08 14:14:40 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/19 18:37:03 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	handle_meta(t_lexer *ctx, char c)
 		append_tok_and_reset_state(ctx, TOK_RPAREN);
 }
 
-// initialize t_lexer funk
 int	init_lexer(t_lexer *ctx, char *input)
 {
 	buf_init(&ctx->buf);
@@ -94,7 +93,6 @@ t_token	*finish_lexing(t_lexer *ctx)
 	return (token_head);
 }
 
-// entry point for lex
 t_token	*lexer(char *input)
 {
 	t_lexer	ctx;
