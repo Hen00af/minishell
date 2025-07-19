@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:31:47 by nando             #+#    #+#             */
-/*   Updated: 2025/07/05 02:30:11 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/19 18:36:26 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	buf_add(t_buf *buf, char c)
 		new_word = malloc(new_capa);
 		if (!new_word)
 			return ;
-		memcpy(new_word, buf->word, buf->len);
+		ft_memcpy(new_word, buf->word, buf->len);
 		free(buf->word);
 		buf->word = new_word;
 		buf->capa = new_capa;
@@ -48,7 +48,6 @@ void	buf_add(t_buf *buf, char c)
 	buf->word[buf->len] = '\0';
 }
 
-// flush bufer and return str content
 char	*buf_flush(t_buf *buf)
 {
 	char	*text;

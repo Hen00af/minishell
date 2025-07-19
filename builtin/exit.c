@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 15:28:33 by nando             #+#    #+#             */
-/*   Updated: 2025/07/09 14:02:17 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/19 18:34:09 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ int	builtin_exit(char **args)
 	printf("exit\n");
 	if (count > 2)
 	{
-		fprintf(stderr, "minishell: exit: too many arguments\n");
+		ft_fprintf(2, "minishell: exit: too many arguments\n");
 		return (1);
 	}
 	else if (count == 1)
 		exit(0);
 	if (!is_numeric(args[1]))
 	{
-		fprintf(stderr, "minishell: exit: %s: numeric argument required\n",
+		ft_fprintf(2, "minishell: exit: %s: numeric argument required\n",
 			args[1]);
 		exit(2);
 	}

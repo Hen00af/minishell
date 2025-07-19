@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 15:20:46 by nando             #+#    #+#             */
-/*   Updated: 2025/07/10 18:02:29 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/19 18:27:09 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ int	builtin_env(char **args, t_env *env)
 		if (current->flag == 1)
 		{
 			if (current->value)
-				ft_printf("%s=%s\n", current->key, current->value);
+				printf("%s=%s\n", current->key, current->value);
 			else
-				ft_printf("%s=\n", current->key);
+				printf("%s=\n", current->key);
 		}
 		current = current->next;
 	}

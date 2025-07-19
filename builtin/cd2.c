@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 19:23:37 by nando             #+#    #+#             */
-/*   Updated: 2025/07/10 19:24:36 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/19 18:33:58 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	check_cd_args(char **args)
 {
 	if (args[1] && args[2])
 	{
-		fprintf(stderr, " too many arguments\n");
+		ft_fprintf(2, " too many arguments\n");
 		return (NG);
 	}
 	return (OK);

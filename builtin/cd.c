@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 15:02:10 by nando             #+#    #+#             */
-/*   Updated: 2025/07/10 19:24:25 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/19 18:33:41 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*resolve_cd_path(char *arg)
 		home = getenv("HOME");
 		if (!home)
 		{
-			fprintf(stderr, "minishell: cd: HOME not set\n");
+			ft_fprintf(2, "minishell: cd: HOME not set\n");
 			return (NULL);
 		}
 		return (ft_strdup(home));
@@ -59,19 +59,19 @@ int	perform_cd(char *path, t_env *env)
 
 	if (stat(path, &dir_stat) == -1)
 	{
-		fprintf(stderr, " No such file or directory\n");
+		ft_fprintf(2, " No such file or directory\n");
 		return (NG);
 	}
 	if (!S_ISDIR(dir_stat.st_mode))
 	{
-		fprintf(stderr, " Not a directory\n");
+		ft_fprintf(2, " Not a directory\n");
 		return (NG);
 	}
 	if (set_pwd(env, "OLDPWD", 6) == NG)
 		return (NG);
 	if (chdir(path) == -1)
 	{
-		fprintf(stderr, " chdir error\n");
+		ft_fprintf(2, " chdir error\n");
 		return (NG);
 	}
 	if (set_pwd(env, "PWD", 3) == NG)

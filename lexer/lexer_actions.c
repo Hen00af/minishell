@@ -6,14 +6,12 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:22:25 by nando             #+#    #+#             */
-/*   Updated: 2025/07/11 01:06:25 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/19 18:36:37 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-// identify and sepalate using spaces and special characters.
-// and add token state
 void	lexer_default(t_lexer *ctx, char c)
 {
 	ctx->move = 1;

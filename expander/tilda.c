@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:40:14 by nando             #+#    #+#             */
-/*   Updated: 2025/06/26 17:00:53 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/19 18:29:01 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*get_home_value(t_env *env)
 {
 	while (env)
 	{
-		if (strcmp(env->key, "HOME") == 0)
+		if (ft_strcmp(env->key, "HOME") == 0)
 			return (ft_strdup(env->value));
 		env = env->next;
 	}
