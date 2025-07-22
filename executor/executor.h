@@ -12,6 +12,9 @@ typedef struct s_ast	t_ast;
 typedef struct s_andor	t_andor;
 typedef struct s_env	t_env;
 typedef struct s_shell	t_shell;
+typedef struct s_command t_command;
+typedef struct s_redirection t_redirection;
+
 typedef struct s_exec   {
     int			pipefd[2];
 	int			prev_fd;
@@ -35,5 +38,8 @@ void                	handle_redirections(t_command *cmd);
 int             		handle_redirections_builtin(t_command *cmd);
 int                     open_redirection_file_builtin(t_redirection *redir, char *last_tmpfile);
 int                     apply_redirection_builtin(int fd, int type);
+int                     is_builtin(const char *cmd);
+int                     exec_builtin(char **argv, t_env *env);
+int                     exec_single_builtin(t_command *cmd, t_exec *exec, t_shell *shell);
 
 #endif
