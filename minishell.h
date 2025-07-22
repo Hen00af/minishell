@@ -30,6 +30,8 @@
 # define STDERROR_INT 2
 # define STDOUT_INT 1
 
+void		expand_and_execute(t_andor *linearized_ast, t_shell *shell);
+
 typedef struct s_shell
 {
 	t_env	*env;
@@ -51,7 +53,5 @@ typedef struct s_ctx
 	t_env	*node;
 	char	**key_value;
 }			t_ctx;
-
-void		expand_and_execute(t_andor *linearized_ast, t_shell *shell);
 
 #endif

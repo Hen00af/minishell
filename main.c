@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:08:04 by nando             #+#    #+#             */
-/*   Updated: 2025/07/12 14:34:59 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/22 02:32:56 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*run_readline(t_shell *shell)
 	char	*cmd;
 
 	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		return (NULL);
 	prompt = ft_strjoin(cwd, " $ ");
 	free(cwd);
 	cmd = readline(prompt);
@@ -38,17 +40,21 @@ char	*run_readline(t_shell *shell)
 
 t_andor	*make_linearized_ast(char *cmd, t_shell *shell)
 {
-	t_token	*lex;
-	t_ast	*ast;
-	t_andor	*linearized_ast;
+	t_token		*lex;
+	t_ast		*ast;
+	t_andor		*linearized_ast;
 
 	lex = lexer(cmd);
+	if (!lex)
+		return (NULL);
 	ast = start_parse(lex);
 	free_tokens(lex);
 	if (!ast)
 		return (NULL);
 	add_history(cmd);
 	linearized_ast = linearizer(ast, shell);
+	if (!linearized_ast)
+		return (NULL);
 	return (linearized_ast);
 }
 
@@ -64,6 +70,8 @@ int	prompt(t_shell *shell)
 	t_andor	*linearized_ast;
 
 	cmd = run_readline(shell);
+	if (!cmd)
+		return (0);
 	linearized_ast = make_linearized_ast(cmd, shell);
 	if (!linearized_ast)
 	{

@@ -1,30 +1,5 @@
 {
-	"files.associations": {
-		"parser.h": "c",
-		"minishell.h": "c",
-		"executor.h": "c",
-		"builtin.h": "c",
-		"expander.h": "c",
-		"lexer.h": "c",
-		"libft.h": "c",
-		"stdlib.h": "c",
-		"wait.h": "c",
-		"fcntl.h": "c",
-		"linerlizer.h": "c",
-		"utils.h": "c",
-		"signal.h": "c",
-		"history.h": "c",
-		"readline.h": "c",
-		"stdio.h": "c",
-		"types.h": "c",
-		"stdbool.h": "c",
-		"dirent.h": "c",
-		"random": "c",
-		"ft_fprintf.h": "c",
-		"stdarg.h": "c",
-		"limits.h": "c",
-		"ctype.h": "c",
-		"linearizer.h": "c",
-		"unistd.h": "c"
-	}
+    "files.associations": {
+        "executor.h": "c"
+    }
 }

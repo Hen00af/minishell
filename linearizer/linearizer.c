@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linearizer.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:37 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/06 15:50:58 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/22 02:37:41 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,21 +72,6 @@ t_command	*linearize_simple_command_to_command(t_ast *ast, t_shell *shell)
 	return (cmd);
 }
 
-t_andor	*linearize_simple_command(t_ast *ast, t_shell *shell)
-{
-	t_command	*cmd;
-	t_pipeline	*pipeline;
-	t_andor		*andor;
-
-	cmd = linearize_simple_command_to_command(ast, shell);
-	process_heredoc(cmd, shell);
-	pipeline = malloc(sizeof(t_pipeline));
-	pipeline->commands = ft_lstnew(cmd);
-	andor = malloc(sizeof(t_andor));
-	andor->type = ANDOR_PIPELINE;
-	andor->pipeline = pipeline;
-	return (andor);
-}
 
 // ====== PIPELINE ======
 void	flatten_pipeline(t_ast *node, t_pipeline *pipeline, t_shell *shell)
@@ -116,20 +101,6 @@ void	flatten_pipeline(t_ast *node, t_pipeline *pipeline, t_shell *shell)
 	}
 }
 
-t_andor	*linearize_pipeline(t_ast *ast, t_shell *shell)
-{
-	t_pipeline	*pipeline;
-	t_andor		*node;
-
-	pipeline = malloc(sizeof(t_pipeline));
-	pipeline->commands = NULL;
-	flatten_pipeline(ast, pipeline, shell);
-	node = malloc(sizeof(t_andor));
-	node->type = ANDOR_PIPELINE;
-	node->pipeline = pipeline;
-	return (node);
-}
-
 // ====== SUBSHELL ======
 t_andor	*linearize_subshell(t_ast *ast, t_shell *shell)
 {
@@ -149,16 +120,3 @@ t_andor	*linearize_subshell(t_ast *ast, t_shell *shell)
 	return (andor);
 }
 
-// ====== DISPATCH ======
-t_andor	*linearizer(t_ast *ast, t_shell *shell)
-{
-	if (!ast)
-		return (NULL);
-	if (ast->type == NODE_AND || ast->type == NODE_OR)
-		return (linearize_andor(ast, shell));
-	if (ast->type == NODE_PIPE)
-		return (linearize_pipeline(ast, shell));
-	if (ast->type == NODE_SUBSHELL)
-		return (linearize_subshell(ast, shell));
-	return (linearize_simple_command(ast, shell));
-}
