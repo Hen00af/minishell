@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 12:54:02 by nando             #+#    #+#             */
-/*   Updated: 2025/07/11 01:05:01 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/24 18:00:46 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void							write_heredoc_lines(int fd,
 									t_shell *shell);
 int								open_heredoc_file(char **path);
 char							*run_heredoc(char *delimiter, t_shell *shell);
-static int						handle_heredoc(t_tmp *ctx, t_command *cmd,
+int								handle_heredoc(t_tmp *ctx, t_command *cmd,
 									t_redirection *redir, t_shell *shell);
 void							process_heredoc(t_command *cmd, t_shell *shell);
 

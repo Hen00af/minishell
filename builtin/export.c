@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:30:31 by nando             #+#    #+#             */
-/*   Updated: 2025/07/10 19:28:29 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/24 18:02:39 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,8 @@ void	process_export_arg(char **args, int i, t_env **env, int *status)
 
 int	builtin_export(char **args, t_env **env)
 {
-	int		i;
-	int		status;
-	char	*key;
-	char	*keybuf;
-	size_t	len;
+	int	i;
+	int	status;
 
 	i = 1;
 	status = OK;
