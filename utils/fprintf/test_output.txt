@@ -1,2 +1,0 @@
-=== file output test ===
-fd = 3 : naruki
