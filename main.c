@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:08:04 by nando             #+#    #+#             */
-/*   Updated: 2025/07/25 01:58:08 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/25 03:17:02 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,13 @@ char	*run_readline(t_shell *shell)
 		free(prompt);
 	}
 	else
-		cmd = readline(NULL);
+		cmd = get_next_line(STDIN_FILENO);
+	if (!cmd)
+	{
+		if (shell->is_interactive)
+			ft_putstr_fd("exit\n", STDOUT_FILENO);
+		exit(shell->exit_status);
+	}
 	if (g_ack_status == 1)
 	{
 		g_ack_status = 0;
@@ -40,12 +46,7 @@ char	*run_readline(t_shell *shell)
 		free(cmd);
 		return (ft_strdup(""));
 	}
-	if (!cmd)
-	{
-		if (shell->is_interactive)
-			ft_putstr_fd("exit\n", STDOUT_FILENO);
-		exit(shell->exit_status);
-	}
+	// printf("cmd = %s\n", cmd);
 	return (cmd);
 }
 

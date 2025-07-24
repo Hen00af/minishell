@@ -14,6 +14,7 @@ SRC_DIRS := \
 	./utils \
 	./signal \
 	./heredoc\
+	./get_next_line\
 	./
 
 SRCS := $(foreach dir, $(SRC_DIRS), $(wildcard $(dir)/*.c))
