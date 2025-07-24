@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:07:55 by nando             #+#    #+#             */
-/*   Updated: 2025/07/11 01:07:56 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/25 01:10:53 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_shell
 {
 	t_env	*env;
 	int		exit_status;
+	int		is_interactive;
 }			t_shell;
 
 typedef struct s_env

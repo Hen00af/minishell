@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:08:04 by nando             #+#    #+#             */
-/*   Updated: 2025/07/24 17:11:24 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/25 01:58:08 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,31 +18,42 @@ char	*run_readline(t_shell *shell)
 	char	*prompt;
 	char	*cmd;
 
-	cwd = getcwd(NULL, 0);
-	if (!cwd)
-		return (NULL);
-	prompt = ft_strjoin(cwd, " $ ");
-	free(cwd);
-	cmd = readline(prompt);
-	free(prompt);
+	cwd = NULL;
+	prompt = NULL;
+	cmd = NULL;
+	if (shell->is_interactive)
+	{
+		cwd = getcwd(NULL, 0);
+		if (!cwd)
+			return (NULL);
+		prompt = ft_strjoin(cwd, " $ ");
+		free(cwd);
+		cmd = readline(prompt);
+		free(prompt);
+	}
+	else
+		cmd = readline(NULL);
 	if (g_ack_status == 1)
 	{
 		g_ack_status = 0;
 		shell->exit_status = 130;
+		free(cmd);
+		return (ft_strdup(""));
 	}
 	if (!cmd)
 	{
-		printf("exit\n");
-		exit(0);
+		if (shell->is_interactive)
+			ft_putstr_fd("exit\n", STDOUT_FILENO);
+		exit(shell->exit_status);
 	}
 	return (cmd);
 }
 
 t_andor	*make_linearized_ast(char *cmd, t_shell *shell)
 {
-	t_token		*lex;
-	t_ast		*ast;
-	t_andor		*linearized_ast;
+	t_token	*lex;
+	t_ast	*ast;
+	t_andor	*linearized_ast;
 
 	lex = lexer(cmd);
 	if (!lex)
@@ -89,6 +100,7 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
+	shell.is_interactive = isatty(STDIN_FILENO);
 	init_signal();
 	shell.env = init_env(envp);
 	shell.exit_status = 0;
