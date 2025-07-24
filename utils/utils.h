@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 21:19:52 by nando             #+#    #+#             */
-/*   Updated: 2025/07/05 02:44:49 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/24 19:34:52 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void					free_env_list(t_env *env_list);
 void					free_inserted_memory(char **result, int j);
 char					*create_key(char const *s, char c);
 char					*create_value(char const *s);
+char					*create_key_value(t_env *list_head, char *tmp);
 char					**create_split(char const *s, char **result, char c);
 char					**env_split(char const *s, char c);
 t_env					*create_env_node(char **key_value);

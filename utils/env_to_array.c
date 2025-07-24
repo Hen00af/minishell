@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:57:37 by nando             #+#    #+#             */
-/*   Updated: 2025/07/07 20:38:50 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/24 19:34:40 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	create_env_array(char **environ, t_env *list_head)
 		if (list_head->flag == 1)
 		{
 			tmp = ft_strjoin(list_head->key, "=");
-			key_value = ft_strjoin(tmp, list_head->value);
+			key_value = create_key_value(list_head, tmp);
 			free(tmp);
 			environ[i] = ft_strdup(key_value);
 			if (!environ[i])
