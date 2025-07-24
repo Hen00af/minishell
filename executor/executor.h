@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 17:18:58 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/24 18:38:30 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/25 04:44:15 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 # include "../minishell.h"
 # include <errno.h>
 # include <fcntl.h>
+# include <signal.h>
+# include <stdio.h>
+# include <stdlib.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
@@ -50,8 +53,8 @@ int								exec_simple_command(t_command *cmd,
 int								exec_subshell(t_command *cmd, t_shell *shell);
 void							handle_redirections(t_command *cmd);
 int								handle_redirections_builtin(t_command *cmd);
-int								open_redirection_file_builtin(
-									t_redirection *redir, char *last_tmpfile);
+int								open_redirection_file_builtin(t_redirection *redir,
+									char *last_tmpfile);
 int								apply_redirection_builtin(int fd, int type);
 int								is_builtin(const char *cmd);
 int								exec_builtin(char **argv, t_env *env);

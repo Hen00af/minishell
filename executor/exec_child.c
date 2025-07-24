@@ -6,17 +6,31 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 17:44:15 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/25 00:07:32 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/25 05:11:57 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
+void	core_dumped_out(int sig, siginfo_t *info, void *context)
+{
+	(void)sig;
+	(void)info;
+	(void)context;
+	write(STDERR_FILENO, "Quit (core dumped)\n", 20);
+}
+
 void	exec_child_process(t_exec *exec, t_command *cmd, t_shell *shell,
 		int has_next)
 {
+	struct sigaction	sa;
+
 	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
+	sa.sa_sigaction = core_dumped_out;
+	sa.sa_flags = SA_SIGINFO;
+	sigemptyset(&sa.sa_mask);
+	sigaction(SIGQUIT, &sa, NULL);
+	signal(SIGINT, SIG_DFL);
 	if (exec->prev_fd != -1)
 		dup2(exec->prev_fd, STDIN_FILENO);
 	if (has_next)
