@@ -6,11 +6,12 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:51:48 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/22 10:52:06 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/24 17:18:46 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
+
 static int	open_redirection_file(t_redirection *redir, char *last_tmpfile)
 {
 	if (redir->type == REDIR_IN)

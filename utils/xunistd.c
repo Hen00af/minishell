@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   xunistd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 17:59:17 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/01 15:57:59 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/24 17:15:19 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
-#include <unistd.h>
 #include <fcntl.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 void	xdup2(int fildes, int fildes2)
 {
@@ -27,7 +27,7 @@ int	xclose(int *fd)
 {
 	int	ret;
 
-	if (!fd || *fd < 3) // 0,1,2(STDIN/STDOUT/STDERR)はcloseしない
+	if (!fd || *fd < 3)
 		return (0);
 	ret = close(*fd);
 	if (ret == -1)

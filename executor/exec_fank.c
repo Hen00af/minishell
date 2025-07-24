@@ -6,14 +6,14 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/24 17:12:13 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/24 17:27:21 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
 static void	exec_child_process(t_exec *exec, t_command *cmd, t_shell *shell,
-				int has_next)
+		int has_next)
 {
 	if (exec->prev_fd != -1)
 		dup2(exec->prev_fd, STDIN_FILENO);
@@ -65,8 +65,8 @@ static int	exec_pipeline_loop(t_list *cmd_list, t_exec *exec, t_shell *shell)
 
 static int	exec_pipeline(t_pipeline *pipeline, t_shell *shell)
 {
-	t_exec	exec;
-	t_list	*cmd_list;
+	t_exec		exec;
+	t_list		*cmd_list;
 	t_command	*cmd;
 
 	exec.in = dup(STDIN_FILENO);
