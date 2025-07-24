@@ -5,22 +5,23 @@ INCLUDES := -Iinclude
 NAME    := minishell
 OBJDIR  := object
 SRC_DIRS := \
-	./expander \
-	./parser \
-	./lexer \
-	./linearizer\
-	./executor \
-	./builtin \
-	./utils \
-	./signal \
-	./heredoc\
-	./get_next_line\
-	./
-
+    ./expander \
+    ./parser \
+    ./lexer \
+    ./linearizer\
+    ./executor \
+    ./builtin \
+    ./utils \
+    ./signal \
+    ./heredoc\
+    ./get_next_line\
+    ./utils/fprintf \
+    ./
+	
 SRCS := $(foreach dir, $(SRC_DIRS), $(wildcard $(dir)/*.c))
 OBJS := $(patsubst %.c, $(OBJDIR)/%.o, $(SRCS))
 
-LIBS := ./utils/fprintf/fprintf.a ./libft/libft.a -lreadline
+LIBS := ./libft/libft.a -lreadline
 
 .PHONY: all clean fclean re run
 
