@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: shattori <shattori@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/07/25 06:10:53 by shattori          #+#    #+#              #
-#    Updated: 2025/07/25 06:11:37 by shattori         ###   ########.fr        #
+#    Created: 2025/07/25 06:16:56 by shattori          #+#    #+#              #
+#    Updated: 2025/07/25 06:16:57 by shattori         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,12 +44,22 @@ LIBS := $(LIBFT_AR) $(FT_FPRINTF_AR) -lreadline
 
 all: $(NAME)
 
+SPINNER = / - \\ \| 
+
 $(NAME): $(OBJS) $(LIBFT_AR) $(FT_FPRINTF_AR)
-	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $^ $(LIBS)
+	@echo "🔧 Linking $(NAME)..."
+	@i=0; while [ $$i -lt 10 ]; do \
+		printf "\r[%c] Linking..." "$$(echo "$(SPINNER)" | cut -c $$(( ($$i%4)*2 + 1 )))"; \
+		sleep 0.1; \
+		i=$$((i+1)); \
+	done
+	@$(CC) $(CFLAGS) $(INCLUDES) -o $@ $^ $(LIBS)
+	@printf "\r✅ Build complete!            \n"
 
 $(OBJDIR)/%.o: %.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@printf "🔨 Compiling %s\n" $<
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(LIBFT_AR):
 	$(MAKE) -C $(LIBFT_DIR)
@@ -63,10 +73,14 @@ run: all
 clean:
 	@rm -rf $(OBJDIR)
 	@rm -rf $(LIBFT_DIR)/objects
+	@rm -rf $(FT_FPRINTF_DIR)/*.o
+	@rm -rf $(FT_FPRINTF_DIR)/conversions/*.o
 	@echo "🧹 Object files removed"
 
 fclean: clean
 	@rm -f $(NAME)
+	@rm -f $(FT_FPRINTF_AR)
+	@rm -f $(LIBFT_AR)
 	@echo "🗑️ Executable removed"
 
 re: fclean all
