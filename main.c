@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:08:04 by nando             #+#    #+#             */
-/*   Updated: 2025/07/22 02:32:56 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/24 17:11:24 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*run_readline(t_shell *shell)
 	}
 	if (!cmd)
 	{
-		ft_printf("exit\n");
+		printf("exit\n");
 		exit(0);
 	}
 	return (cmd);

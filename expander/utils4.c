@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 23:28:24 by nando             #+#    #+#             */
-/*   Updated: 2025/07/12 14:49:19 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/19 18:30:17 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,22 @@ char	*remove_quote(char *arg)
 	return (ft_strdup(arg));
 }
 
+int	count_quote_in_arg(char *arg, size_t len)
+{
+	size_t	i;
+	size_t	count;
+
+	i = 0;
+	count = 0;
+	while (i < len)
+	{
+		if (arg[i] != '\'' && arg[i] != '\"')
+			count++;
+		i++;
+	}
+	return (count);
+}
+
 char	*remove_all_quote(char *arg)
 {
 	char	*res;
@@ -37,17 +53,10 @@ char	*remove_all_quote(char *arg)
 	size_t	i;
 	size_t	count;
 
-	i = 0;
-	count = 0;
 	len = ft_strlen(arg);
-	while (i < len)
-	{
-		if (arg[i] != '\'' && arg[i] != '\"')
-			count++;
-		i++;
-	}
+	count = count_quote_in_arg(arg, len);
 	res = malloc(sizeof(char) * (count + 1));
-	memset(res, 0, count + 1);
+	ft_memset(res, 0, count + 1);
 	i = 0;
 	count = 0;
 	while (i < len)

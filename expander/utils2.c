@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils3.c                                           :+:      :+:    :+:   */
+/*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 20:23:19 by nando             #+#    #+#             */
-/*   Updated: 2025/07/10 23:43:57 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/19 18:13:14 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,19 @@ void	swap_name(t_file_node *current, t_file_node *next)
 	tmp = current->name;
 	current->name = next->name;
 	next->name = tmp;
+}
+
+void	remove_quotes_from_redirs(t_command *cmd)
+{
+	t_list			*redir_list;
+	t_redirection	*redir;
+
+	redir_list = cmd->redirections;
+	while (redir_list)
+	{
+		redir = (t_redirection *)redir_list->content;
+		if (redir->filename)
+			redir->filename = remove_all_quote(redir->filename);
+		redir_list = redir_list->next;
+	}
 }

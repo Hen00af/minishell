@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:40:45 by nando             #+#    #+#             */
-/*   Updated: 2025/07/11 16:40:52 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/19 18:30:28 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	search_env_value(t_var *var, t_shell *shell)
 
 	env = shell->env;
 	var->value = NULL;
-	if (strcmp(var->key, "?") == 0)
+	if (ft_strcmp(var->key, "?") == 0)
 	{
 		var->value = ft_itoa(shell->exit_status);
 		return ;
