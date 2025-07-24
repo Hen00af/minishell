@@ -6,11 +6,12 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:55:03 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/22 10:55:36 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/24 17:18:33 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
+
 int	is_builtin(const char *cmd)
 {
 	if (!cmd)
