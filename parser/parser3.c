@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 11:06:15 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/24 17:24:32 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/24 18:09:47 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,3 @@ t_ast	*create_empty_command(t_token *cur)
 	cmd->argv[0] = NULL;
 	return (cmd);
 }
-
