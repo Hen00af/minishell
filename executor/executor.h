@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 17:18:58 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/24 18:17:28 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/24 18:36:59 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int								is_builtin(const char *cmd);
 int								exec_builtin(char **argv, t_env *env);
 int								exec_single_builtin(t_command *cmd,
 									t_exec *exec, t_shell *shell);
-
+int								handle_child_and_parent(t_exec *exec,
+									t_command *cmd, t_shell *shell,
+									int has_next);
 
 #endif

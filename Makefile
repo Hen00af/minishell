@@ -1,5 +1,5 @@
 CC      := cc
-CFLAGS  := -O2 -no-pie
+CFLAGS  := -O2 -Wall -Wextra -Werror
 INCLUDES := -Iinclude
 
 NAME    := minishell
