@@ -17,7 +17,6 @@ SRC_DIRS := \
 	./
 
 SRCS := $(foreach dir, $(SRC_DIRS), $(wildcard $(dir)/*.c))
-
 OBJS := $(patsubst %.c, $(OBJDIR)/%.o, $(SRCS))
 
 LIBS := ./utils/fprintf/fprintf.a ./libft/libft.a -lreadline

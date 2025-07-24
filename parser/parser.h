@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 20:32:34 by shattori          #+#    #+#             */
-/*   Updated: 2025/06/23 15:14:24 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/22 11:08:53 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,8 @@ t_ast					*parse_simple_command(t_token **cur);
 void					print_ast(t_ast *node, int depth);
 void					free_ast(t_ast *node);
 t_ast					*parse_redirection(t_token **cur, t_ast *cmd);
-
+int						append_argv(t_ast *cmd, char *word);
+t_ast					*create_empty_command(t_token *cur);
+t_ast					*parse_simple_command(t_token **cur);
+int						is_redirection_token(t_token *tok);
 #endif
