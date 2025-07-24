@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 23:28:24 by nando             #+#    #+#             */
-/*   Updated: 2025/07/19 18:05:13 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/19 18:30:17 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*remove_all_quote(char *arg)
 	len = ft_strlen(arg);
 	count = count_quote_in_arg(arg, len);
 	res = malloc(sizeof(char) * (count + 1));
-	memset(res, 0, count + 1);
+	ft_memset(res, 0, count + 1);
 	i = 0;
 	count = 0;
 	while (i < len)

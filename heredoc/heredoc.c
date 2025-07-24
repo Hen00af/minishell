@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/07/12 13:07:24 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/19 18:31:22 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	write_heredoc_lines(int fd, char *clean_delimiter, int need_expand,
 			free(line);
 			break ;
 		}
-		if (strcmp(line, clean_delimiter) == 0)
+		if (ft_strcmp(line, clean_delimiter) == 0)
 		{
 			free(line);
 			break ;

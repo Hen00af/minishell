@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:18:47 by nando             #+#    #+#             */
-/*   Updated: 2025/07/09 10:52:05 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/19 18:37:45 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 
 void	parent_error(t_lexer *ctx)
 {
-	ft_printf("parent not closed.\n");
+	printf("parent not closed.\n");
 	free_buf(&ctx->buf);
 	free_tokens(ctx->head);
 }
 
 void	quate_error(t_lexer *ctx)
 {
-	ft_printf("quate not closed.\n");
+	printf("quate not closed.\n");
 	free_buf(&ctx->buf);
 	free_tokens(ctx->head);
 }
