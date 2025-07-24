@@ -50,12 +50,18 @@ int								exec_simple_command(t_command *cmd,
 int								exec_subshell(t_command *cmd, t_shell *shell);
 void							handle_redirections(t_command *cmd);
 int								handle_redirections_builtin(t_command *cmd);
-int								open_redirection_file_builtin(
-									t_redirection *redir, char *last_tmpfile);
+int								open_redirection_file_builtin(t_redirection *redir,
+									char *last_tmpfile);
 int								apply_redirection_builtin(int fd, int type);
 int								is_builtin(const char *cmd);
 int								exec_builtin(char **argv, t_env *env);
 int								exec_single_builtin(t_command *cmd,
 									t_exec *exec, t_shell *shell);
+void							exec_child_process(t_exec *exec, t_command *cmd,
+									t_shell *shell, int has_next);
+int								handle_child_and_parent(t_exec *exec,
+									t_command *cmd, t_shell *shell,
+									int has_next);
+
 
 #endif
