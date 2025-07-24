@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 17:44:15 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/24 17:45:05 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/25 00:07:32 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 void	exec_child_process(t_exec *exec, t_command *cmd, t_shell *shell,
 		int has_next)
 {
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	if (exec->prev_fd != -1)
 		dup2(exec->prev_fd, STDIN_FILENO);
 	if (has_next)
@@ -34,8 +36,8 @@ void	exec_child_process(t_exec *exec, t_command *cmd, t_shell *shell,
 	exit(exec_simple_command(cmd, shell));
 }
 
-int	handle_child_and_parent(t_exec *exec, t_command *cmd,
-		t_shell *shell, int has_next)
+int	handle_child_and_parent(t_exec *exec, t_command *cmd, t_shell *shell,
+		int has_next)
 {
 	exec->pid = fork();
 	if (exec->pid == -1)
