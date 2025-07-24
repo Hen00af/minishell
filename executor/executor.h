@@ -57,6 +57,8 @@ int								is_builtin(const char *cmd);
 int								exec_builtin(char **argv, t_env *env);
 int								exec_single_builtin(t_command *cmd,
 									t_exec *exec, t_shell *shell);
-
+int								handle_child_and_parent(t_exec *exec,
+									t_command *cmd, t_shell *shell,
+									int has_next);
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:28:29 by nando             #+#    #+#             */
-/*   Updated: 2025/07/10 19:39:29 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/24 18:03:14 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-int	process_unset_arg(char *arg, t_env **env, int *status)
+int	process_unset_arg(char *arg, t_env **env)
 {
 	t_env	*prev;
 
@@ -38,7 +38,6 @@ int	process_unset_arg(char *arg, t_env **env, int *status)
 int	builtin_unset(char **args, t_env **env)
 {
 	int		i;
-	t_env	*prev;
 	int		status;
 
 	i = 1;
@@ -47,7 +46,7 @@ int	builtin_unset(char **args, t_env **env)
 		return (status);
 	while (args[i])
 	{
-		if (process_unset_arg(args[i], env, &status) == NG)
+		if (process_unset_arg(args[i], env) == NG)
 			status = NG;
 		i++;
 	}

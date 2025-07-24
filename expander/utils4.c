@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 23:28:24 by nando             #+#    #+#             */
-/*   Updated: 2025/07/19 18:30:17 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/24 18:02:02 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ void	expand_and_add_to_output(t_expand *ctx, t_shell *shell, int state,
 	char	*after;
 	char	*old_out;
 
+	after = NULL;
 	if (num == 1 || num == 2)
 		after = expand_all_type(buf_flush(&ctx->buf), shell, ctx);
 	else if (num == 3)
