@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 20:20:02 by nando             #+#    #+#             */
-/*   Updated: 2025/07/19 18:12:30 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/24 17:58:59 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,7 @@ char						*expand_all_type(char *arg, t_shell *shell,
 void						expander(t_andor *ast, t_shell *shell);
 void						expand_andor_arguments(t_andor *ast,
 								t_shell *shell);
-void						expand_command_args(t_command *cmd, t_shell *shell,
-								t_list *cmd_list);
+void						expand_command_args(t_command *cmd, t_shell *shell);
 char						*expand_string(char *arg, t_shell *shell,
 								t_expand *ctx);
 bool						is_match(const char *pattern, const char *str,

@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/07/19 18:31:22 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/24 18:04:28 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ char	*run_heredoc(char *delimiter, t_shell *shell)
 {
 	char	*path;
 	int		fd;
-	char	*line;
 	char	*clean_delimiter;
 	int		need_expand;
 
@@ -89,7 +88,7 @@ char	*run_heredoc(char *delimiter, t_shell *shell)
 	return (path);
 }
 
-static int	handle_heredoc(t_tmp *ctx, t_command *cmd, t_redirection *redir,
+int	handle_heredoc(t_tmp *ctx, t_command *cmd, t_redirection *redir,
 		t_shell *shell)
 {
 	if (ctx->flag)

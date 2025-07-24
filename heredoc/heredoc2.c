@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:02:08 by nando             #+#    #+#             */
-/*   Updated: 2025/07/11 10:26:50 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/24 18:04:15 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ int	is_include_quote(char *delimiter)
 	char	start;
 	char	end;
 
+	len = ft_strlen(delimiter);
 	start = delimiter[0];
 	end = delimiter[len - 1];
-	len = ft_strlen(delimiter);
 	if ((start == '\"' && end == '\"') || (start == '\'' && end == '\''))
 		return (0);
 	return (1);

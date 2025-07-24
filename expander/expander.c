@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 14:30:21 by nando             #+#    #+#             */
-/*   Updated: 2025/07/24 17:10:54 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/24 18:00:24 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*expand_string(char *arg, t_shell *shell, t_expand *ctx)
 	return (ctx->output);
 }
 
-void	expand_command_args(t_command *cmd, t_shell *shell, t_list *cmd_list)
+void	expand_command_args(t_command *cmd, t_shell *shell)
 {
 	t_expand	ctx;
 	int			i;
@@ -87,8 +87,6 @@ void	expand_command_args(t_command *cmd, t_shell *shell, t_list *cmd_list)
 void	expander(t_andor *ast, t_shell *shell)
 {
 	t_list			*cmd_node;
-	t_list			*redir_list;
-	t_redirection	*redirs;
 	t_command		*cmd;
 
 	if (!ast || ast->type != ANDOR_PIPELINE || !ast->pipeline
@@ -100,7 +98,7 @@ void	expander(t_andor *ast, t_shell *shell)
 		cmd = (t_command *)cmd_node->content;
 		remove_quotes_from_redirs(cmd);
 		if (cmd->argv && cmd->argv[0])
-			expand_command_args(cmd, shell, ast->pipeline->commands);
+			expand_command_args(cmd, shell);
 		if (cmd->subshell_ast)
 			expand_andor_arguments(cmd->subshell_ast, shell);
 		cmd_node = cmd_node->next;
