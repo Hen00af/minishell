@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:07:55 by nando             #+#    #+#             */
-/*   Updated: 2025/07/25 01:10:53 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/25 02:11:02 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "builtin/builtin.h"
 # include "executor/executor.h"
 # include "expander/expander.h"
+# include "get_next_line/get_next_line.h"
 # include "heredoc/heredoc.h"
 # include "lexer/lexer.h"
 # include "libft/libft.h"
