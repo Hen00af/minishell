@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:08:04 by nando             #+#    #+#             */
-/*   Updated: 2025/07/25 05:50:03 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/25 06:55:16 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	prompt(t_shell *shell)
 		return (0);
 	}
 	expand_and_execute(linearized_ast, shell);
+	free_andor_ast(linearized_ast);
 	free(cmd);
 	return (1);
 }
