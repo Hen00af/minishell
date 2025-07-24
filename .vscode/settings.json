@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "executor.h": "c"
+        "executor.h": "c",
+        "signal.h": "c",
+        "readline.h": "c",
+        "stdlib.h": "c"
     }
 }
