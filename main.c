@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:08:04 by nando             #+#    #+#             */
-/*   Updated: 2025/07/25 04:13:50 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/25 05:41:49 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int	main(int ac, char **av, char **envp)
 		if (!prompt(&shell))
 			continue ;
 	}
+	rl_clear_history();
 	free_env_list(shell.env);
 	return (0);
 }
