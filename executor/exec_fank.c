@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/24 17:27:21 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/24 17:33:25 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,29 @@ static void	exec_child_process(t_exec *exec, t_command *cmd, t_shell *shell,
 	exit(exec_simple_command(cmd, shell));
 }
 
+static int	handle_child_and_parent(t_exec *exec, t_command *cmd,
+		t_shell *shell, int has_next)
+{
+	exec->pid = fork();
+	if (exec->pid == -1)
+		return (perror("fork"), 1);
+	if (exec->pid == 0)
+		exec_child_process(exec, cmd, shell, has_next);
+	if (exec->prev_fd != -1)
+		close(exec->prev_fd);
+	if (has_next)
+		close(exec->pipefd[1]);
+	if (has_next)
+		exec->prev_fd = exec->pipefd[0];
+	else
+		exec->prev_fd = -1;
+	return (0);
+}
+
 static int	exec_pipeline_loop(t_list *cmd_list, t_exec *exec, t_shell *shell)
 {
 	t_command	*cmd;
+	int			has_next;
 
 	while (cmd_list)
 	{
@@ -46,18 +66,11 @@ static int	exec_pipeline_loop(t_list *cmd_list, t_exec *exec, t_shell *shell)
 			cmd_list = cmd_list->next;
 			continue ;
 		}
-		if (cmd_list->next && pipe(exec->pipefd) == -1)
+		has_next = (cmd_list->next != NULL);
+		if (has_next && pipe(exec->pipefd) == -1)
 			return (perror("pipe"), 1);
-		exec->pid = fork();
-		if (exec->pid == -1)
-			return (perror("fork"), 1);
-		else if (exec->pid == 0)
-			exec_child_process(exec, cmd, shell, !!cmd_list->next);
-		if (exec->prev_fd != -1)
-			close(exec->prev_fd);
-		if (cmd_list->next)
-			close(exec->pipefd[1]);
-		exec->prev_fd = cmd_list->next ? exec->pipefd[0] : -1;
+		if (handle_child_and_parent(exec, cmd, shell, has_next))
+			return (1);
 		cmd_list = cmd_list->next;
 	}
 	return (0);
