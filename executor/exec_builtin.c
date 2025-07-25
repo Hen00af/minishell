@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:55:03 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/24 17:18:33 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/25 09:53:26 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,24 @@ int	is_builtin(const char *cmd)
 		|| !ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "exit"));
 }
 
-int	exec_builtin(char **argv, t_env *env)
+int	exec_builtin(char **argv, t_shell *shell)
 {
 	if (!argv || !argv[0])
 		return (1);
 	if (!ft_strcmp(argv[0], "echo"))
-		return (builtin_echo(argv, env));
+		return (builtin_echo(argv, shell->env));
 	else if (!ft_strcmp(argv[0], "cd"))
-		return (builtin_cd(argv, env));
+		return (builtin_cd(argv, shell->env));
 	else if (!ft_strcmp(argv[0], "pwd"))
-		return (builtin_pwd(argv, env));
+		return (builtin_pwd(argv, shell->env));
 	else if (!ft_strcmp(argv[0], "export"))
-		return (builtin_export(argv, &env));
+		return (builtin_export(argv, &shell->env));
 	else if (!ft_strcmp(argv[0], "unset"))
-		return (builtin_unset(argv, &env));
+		return (builtin_unset(argv, &shell->env));
 	else if (!ft_strcmp(argv[0], "env"))
-		return (builtin_env(argv, env));
+		return (builtin_env(argv, shell->env));
 	else if (!ft_strcmp(argv[0], "exit"))
-		return (builtin_exit(argv));
+		return (builtin_exit(argv, shell));
 	return (1);
 }
 
@@ -51,7 +51,7 @@ int	exec_single_builtin(t_command *cmd, t_exec *exec, t_shell *shell)
 		dup2(exec->out, STDOUT_FILENO);
 		return (1);
 	}
-	shell->exit_status = exec_builtin(cmd->argv, shell->env);
+	shell->exit_status = exec_builtin(cmd->argv, shell);
 	dup2(exec->in, STDIN_FILENO);
 	dup2(exec->out, STDOUT_FILENO);
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:13 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/24 17:19:31 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/25 07:09:41 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,6 @@ t_andor						*linearize_simple_command(t_ast *ast,
 								t_shell *shell);
 t_andor						*linearizer(t_ast *ast, t_shell *shell);
 t_andor						*linearize_pipeline(t_ast *ast, t_shell *shell);
+void						free_andor_ast(t_andor *node);
 
 #endif // LINEARIZER
