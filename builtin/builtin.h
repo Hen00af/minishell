@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 19:32:05 by nando             #+#    #+#             */
-/*   Updated: 2025/07/10 19:32:07 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/25 09:44:42 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,5 @@ int						builtin_pwd(char **args, t_env *env);
 int						builtin_env(char **args, t_env *env);
 int						builtin_export(char **args, t_env **env);
 int						builtin_unset(char **args, t_env **env);
-int						builtin_exit(char **args);
-
+int						builtin_exit(char **args, t_shell *shell);
 #endif // BUILTIN_H

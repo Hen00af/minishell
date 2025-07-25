@@ -3,26 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 21:31:05 by nando             #+#    #+#             */
-/*   Updated: 2025/07/05 02:44:40 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/25 09:23:34 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	free_env_list(t_env *env_list)
+void	free_env_list(t_env *env)
 {
-	t_env	*next;
+	t_env	*tmp;
 
-	while (env_list)
+	while (env)
 	{
-		next = env_list->next;
-		free(env_list->key);
-		free(env_list->value);
-		free(env_list);
-		env_list = next;
+		tmp = env->next;
+		if (env->key)
+			free(env->key);
+		if (env->value)
+			free(env->value);
+		if (env)
+			free(env);
+		env = tmp;
 	}
 }
 

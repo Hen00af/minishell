@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 17:23:44 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/24 17:23:57 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/25 08:59:41 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int	append_argv(t_ast *cmd, char *word)
 	int		argc;
 	char	**new_argv;
 
+	if (!word)
+		return (1);
 	argc = 0;
 	while (cmd->argv && cmd->argv[argc])
 		argc++;
