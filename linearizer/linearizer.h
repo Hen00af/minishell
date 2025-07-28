@@ -81,5 +81,6 @@ t_andor						*linearize_simple_command(t_ast *ast,
 								t_shell *shell);
 t_andor						*linearizer(t_ast *ast, t_shell *shell);
 t_andor						*linearize_pipeline(t_ast *ast, t_shell *shell);
+void						free_andor_ast(t_andor *node);
 
 #endif // LINEARIZER
