@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 21:19:52 by nando             #+#    #+#             */
-/*   Updated: 2025/07/24 19:34:52 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/28 11:53:18 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,8 @@ t_env					*init_env(char **envp);
 char					**env_to_array(t_env *list_head);
 void					assign_shell_var(char *var_str, t_env *list_head);
 int						xclose(int *fd);
+int						has_syntax_error(t_token *tokens);
+int						print_syntax_error(const char *token_text,
+							t_tokentype type);
 
 #endif // UTILS_H

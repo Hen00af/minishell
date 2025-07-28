@@ -5,6 +5,8 @@
         "readline.h": "c",
         "stdlib.h": "c",
         "utils.h": "c",
-        "minishell.h": "c"
+        "minishell.h": "c",
+        "linearizer.h": "c",
+        "lexer.h": "c"
     }
 }

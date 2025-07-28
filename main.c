@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:08:04 by nando             #+#    #+#             */
-/*   Updated: 2025/07/25 05:50:03 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/28 11:13:19 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ t_andor	*make_linearized_ast(char *cmd, t_shell *shell)
 	lex = lexer(cmd);
 	if (!lex)
 		return (NULL);
+	shell->exit_status = has_syntax_error(lex);
+	if (shell->exit_status)
+	{
+		free_tokens(lex);
+		return (NULL);
+	}
 	ast = start_parse(lex);
 	free_tokens(lex);
 	if (!ast)
@@ -53,6 +59,7 @@ int	prompt(t_shell *shell)
 		return (0);
 	}
 	expand_and_execute(linearized_ast, shell);
+	free_andor_ast(linearized_ast);
 	free(cmd);
 	return (1);
 }
