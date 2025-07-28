@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/07/28 13:19:03 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/28 16:31:40 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ char	*run_heredoc(char *delimiter, t_shell *shell)
 	int		fd;
 	char	*clean_delimiter;
 	int		need_expand;
+	pid_t	pid;
+	int		status;
 
 	g_ack_status = 0;
 	need_expand = is_include_quote(delimiter);
@@ -76,15 +78,33 @@ char	*run_heredoc(char *delimiter, t_shell *shell)
 		free(clean_delimiter);
 		return (NULL);
 	}
-	write_heredoc_lines(fd, clean_delimiter, need_expand, shell);
-	if (g_ack_status == 1)
+	pid = fork();
+	if (pid < 0)
 	{
+		perror("fork");
+		free(clean_delimiter);
+		free(path);
+		close(fd);
+		return (NULL);
+	}
+	else if (pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
+		write_heredoc_lines(fd, clean_delimiter, need_expand, shell);
+		close(fd);
+		free(clean_delimiter);
+		_exit(0);
+	}
+	free(clean_delimiter);
+	close(fd);
+	waitpid(pid, &status, 0);
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	{
+		g_ack_status = 1;
 		unlink(path);
 		free(path);
 		path = NULL;
 	}
-	free(clean_delimiter);
-	close(fd);
 	return (path);
 }
 
