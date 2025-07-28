@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/07/28 16:31:40 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/28 17:23:00 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,50 +62,42 @@ int	open_heredoc_file(char **path)
 
 char	*run_heredoc(char *delimiter, t_shell *shell)
 {
-	char	*path;
-	int		fd;
-	char	*clean_delimiter;
-	int		need_expand;
-	pid_t	pid;
-	int		status;
+	t_heredoc_file		file;
+	char				*clean_delimiter;
+	int					need_expand;
+	pid_t				pid;
+	struct sigaction	sa;
+	int					status;
 
+	sa.sa_sigaction = sigint_handler;
+	// sa.sa_flags = SA_RESTART;
+	// sigemptyset(&sa.sa_mask);
 	g_ack_status = 0;
 	need_expand = is_include_quote(delimiter);
-	clean_delimiter = remove_quote(delimiter);
-	fd = open_heredoc_file(&path);
-	if (fd < 0)
-	{
-		free(clean_delimiter);
+	file = open_and_prepare_file(delimiter, &clean_delimiter);
+	if (file.fd < 0)
 		return (NULL);
-	}
+	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid < 0)
-	{
-		perror("fork");
-		free(clean_delimiter);
-		free(path);
-		close(fd);
-		return (NULL);
-	}
+		return (handle_fork_error(file.fd, clean_delimiter, file.path));
 	else if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
-		write_heredoc_lines(fd, clean_delimiter, need_expand, shell);
-		close(fd);
-		free(clean_delimiter);
-		_exit(0);
+		child_heredoc_process(file.fd, clean_delimiter, need_expand, shell);
 	}
 	free(clean_delimiter);
-	close(fd);
+	close(file.fd);
 	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 	{
+		sigaction(SIGINT, &sa, NULL);
 		g_ack_status = 1;
-		unlink(path);
-		free(path);
-		path = NULL;
+		unlink(file.path);
+		free(file.path);
+		return (NULL);
 	}
-	return (path);
+	return (file.path);
 }
 
 int	handle_heredoc(t_tmp *ctx, t_command *cmd, t_redirection *redir,

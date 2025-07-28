@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:59:47 by nando             #+#    #+#             */
-/*   Updated: 2025/06/26 15:01:13 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/28 17:12:51 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 
 extern volatile sig_atomic_t	g_ack_status;
 
+void							sigint_handler(int sig_number, siginfo_t *info,
+									void *context);
 void							init_signal(void);
 
 #endif
