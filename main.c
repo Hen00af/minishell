@@ -6,10 +6,10 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:08:04 by nando             #+#    #+#             */
-/*   Updated: 2025/07/28 11:13:19 by shattori         ###   ########.fr       */
-/*   Updated: 2025/07/25 06:39:28 by nando            ###   ########.fr       */
-/*   Updated: 2025/07/25 06:55:16 by nando            ###   ########.fr       */
-/*   Updated: 2025/07/25 06:31:17 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/28 13:15:19 by shattori         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 /*   Updated: 2025/07/25 09:15:49 by shattori         ###   ########.fr       */
 /*   Updated: 2025/07/28 12:16:19 by shattori         ###   ########.fr       */
 /*                                                                            */
@@ -26,13 +26,14 @@ t_andor	*make_linearized_ast(char *cmd, t_shell *shell, t_ast **ast)
 
 	lex = lexer(cmd);
 	if (!lex)
+		return (NULL);
 	shell->exit_status = has_syntax_error(lex);
 	if (shell->exit_status)
 	{
 		free_tokens(lex);
 		return (NULL);
 	}
-	ast = start_parse(lex);
+	*ast = start_parse(lex);
 	free_tokens(lex);
 	if (!*ast)
 		return (NULL);
@@ -62,7 +63,8 @@ int	prompt(t_shell *shell)
 	linearized_ast = make_linearized_ast(cmd, shell, &ast);
 	if (!linearized_ast)
 	{
-		free(cmd);
+		if (cmd)
+			free(cmd);
 		return (0);
 	}
 	expand_and_execute(linearized_ast, shell);
