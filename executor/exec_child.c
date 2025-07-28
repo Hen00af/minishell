@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_child.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 17:44:15 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/25 09:51:25 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/28 17:38:10 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void	exec_child_process(t_exec *exec, t_command *cmd, t_shell *shell,
 		close(exec->pipefd[0]);
 		close(exec->pipefd[1]);
 	}
-	handle_redirections(cmd);
+	if (!g_ack_status)
+		handle_redirections(cmd);
 	if (cmd->subshell_ast)
 		exit(exec_subshell(cmd, shell));
 	else if (is_builtin(cmd->argv[0]))

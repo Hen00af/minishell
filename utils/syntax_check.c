@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 11:07:27 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/28 13:07:54 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/28 19:16:33 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	check_redir_syntax(t_token *tok)
 	if (!tok->next)
 		return (print_syntax_error("newline", TOK_WORD));
 	if (tok->next->type != TOK_WORD && tok->next->type != TOK_ASSIGN_WORD)
-		return (print_syntax_error(tok->next->text, tok->next->type));
+		return (print_syntax_error(tok->next->text, tok->type));
 	return (0);
 }
 

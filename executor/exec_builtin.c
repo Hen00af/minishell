@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:55:03 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/25 09:53:26 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/28 18:24:09 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,5 @@ int	exec_single_builtin(t_command *cmd, t_exec *exec, t_shell *shell)
 	shell->exit_status = exec_builtin(cmd->argv, shell);
 	dup2(exec->in, STDIN_FILENO);
 	dup2(exec->out, STDOUT_FILENO);
-	return (1);
+	return (shell->exit_status);
 }
