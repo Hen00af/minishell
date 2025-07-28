@@ -61,5 +61,4 @@ t_ast					*create_empty_command(t_token *cur);
 t_ast					*parse_simple_command(t_token **cur);
 int						is_redirection_token(t_token *tok);
 void					free_ast(t_ast *node);
-
 #endif

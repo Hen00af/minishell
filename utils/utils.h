@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 21:19:52 by nando             #+#    #+#             */
-/*   Updated: 2025/07/24 19:34:52 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/25 09:31:31 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,6 @@ t_env					*init_env(char **envp);
 char					**env_to_array(t_env *list_head);
 void					assign_shell_var(char *var_str, t_env *list_head);
 int						xclose(int *fd);
+void					safe_exit(t_shell *shell, t_andor *ast, int status);
 
 #endif // UTILS_H

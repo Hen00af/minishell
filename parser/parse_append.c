@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 17:23:44 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/24 17:23:57 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/25 10:00:22 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,15 @@ static char	**copy_argv(char **argv, int argc)
 	return (new_argv);
 }
 
-static void	free_argv(char **argv)
+void	free_argv(char **argv)
 {
 	int	i;
 
+	if (!argv)
+		return ;
 	i = 0;
-	while (argv && argv[i])
-	{
-		free(argv[i]);
-		i++;
-	}
+	while (argv[i])
+		free(argv[i++]);
 	free(argv);
 }
 
@@ -47,6 +46,8 @@ int	append_argv(t_ast *cmd, char *word)
 	int		argc;
 	char	**new_argv;
 
+	if (!word)
+		return (1);
 	argc = 0;
 	while (cmd->argv && cmd->argv[argc])
 		argc++;
@@ -54,6 +55,11 @@ int	append_argv(t_ast *cmd, char *word)
 	if (!new_argv)
 		return (1);
 	new_argv[argc] = ft_strdup(word);
+	if (!new_argv[argc])
+	{
+		free_argv(new_argv);
+		return (1);
+	}
 	new_argv[argc + 1] = NULL;
 	free_argv(cmd->argv);
 	cmd->argv = new_argv;
