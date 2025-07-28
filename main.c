@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:08:04 by nando             #+#    #+#             */
-/*   Updated: 2025/07/28 17:54:36 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/28 19:28:44 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ t_andor	*make_linearized_ast(char *cmd, t_shell *shell, t_ast **ast)
 	if (!lex)
 		return (NULL);
 	shell->exit_status = has_syntax_error(lex);
+	if (shell->exit_status != 0)
+		add_history(cmd);
 	if (shell->exit_status)
 	{
 		free_tokens(lex);
