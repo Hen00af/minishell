@@ -7,6 +7,7 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:16:11 by shattori          #+#    #+#             */
 /*   Updated: 2025/07/25 06:24:40 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/25 09:03:11 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +80,7 @@ t_ast	*parse_redirection(t_token **cur, t_ast *cmd)
 	else
 		return (NULL);
 	*cur = (*cur)->next;
-	if (!*cur || (*cur)->type != TOK_WORD)
+	if (!*cur || (*cur)->type != TOK_WORD || !(*cur)->text)
 		return (NULL);
 	redir = calloc(1, sizeof(t_ast));
 	if (!redir)

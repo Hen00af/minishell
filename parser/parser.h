@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 20:32:34 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/24 17:24:18 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/25 06:02:31 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,5 @@ int						append_argv(t_ast *cmd, char *word);
 t_ast					*create_empty_command(t_token *cur);
 t_ast					*parse_simple_command(t_token **cur);
 int						is_redirection_token(t_token *tok);
+void					free_ast(t_ast *node);
 #endif

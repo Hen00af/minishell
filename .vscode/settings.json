@@ -8,5 +8,6 @@
         "minishell.h": "c",
         "linearizer.h": "c",
         "lexer.h": "c"
+        "random": "c"
     }
 }

@@ -3,10 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   linearizer.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:13 by shattori          #+#    #+#             */
 /*   Updated: 2025/07/25 06:44:46 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/25 06:54:43 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/25 06:00:17 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +71,7 @@ typedef struct s_andor
 	};
 }							t_andor;
 
+void						free_andor_ast(t_andor *node);
 t_andor						*linearize_andor(t_ast *ast, t_shell *shell);
 t_redir_type				map_redir_type(t_node_type type);
 t_command					*linearize_simple_command_to_command(t_ast *ast,

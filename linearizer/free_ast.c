@@ -1,24 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_linearizer.c                                  :+:      :+:    :+:   */
+/*   free_ast.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/25 05:50:48 by nando             #+#    #+#             */
-/*   Updated: 2025/07/25 07:07:17 by shattori         ###   ########.fr       */
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 05:50:48 by nando             #+#    #+#             */
-/*   Updated: 2025/07/25 06:54:37 by nando            ###   ########.fr       */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/25 05:50:48 by nando             #+#    #+#             */
-/*   Updated: 2025/07/25 07:09:19 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/25 05:51:27 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "linearizer.h"
+
+void		free_andor_ast(t_andor *node);
 
 static void	free_redirections(t_list *redir_list)
 {

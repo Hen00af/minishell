@@ -3,24 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:08:04 by nando             #+#    #+#             */
 /*   Updated: 2025/07/28 11:13:19 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/25 06:39:28 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/25 06:55:16 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/25 06:31:17 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/25 09:15:49 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./minishell.h"
 
-t_andor	*make_linearized_ast(char *cmd, t_shell *shell)
+t_andor	*make_linearized_ast(char *cmd, t_shell *shell, t_ast **ast)
 {
 	t_token	*lex;
-	t_ast	*ast;
 	t_andor	*linearized_ast;
 
 	lex = lexer(cmd);
 	if (!lex)
-		return (NULL);
 	shell->exit_status = has_syntax_error(lex);
 	if (shell->exit_status)
 	{
@@ -29,7 +31,7 @@ t_andor	*make_linearized_ast(char *cmd, t_shell *shell)
 	}
 	ast = start_parse(lex);
 	free_tokens(lex);
-	if (!ast)
+	if (!*ast)
 		return (NULL);
 	add_history(cmd);
 	linearized_ast = linearizer(ast, shell);
@@ -48,17 +50,20 @@ int	prompt(t_shell *shell)
 {
 	char	*cmd;
 	t_andor	*linearized_ast;
+	t_ast	*ast;
 
+	ast = NULL;
 	cmd = run_readline(shell);
 	if (!cmd)
 		return (0);
-	linearized_ast = make_linearized_ast(cmd, shell);
+	linearized_ast = make_linearized_ast(cmd, shell, &ast);
 	if (!linearized_ast)
 	{
 		free(cmd);
 		return (0);
 	}
 	expand_and_execute(linearized_ast, shell);
+	free_ast(ast);
 	free_andor_ast(linearized_ast);
 	free(cmd);
 	return (1);
