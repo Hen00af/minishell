@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:08:04 by nando             #+#    #+#             */
-/*   Updated: 2025/07/28 13:15:19 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/28 17:54:36 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ t_andor	*make_linearized_ast(char *cmd, t_shell *shell, t_ast **ast)
 	linearized_ast = linearizer(*ast, shell);
 	if (!linearized_ast)
 		return (NULL);
+	if (g_ack_status)
+		return (NULL);
 	return (linearized_ast);
 }
 
@@ -57,6 +59,7 @@ int	prompt(t_shell *shell)
 	t_ast	*ast;
 
 	ast = NULL;
+	g_ack_status = 0;
 	cmd = run_readline(shell);
 	if (!cmd)
 		return (0);

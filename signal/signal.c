@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:59:39 by nando             #+#    #+#             */
-/*   Updated: 2025/07/25 03:59:38 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/28 17:14:06 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 volatile sig_atomic_t	g_ack_status = 0;
 
-static void	sigint_handler(int sig_number, siginfo_t *info, void *context)
+void	sigint_handler(int sig_number, siginfo_t *info, void *context)
 {
 	(void)sig_number;
 	(void)info;

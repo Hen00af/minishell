@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 12:54:02 by nando             #+#    #+#             */
-/*   Updated: 2025/07/28 13:19:07 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/28 17:05:47 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ typedef struct s_tmp
 	int							flag;
 }								t_tmp;
 
+typedef struct s_heredoc_file
+{
+	int							fd;
+	char						*path;
+}								t_heredoc_file;
+
 char							*append_str(char *dst, const char *src);
 char							*build_tmp_path(const char *count_str);
 char							*generate_tmpfile_path(void);
@@ -33,6 +39,12 @@ int								is_include_quote(char *delimiter);
 void							write_heredoc_lines(int fd,
 									char *clean_delimiter, int need_expand,
 									t_shell *shell);
+void							child_heredoc_process(int fd, char *delimiter,
+									int expand, t_shell *shell);
+char							*handle_fork_error(int fd, char *delimiter,
+									char *path);
+t_heredoc_file					open_and_prepare_file(char *delimiter,
+									char **clean_delimiter);
 int								open_heredoc_file(char **path);
 char							*run_heredoc(char *delimiter, t_shell *shell);
 int								handle_heredoc(t_tmp *ctx, t_command *cmd,
