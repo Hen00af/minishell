@@ -3,6 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_linearizer.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/25 05:50:48 by nando             #+#    #+#             */
+/*   Updated: 2025/07/25 06:54:37 by nando            ###   ########.fr       */
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 05:50:48 by nando             #+#    #+#             */
