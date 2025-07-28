@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 05:32:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/25 05:51:59 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:08:29 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ static char	*get_input_line(t_shell *shell)
 		free(cwd);
 		if (!prompt)
 			return (NULL);
-		cmd = readline(prompt);
+		write(2, prompt, ft_strlen(prompt) + 1);
+		cmd = readline(NULL);
 		free(prompt);
 		return (cmd);
 	}
