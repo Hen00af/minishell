@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 17:44:15 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/25 05:27:40 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/25 09:51:25 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	exec_child_process(t_exec *exec, t_command *cmd, t_shell *shell,
 	if (cmd->subshell_ast)
 		exit(exec_subshell(cmd, shell));
 	else if (is_builtin(cmd->argv[0]))
-		exit(exec_builtin(cmd->argv, shell->env));
+		exit(exec_builtin(cmd->argv, shell));
 	exit(exec_simple_command(cmd, shell));
 }
 

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parcer.c                                           :+:      :+:    :+:   */
+/*   parser2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 20:21:45 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/22 11:06:12 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/25 09:12:55 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ t_ast	*parse_command(t_token **cur)
 		}
 		while (*cur && (*cur)->type == TOK_WORD)
 		{
+			if (!(*cur)->text)
+				return (NULL);
 			if (append_argv(cmd_leaf, (*cur)->text))
 				return (NULL);
 			*cur = (*cur)->next;
