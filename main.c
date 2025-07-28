@@ -6,6 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:08:04 by nando             #+#    #+#             */
+/*   Updated: 2025/07/25 06:39:28 by nando            ###   ########.fr       */
 /*   Updated: 2025/07/25 06:55:16 by nando            ###   ########.fr       */
 /*   Updated: 2025/07/25 06:31:17 by nando            ###   ########.fr       */
 /*   Updated: 2025/07/25 09:15:49 by shattori         ###   ########.fr       */
@@ -28,7 +29,6 @@ t_andor	*make_linearized_ast(char *cmd, t_shell *shell, t_ast **ast)
 		return (NULL);
 	add_history(cmd);
 	linearized_ast = linearizer(ast, shell);
-	// free_ast(ast);
 	if (!linearized_ast)
 		return (NULL);
 	return (linearized_ast);
