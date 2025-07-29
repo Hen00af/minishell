@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 17:18:58 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/29 19:08:20 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/29 20:33:24 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_exec
 	pid_t						pid;
 	int							in;
 	int							out;
+	struct sigaction			old;
 }								t_exec;
 
 int								executor(t_andor *node, t_shell *shell);
@@ -48,9 +49,9 @@ int								env_size(t_env *env);
 char							*ft_strjoin_3(char *s1, char *s2, char *s3);
 char							*search_path(char *cmd, t_env *env);
 int								exec_simple_command(t_command *cmd,
-									t_shell *shell);
+									t_shell *shell, t_exec *exec);
 int								exec_subshell(t_command *cmd, t_shell *shell,
-									struct sigaction old);
+									struct sigaction *old);
 void							handle_redirections(t_command *cmd);
 int								handle_redirections_builtin(t_command *cmd);
 int								open_redirection_file_builtin(t_redirection *redir,
@@ -63,5 +64,6 @@ int								exec_single_builtin(t_command *cmd,
 int								handle_child_and_parent(t_exec *exec,
 									t_command *cmd, t_shell *shell,
 									int has_next);
-
+int								exec_child_process(t_exec *exec, t_command *cmd,
+									t_shell *shell, int has_next);
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_fank.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/29 19:39:00 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/29 21:29:38 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static int	exec_pipeline_loop(t_list *cmd_list, t_exec *exec, t_shell *shell)
 	t_command	*cmd;
 	int			has_next;
 
-	printf("exec_pipeliune_loop\n");
 	while (cmd_list)
 	{
 		cmd = cmd_list->content;
@@ -29,8 +28,11 @@ static int	exec_pipeline_loop(t_list *cmd_list, t_exec *exec, t_shell *shell)
 		has_next = (cmd_list->next != NULL);
 		if (has_next && pipe(exec->pipefd) == -1)
 			return (perror("pipe"), 1);
-		if (handle_child_and_parent(exec, cmd, shell, has_next))
+		shell->exit_status = exec_child_process(exec, cmd, shell, has_next);
+		printf("exit status = %d(before)\n", shell->exit_status);
+		if (shell->exit_status)
 			return (1);
+		printf("exit status = %d\n", shell->exit_status);
 		cmd_list = cmd_list->next;
 	}
 	return (0);
@@ -38,24 +40,24 @@ static int	exec_pipeline_loop(t_list *cmd_list, t_exec *exec, t_shell *shell)
 
 static int	exec_pipeline(t_pipeline *pipeline, t_shell *shell)
 {
-	t_exec				exec;
-	t_list				*cmd_list;
-	t_command			*cmd;
-	int					i;
-	struct sigaction	old;
+	t_exec		exec;
+	t_list		*cmd_list;
+	t_command	*cmd;
+	int			i;
 
-	sigaction(SIGINT, NULL, &old);
+	sigaction(SIGINT, NULL, &exec.old);
 	signal(SIGINT, SIG_IGN);
 	printf("exec_pipeline \n");
 	exec.in = dup(STDIN_FILENO);
 	exec.out = dup(STDOUT_FILENO);
 	exec.prev_fd = -1;
 	cmd_list = pipeline->commands;
+	printf("%d\n", shell->exit_status);
 	if (!cmd_list->next)
 	{
 		cmd = cmd_list->content;
 		if (cmd->subshell_ast)
-			return (exec_subshell(cmd, shell, old));
+			return (exec_subshell(cmd, shell, &exec.old));
 		if (is_builtin(cmd->argv[0]))
 		{
 			i = exec_single_builtin(cmd, &exec, shell);
@@ -65,9 +67,6 @@ static int	exec_pipeline(t_pipeline *pipeline, t_shell *shell)
 	}
 	if (exec_pipeline_loop(cmd_list, &exec, shell) != 0)
 		return (1);
-	while (wait(&shell->exit_status) > 0)
-		shell->exit_status = WEXITSTATUS(shell->exit_status);
-	sigaction(SIGINT, &old, NULL);
 	return (shell->exit_status);
 }
 

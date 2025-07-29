@@ -3,10 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:08:04 by nando             #+#    #+#             */
-/*   Updated: 2025/07/29 18:14:13 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/29 21:23:21 by shattori         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/*   Updated: 2025/07/25 09:15:49 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/28 12:16:19 by shattori         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +27,14 @@ t_andor	*make_linearized_ast(char *cmd, t_shell *shell, t_ast **ast)
 	lex = lexer(cmd);
 	if (!lex)
 		return (NULL);
-	shell->exit_status = has_syntax_error(lex);
-	if (shell->exit_status != 0)
+	has_syntax_error(lex, shell);
+	if (shell->exit_status == 258)
 		add_history(cmd);
-	if (shell->exit_status)
+	printf("make liner exit = %d\n", shell->exit_status);
+	if (shell->exit_status == 258)
 	{
 		free_tokens(lex);
+		shell->exit_status = 2;
 		return (NULL);
 	}
 	*ast = start_parse(lex);
