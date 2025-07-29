@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 11:07:27 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/29 23:24:50 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/30 06:58:42 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,11 @@ int	print_syntax_error(const char *token_text, t_tokentype type)
 }
 int	check_pipe_syntax(t_token *tok, t_token *prev)
 {
-	if (!prev || !tok->next || tok->next->type != TOK_WORD
-		|| prev->type != TOK_WORD)
+	if (!prev || !tok->next)
+		return (print_syntax_error("|", tok->type));
+	if (prev->type != TOK_WORD && prev->type != TOK_RPAREN)
+		return (print_syntax_error("|", tok->type));
+	if (tok->next->type != TOK_WORD && tok->next->type != TOK_LPAREN)
 		return (print_syntax_error("|", tok->type));
 	return (0);
 }
@@ -50,15 +53,18 @@ int	check_redir_syntax(t_token *tok)
 {
 	if (!tok->next)
 		return (print_syntax_error("newline", TOK_WORD));
-	if (tok->next->type != TOK_WORD && tok->next->type != TOK_ASSIGN_WORD)
+	if (tok->next->type != TOK_WORD && tok->next->type != TOK_ASSIGN_WORD
+		&& tok->next->type != TOK_RPAREN)
 		return (print_syntax_error(tok->next->text, tok->type));
 	return (0);
 }
 
 int	check_andor_syntax(t_token *tok, t_token *prev)
 {
-	if (!prev || !tok->next || tok->next->type != TOK_WORD
-		|| prev->type != TOK_WORD)
+	if (!prev || !tok->next)
+		return (print_syntax_error(NULL, tok->type));
+	if ((prev->type != TOK_WORD && prev->type != TOK_RPAREN)
+		|| (tok->next->type != TOK_WORD && tok->next->type != TOK_LPAREN))
 		return (print_syntax_error(NULL, tok->type));
 	return (0);
 }

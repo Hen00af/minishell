@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 17:44:15 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/29 23:28:55 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/30 07:09:37 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,30 +23,40 @@ void	core_dumped_out(int sig, siginfo_t *info, void *context)
 int	exec_child_process(t_exec *exec, t_command *cmd, t_shell *shell,
 		int has_next)
 {
+	pid_t				pid;
 	struct sigaction	sa;
 
-	sa.sa_sigaction = core_dumped_out;
-	sa.sa_flags = SA_SIGINFO;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGQUIT, &sa, NULL);
-	if (exec->prev_fd != -1)
-		dup2(exec->prev_fd, STDIN_FILENO);
-	if (has_next)
-		dup2(exec->pipefd[1], STDOUT_FILENO);
-	if (exec->prev_fd != -1)
-		close(exec->prev_fd);
-	if (has_next)
+	pid = fork();
+	if (pid == -1)
+		return (perror("fork"), -1);
+	if (pid == 0)
 	{
-		close(exec->pipefd[0]);
-		close(exec->pipefd[1]);
+		signal(SIGINT, SIG_DFL);
+		sa.sa_sigaction = core_dumped_out;
+		sa.sa_flags = SA_SIGINFO;
+		sigemptyset(&sa.sa_mask);
+		sigaction(SIGQUIT, &sa, NULL);
+		if (exec->prev_fd != -1)
+			dup2(exec->prev_fd, STDIN_FILENO);
+		if (has_next)
+			dup2(exec->pipefd[1], STDOUT_FILENO);
+		if (exec->prev_fd != -1)
+			close(exec->prev_fd);
+		if (has_next)
+		{
+			close(exec->pipefd[0]);
+			close(exec->pipefd[1]);
+		}
+		if (!g_ack_status)
+			handle_redirections(cmd);
+		if (cmd->subshell_ast)
+			exit(exec_subshell(cmd, shell, NULL));
+		else if (is_builtin(cmd->argv[0]))
+			exit(exec_builtin(cmd->argv, shell));
+		else
+			setup_child_process(cmd, shell);
 	}
-	if (!g_ack_status)
-		handle_redirections(cmd);
-	if (cmd->subshell_ast)
-		return (exec_subshell(cmd, shell, NULL));
-	else if (is_builtin(cmd->argv[0]))
-		return (exec_builtin(cmd->argv, shell));
-	return (exec_simple_command(cmd, shell, exec));
+	return (pid);
 }
 
 int	handle_child_and_parent(t_exec *exec, t_command *cmd, t_shell *shell,

@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 17:18:58 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/29 20:33:24 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/30 06:52:45 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,6 @@ int								handle_child_and_parent(t_exec *exec,
 									int has_next);
 int								exec_child_process(t_exec *exec, t_command *cmd,
 									t_shell *shell, int has_next);
+void							setup_child_process(t_command *cmd,
+									t_shell *shell);
 #endif
