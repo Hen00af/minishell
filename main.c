@@ -10,13 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/*   Updated: 2025/07/25 09:15:49 by shattori         ###   ########.fr       */
-/*   Updated: 2025/07/28 12:16:19 by shattori         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "./minishell.h"
 
 t_andor	*make_linearized_ast(char *cmd, t_shell *shell, t_ast **ast)
@@ -28,6 +21,8 @@ t_andor	*make_linearized_ast(char *cmd, t_shell *shell, t_ast **ast)
 	if (!lex)
 		return (NULL);
 	shell->exit_status = has_syntax_error(lex);
+	if (shell->exit_status != 0)
+		add_history(cmd);
 	if (shell->exit_status)
 	{
 		free_tokens(lex);
