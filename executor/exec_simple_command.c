@@ -6,13 +6,13 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:50:34 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/28 18:11:36 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/29 19:08:35 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-int	exec_subshell(t_command *cmd, t_shell *shell)
+int	exec_subshell(t_command *cmd, t_shell *shell, struct sigaction old)
 {
 	pid_t	pid;
 	int		status;
@@ -23,6 +23,7 @@ int	exec_subshell(t_command *cmd, t_shell *shell)
 	if (pid == 0)
 		exit(executor(cmd->subshell_ast, shell));
 	wait(&status);
+	sigaction(SIGINT, &old, NULL);
 	return (WEXITSTATUS(status));
 }
 

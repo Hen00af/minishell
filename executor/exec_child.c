@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 17:44:15 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/28 17:38:10 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/29 19:40:21 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	exec_child_process(t_exec *exec, t_command *cmd, t_shell *shell,
 	sa.sa_flags = SA_SIGINFO;
 	sigemptyset(&sa.sa_mask);
 	sigaction(SIGQUIT, &sa, NULL);
-	signal(SIGINT, SIG_DFL);
 	if (exec->prev_fd != -1)
 		dup2(exec->prev_fd, STDIN_FILENO);
 	if (has_next)

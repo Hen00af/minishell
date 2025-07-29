@@ -6,11 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/07/28 13:19:03 by shattori         ###   ########.fr       */
-=======
-/*   Updated: 2025/07/28 17:23:00 by nando            ###   ########.fr       */
->>>>>>> 108cb27 (fix/色々)
+/*   Updated: 2025/07/29 18:04:13 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +66,10 @@ char	*run_heredoc(char *delimiter, t_shell *shell)
 	char				*clean_delimiter;
 	int					need_expand;
 	pid_t				pid;
-	struct sigaction	sa;
 	int					status;
+	struct sigaction	old;
 
-	sa.sa_sigaction = sigint_handler;
-	// sa.sa_flags = SA_RESTART;
-	// sigemptyset(&sa.sa_mask);
+	sigaction(SIGINT, NULL, &old);
 	g_ack_status = 0;
 	need_expand = is_include_quote(delimiter);
 	file = open_and_prepare_file(delimiter, &clean_delimiter);
@@ -93,9 +87,9 @@ char	*run_heredoc(char *delimiter, t_shell *shell)
 	free(clean_delimiter);
 	close(file.fd);
 	waitpid(pid, &status, 0);
+	sigaction(SIGINT, &old, NULL);
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 	{
-		sigaction(SIGINT, &sa, NULL);
 		g_ack_status = 1;
 		unlink(file.path);
 		free(file.path);
