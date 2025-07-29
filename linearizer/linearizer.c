@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linearizer.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:37 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/24 17:17:31 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/29 17:47:05 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void	flatten_pipeline(t_ast *node, t_pipeline *pipeline, t_shell *shell)
 	else
 	{
 		cmd = linearize_simple_command_to_command(node, shell);
+		process_heredoc(cmd, shell);
 		new_node = ft_lstnew(cmd);
 		ft_lstadd_back(&pipeline->commands, new_node);
 	}
