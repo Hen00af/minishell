@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:59:39 by nando             #+#    #+#             */
-/*   Updated: 2025/07/30 09:30:29 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/29 19:53:42 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	sigint_handler(int sig_number, siginfo_t *info, void *context)
 	(void)info;
 	(void)context;
 	write(STDOUT_FILENO, "\n", 1);
-	printf("sig_handler \n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
