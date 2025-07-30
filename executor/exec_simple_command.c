@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:50:34 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/30 07:05:53 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/30 09:55:58 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,20 +65,3 @@ void	setup_child_process(t_command *cmd, t_shell *shell)
 	if (execve(path, cmd->argv, envp) == -1)
 		handle_execve_error(envp);
 }
-
-// int	exec_simple_command(t_command *cmd, t_shell *shell, t_exec *exec)
-// {
-// 	pid_t	pid;
-// 	int		status;
-
-// 	pid = fork();
-// 	if (pid == -1)
-// 		return (perror("fork"), 1);
-// 	if (pid == 0)
-// 		setup_child_process(cmd, shell);
-// 	waitpid(pid, &status, 0);
-// 	sigaction(SIGINT, &exec->old, NULL);
-// 	if (WIFEXITED(status) && WEXITSTATUS(status) == 127)
-// 		ft_fprintf(2, "%s: command not found\n", cmd->argv[0]);
-// 	return (WEXITSTATUS(status));
-// }

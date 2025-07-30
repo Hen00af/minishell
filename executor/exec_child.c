@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 17:44:15 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/30 07:09:37 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/30 10:54:03 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,21 @@ void	core_dumped_out(int sig, siginfo_t *info, void *context)
 	(void)info;
 	(void)context;
 	write(STDERR_FILENO, "Quit (core dumped)\n", 20);
+}
+
+void	exec_close_fd(t_exec *exec, int has_next)
+{
+	if (exec->prev_fd != -1)
+		dup2(exec->prev_fd, STDIN_FILENO);
+	if (has_next)
+		dup2(exec->pipefd[1], STDOUT_FILENO);
+	if (exec->prev_fd != -1)
+		close(exec->prev_fd);
+	if (has_next)
+	{
+		close(exec->pipefd[0]);
+		close(exec->pipefd[1]);
+	}
 }
 
 int	exec_child_process(t_exec *exec, t_command *cmd, t_shell *shell,
@@ -36,17 +51,7 @@ int	exec_child_process(t_exec *exec, t_command *cmd, t_shell *shell,
 		sa.sa_flags = SA_SIGINFO;
 		sigemptyset(&sa.sa_mask);
 		sigaction(SIGQUIT, &sa, NULL);
-		if (exec->prev_fd != -1)
-			dup2(exec->prev_fd, STDIN_FILENO);
-		if (has_next)
-			dup2(exec->pipefd[1], STDOUT_FILENO);
-		if (exec->prev_fd != -1)
-			close(exec->prev_fd);
-		if (has_next)
-		{
-			close(exec->pipefd[0]);
-			close(exec->pipefd[1]);
-		}
+		exec_close_fd(exec, has_next);
 		if (!g_ack_status)
 			handle_redirections(cmd);
 		if (cmd->subshell_ast)

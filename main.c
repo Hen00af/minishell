@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:08:04 by nando             #+#    #+#             */
-/*   Updated: 2025/07/29 21:23:21 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/30 10:50:53 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,25 @@
 
 #include "./minishell.h"
 
+int	add_history_and_parse(t_token *lex, t_shell *shell, char *cmd, t_ast **ast)
+{
+	has_syntax_error(lex, shell);
+	if (shell->exit_status == 258)
+		add_history(cmd);
+	if (shell->exit_status == 258)
+	{
+		free_tokens(lex);
+		shell->exit_status = 2;
+		return (-1);
+	}
+	*ast = start_parse(lex);
+	free_tokens(lex);
+	if (!*ast)
+		return (-1);
+	add_history(cmd);
+	return (1);
+}
+
 t_andor	*make_linearized_ast(char *cmd, t_shell *shell, t_ast **ast)
 {
 	t_token	*lex;
@@ -27,21 +46,8 @@ t_andor	*make_linearized_ast(char *cmd, t_shell *shell, t_ast **ast)
 	lex = lexer(cmd);
 	if (!lex)
 		return (NULL);
-	has_syntax_error(lex, shell);
-	if (shell->exit_status == 258)
-		add_history(cmd);
-	printf("make liner exit = %d\n", shell->exit_status);
-	if (shell->exit_status == 258)
-	{
-		free_tokens(lex);
-		shell->exit_status = 2;
+	if (!add_history_and_parse(lex, shell, cmd, ast))
 		return (NULL);
-	}
-	*ast = start_parse(lex);
-	free_tokens(lex);
-	if (!*ast)
-		return (NULL);
-	add_history(cmd);
 	linearized_ast = linearizer(*ast, shell);
 	if (!linearized_ast)
 		return (NULL);

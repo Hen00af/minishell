@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/30 07:16:10 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/30 10:51:44 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	exec_pipeline(t_pipeline *pipeline, t_shell *shell)
 		cmd = cmd_list->content;
 		if (cmd->subshell_ast)
 			shell->exit_status = exec_subshell(cmd, shell, &exec.old);
-		else if (is_builtin(cmd->argv[0]))
+		else if (cmd->argv && cmd->argv[0] && is_builtin(cmd->argv[0]))
 			shell->exit_status = exec_single_builtin(cmd, &exec, shell);
 		else
 			shell->exit_status = exec_pipeline_loop(cmd_list, &exec, shell);

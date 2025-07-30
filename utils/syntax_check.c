@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 11:07:27 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/30 06:58:42 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/30 09:30:22 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	print_syntax_error(const char *token_text, t_tokentype type)
 		ft_fprintf(2, "minishell: syntax error near unexpected token `|'\n");
 	return (258);
 }
+
 int	check_pipe_syntax(t_token *tok, t_token *prev)
 {
 	if (!prev || !tok->next)

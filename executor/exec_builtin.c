@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:55:03 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/29 20:54:04 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/30 07:28:39 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	is_builtin(const char *cmd)
 
 int	exec_builtin(char **argv, t_shell *shell)
 {
-	printf("built in \n");
 	if (!argv || !argv[0])
 		return (1);
 	if (!ft_strcmp(argv[0], "echo"))

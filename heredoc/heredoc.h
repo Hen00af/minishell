@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 12:54:02 by nando             #+#    #+#             */
-/*   Updated: 2025/07/28 17:05:47 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/30 10:22:21 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,7 @@ char							*run_heredoc(char *delimiter, t_shell *shell);
 int								handle_heredoc(t_tmp *ctx, t_command *cmd,
 									t_redirection *redir, t_shell *shell);
 void							process_heredoc(t_command *cmd, t_shell *shell);
-
+t_command						*handle_redir_node(t_ast *ast, t_shell *shell);
+char							*finalize_heredoc(pid_t pid, char *path,
+									struct sigaction *old);
 #endif

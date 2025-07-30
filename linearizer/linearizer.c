@@ -3,44 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   linearizer.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:37 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/29 17:47:05 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/30 09:50:57 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./linearizer.h"
 
-// ====== AND/OR ======
-t_andor	*linearize_andor(t_ast *ast, t_shell *shell)
+t_command	*linearize_handle_subshell(t_ast *ast, t_shell *shell,
+		t_command *cmd)
 {
-	t_andor	*node;
-
-	node = malloc(sizeof(t_andor));
-	if (!node)
-		return (NULL);
-	if (ast->type == NODE_AND)
-		node->type = ANDOR_AND;
-	else
-		node->type = ANDOR_OR;
-	node->left = linearizer(ast->left, shell);
-	node->right = linearizer(ast->right, shell);
-	return (node);
+	cmd = malloc(sizeof(t_command));
+	cmd->argv = NULL;
+	cmd->redirections = NULL;
+	cmd->subshell_ast = linearizer(ast->left, shell);
+	return (cmd);
 }
 
-t_redir_type	map_redir_type(t_node_type type)
+t_command	*linearize_ast_to_command(t_ast *ast, t_shell *shell)
 {
-	if (type == NODE_REDIR_IN)
-		return (REDIR_IN);
-	if (type == NODE_REDIR_OUT)
-		return (REDIR_OUT);
-	if (type == NODE_REDIR_APPEND)
-		return (REDIR_APPEND);
-	if (type == NODE_HEREDOC)
-		return (REDIR_HEREDOC);
-	ft_fprintf(STDERROR_INT, "Unknown redirection type!\n");
-	exit(1);
+	t_command		*cmd;
+	t_command		*child;
+	t_redirection	*redir;
+	t_list			*redir_node;
+
+	if (!ast)
+		return (NULL);
+	cmd = NULL;
+	if (ast->type == NODE_REDIR_IN || ast->type == NODE_REDIR_OUT
+		|| ast->type == NODE_REDIR_APPEND || ast->type == NODE_HEREDOC)
+	{
+		child = linearize_ast_to_command(ast->left, shell);
+		if (!child)
+			return (NULL);
+		redir = malloc(sizeof(t_redirection));
+		redir->type = map_redir_type(ast->type);
+		redir->filename = ast->filename;
+		redir_node = ft_lstnew(redir);
+		ft_lstadd_back(&child->redirections, redir_node);
+		return (child);
+	}
+	else if (ast->type == NODE_SUBSHELL)
+		return (linearize_handle_subshell(ast, shell, cmd));
+	else
+		return (linearize_simple_command_to_command(ast, shell));
 }
 
 // ====== SIMPLE COMMAND ======
@@ -82,18 +90,11 @@ void	flatten_pipeline(t_ast *node, t_pipeline *pipeline, t_shell *shell)
 		flatten_pipeline(node->left, pipeline, shell);
 		flatten_pipeline(node->right, pipeline, shell);
 	}
-	else if (node->type == NODE_SUBSHELL)
-	{
-		cmd = malloc(sizeof(t_command));
-		cmd->argv = NULL;
-		cmd->redirections = NULL;
-		cmd->subshell_ast = linearizer(node->left, shell);
-		new_node = ft_lstnew(cmd);
-		ft_lstadd_back(&pipeline->commands, new_node);
-	}
 	else
 	{
-		cmd = linearize_simple_command_to_command(node, shell);
+		cmd = linearize_ast_to_command(node, shell);
+		if (!cmd)
+			return ;
 		process_heredoc(cmd, shell);
 		new_node = ft_lstnew(cmd);
 		ft_lstadd_back(&pipeline->commands, new_node);
@@ -106,13 +107,18 @@ t_andor	*linearize_subshell(t_ast *ast, t_shell *shell)
 	t_pipeline	*pipeline;
 	t_andor		*andor;
 
-	cmd = malloc(sizeof(t_command));
-	cmd->argv = NULL;
-	cmd->redirections = NULL;
-	cmd->subshell_ast = linearizer(ast->left, shell);
+	cmd = linearize_ast_to_command(ast, shell);
+	if (!cmd)
+		return (NULL);
 	pipeline = malloc(sizeof(t_pipeline));
+	if (!pipeline)
+		return (NULL);
 	pipeline->commands = ft_lstnew(cmd);
+	if (!pipeline->commands)
+		return (NULL);
 	andor = malloc(sizeof(t_andor));
+	if (!andor)
+		return (NULL);
 	andor->type = ANDOR_PIPELINE;
 	andor->pipeline = pipeline;
 	return (andor);
