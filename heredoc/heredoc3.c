@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 17:00:40 by nando             #+#    #+#             */
-/*   Updated: 2025/07/28 17:18:23 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/30 10:22:27 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,20 @@ t_heredoc_file	open_and_prepare_file(char *delimiter, char **clean_delimiter)
 	if (file.fd < 0)
 		free(*clean_delimiter);
 	return (file);
+}
+
+char	*finalize_heredoc(pid_t pid, char *path, struct sigaction *old)
+{
+	int	status;
+
+	waitpid(pid, &status, 0);
+	sigaction(SIGINT, old, NULL);
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	{
+		g_ack_status = 1;
+		unlink(path);
+		free(path);
+		return (NULL);
+	}
+	return (path);
 }

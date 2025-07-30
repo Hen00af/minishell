@@ -6,8 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:16:11 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/25 06:24:40 by shattori         ###   ########.fr       */
-/*   Updated: 2025/07/25 09:03:11 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/30 07:51:10 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +58,23 @@ t_ast	*parse_subshell(t_token **cur)
 
 t_ast	*parse_command_or_subshell(t_token **cur)
 {
+	t_ast	*cmd;
+
 	if ((*cur)->type == TOK_LPAREN)
-		return (parse_subshell(cur));
-	return (parse_command(cur));
+		cmd = parse_subshell(cur);
+	else
+		cmd = parse_command(cur);
+	if (!cmd)
+		return (NULL);
+	while (*cur && ((*cur)->type == TOK_REDIR_IN
+			|| (*cur)->type == TOK_REDIR_OUT || (*cur)->type == TOK_REDIR_APP
+			|| (*cur)->type == TOK_HEREDOC))
+	{
+		cmd = parse_redirection(cur, cmd);
+		if (!cmd)
+			return (NULL);
+	}
+	return (cmd);
 }
 
 t_ast	*parse_redirection(t_token **cur, t_ast *cmd)
