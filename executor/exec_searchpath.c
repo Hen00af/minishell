@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_searchpath.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:21:49 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/24 17:15:52 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/31 20:09:57 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ char	*search_path(char *cmd, t_env *env)
 	char	**paths;
 	char	*full_path;
 
+	if (!cmd)
+		exit(0);
 	if (ft_strchr(cmd, '/'))
 		return (ft_strdup(cmd));
 	path_var = get_path_variable(env);

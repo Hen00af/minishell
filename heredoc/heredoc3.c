@@ -3,14 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 17:00:40 by nando             #+#    #+#             */
-/*   Updated: 2025/07/30 10:22:27 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/31 22:40:24 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "heredoc.h"
+
+void	write_heredoc_lines(int fd, char *clean_delimiter, int need_expand,
+		t_shell *shell)
+{
+	char	*line;
+
+	while (1)
+	{
+		line = readline("> ");
+		if (g_ack_status == 1 || !line)
+		{
+			free(line);
+			break ;
+		}
+		if (ft_strcmp(line, clean_delimiter) == 0)
+		{
+			free(line);
+			break ;
+		}
+		if (need_expand)
+			line = expand_variables(line, shell);
+		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
+		free(line);
+	}
+}
 
 void	child_heredoc_process(int fd, char *delimiter, int expand,
 		t_shell *shell)
@@ -41,7 +67,8 @@ t_heredoc_file	open_and_prepare_file(char *delimiter, char **clean_delimiter)
 	return (file);
 }
 
-char	*finalize_heredoc(pid_t pid, char *path, struct sigaction *old)
+char	*finalize_heredoc(pid_t pid, t_heredoc_file *path,
+		struct sigaction *old, char *clean_delim)
 {
 	int	status;
 
@@ -50,9 +77,10 @@ char	*finalize_heredoc(pid_t pid, char *path, struct sigaction *old)
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 	{
 		g_ack_status = 1;
-		unlink(path);
-		free(path);
+		unlink(path->path);
 		return (NULL);
 	}
-	return (path);
+	free(clean_delim);
+	close(path->fd);
+	return (path->path);
 }
