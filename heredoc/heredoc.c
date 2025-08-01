@@ -3,40 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/07/30 09:54:27 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/31 22:40:59 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "heredoc.h"
-
-void	write_heredoc_lines(int fd, char *clean_delimiter, int need_expand,
-		t_shell *shell)
-{
-	char	*line;
-
-	while (1)
-	{
-		line = readline("> ");
-		if (g_ack_status == 1 || !line)
-		{
-			free(line);
-			break ;
-		}
-		if (ft_strcmp(line, clean_delimiter) == 0)
-		{
-			free(line);
-			break ;
-		}
-		if (need_expand)
-			line = expand_variables(line, shell);
-		write(fd, line, ft_strlen(line));
-		write(fd, "\n", 1);
-		free(line);
-	}
-}
 
 int	open_heredoc_file(char **path)
 {
@@ -83,9 +57,7 @@ char	*run_heredoc(char *delimiter, t_shell *shell)
 		signal(SIGINT, SIG_DFL);
 		child_heredoc_process(file.fd, clean_delim, !is_quoted, shell);
 	}
-	free(clean_delim);
-	close(file.fd);
-	return (finalize_heredoc(pid, file.path, &old));
+	return (finalize_heredoc(pid, &file, &old, clean_delim));
 }
 
 int	handle_heredoc(t_tmp *ctx, t_command *cmd, t_redirection *redir,
@@ -122,7 +94,11 @@ void	process_heredoc(t_command *cmd, t_shell *shell)
 		if (redir->type == REDIR_HEREDOC)
 		{
 			if (!handle_heredoc(&ctx, cmd, redir, shell))
+			{
+				if (ctx.flag)
+					free(ctx.file);
 				return ;
+			}
 		}
 		redir_list = redir_list->next;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 11:07:27 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/30 09:30:22 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/31 22:52:21 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,13 @@ void	has_syntax_error(t_token *tok, t_shell *shell)
 	prev = NULL;
 	while (tok && tok->type != TOK_EOF)
 	{
-		if (tok->type == TOK_PIPE)
-		{
-			if (check_pipe_syntax(tok, prev))
-				shell->exit_status = 258;
-		}
-		else if (tok->type == TOK_REDIR_IN || tok->type == TOK_REDIR_OUT
+		// パイプの先にリダイレクションがあった場合の処理　実装する
+		// if (tok->type == TOK_PIPE)
+		// {
+		// 	if (check_pipe_syntax(tok, prev))
+		// 		shell->exit_status = 258;
+		// }
+		if (tok->type == TOK_REDIR_IN || tok->type == TOK_REDIR_OUT
 			|| tok->type == TOK_REDIR_APP || tok->type == TOK_HEREDOC)
 		{
 			if (check_redir_syntax(tok))

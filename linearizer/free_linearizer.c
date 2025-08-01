@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   free_linearizer.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/25 05:50:48 by nando             #+#    #+#             */
-/*   Updated: 2025/07/25 07:07:17 by shattori         ###   ########.fr       */
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 05:50:48 by nando             #+#    #+#             */
+/*   Updated: 2025/07/31 22:52:44 by nando            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 /*   Updated: 2025/07/25 06:54:37 by nando            ###   ########.fr       */
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -48,6 +48,9 @@ static void	free_command_list(t_list *cmd_list)
 			free_andor_ast(cmd->subshell_ast);
 		if (cmd->redirections)
 			free_redirections(cmd->redirections);
+		// もしかしたら消すかも　下の二行
+		if (cmd->heredoc_filename)
+			free(cmd->heredoc_filename);
 		free(cmd);
 		free(cmd_list);
 		cmd_list = next;

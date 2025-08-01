@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:59:39 by nando             #+#    #+#             */
-/*   Updated: 2025/07/29 19:53:42 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/31 17:34:15 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	sigint_handler(int sig_number, siginfo_t *info, void *context)
 	(void)sig_number;
 	(void)info;
 	(void)context;
+	g_ack_status = 1;
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);

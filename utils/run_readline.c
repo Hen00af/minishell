@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 05:32:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/29 18:19:49 by nando            ###   ########.fr       */
+/*   Updated: 2025/07/31 17:56:04 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,16 @@ char	*run_readline(t_shell *shell)
 	char	*cmd;
 
 	cmd = get_input_line(shell);
+	if (g_ack_status == 1)
+	{
+		g_ack_status = 0;
+		shell->exit_status = 130;
+	}
 	if (!cmd)
 	{
 		if (shell->is_interactive)
 			ft_putstr_fd("exit\n", STDOUT_FILENO);
 		exit(shell->exit_status);
-	}
-	if (g_ack_status == 1)
-	{
-		g_ack_status = 0;
-		shell->exit_status = 130;
-		free(cmd);
-		return (ft_strdup(""));
 	}
 	return (cmd);
 }

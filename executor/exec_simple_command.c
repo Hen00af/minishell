@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:50:34 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/30 09:55:58 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/31 22:54:17 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,12 @@ void	setup_child_process(t_command *cmd, t_shell *shell)
 	if (!path)
 	{
 		ft_fprintf(2, "%s: command not found\n", cmd->argv[0]);
+		free_split(envp);
 		exit(127);
 	}
 	if (execve(path, cmd->argv, envp) == -1)
+	{
+		free(path);
 		handle_execve_error(envp);
+	}
 }

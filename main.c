@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:08:04 by nando             #+#    #+#             */
-/*   Updated: 2025/07/30 10:50:53 by shattori         ###   ########.fr       */
+/*   Updated: 2025/07/31 22:51:10 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,13 @@ int	prompt(t_shell *shell)
 	t_ast	*ast;
 
 	ast = NULL;
-	g_ack_status = 0;
 	cmd = run_readline(shell);
-	if (!cmd)
+	if (!cmd || cmd[0] == '\0')
+	{
+		if (cmd)
+			free(cmd);
 		return (0);
+	}
 	linearized_ast = make_linearized_ast(cmd, shell, &ast);
 	if (!linearized_ast)
 	{
