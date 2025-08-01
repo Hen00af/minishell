@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linearizer.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:37 by shattori          #+#    #+#             */
-/*   Updated: 2025/08/01 15:45:40 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/01 16:25:02 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ t_command	*linearize_ast_to_command(t_ast *ast, t_shell *shell)
 			return (NULL);
 		redir = ft_calloc(1, sizeof(t_redirection));
 		redir->type = map_redir_type(ast->type);
-		redir->filename = ast->filename;
+		if (ast->filename)
+			redir->filename = ft_strdup(ast->filename);
 		redir_node = ft_lstnew(redir);
 		ft_lstadd_back(&child->redirections, redir_node);
 		return (child);
@@ -73,7 +74,8 @@ t_command	*linearize_simple_command_to_command(t_ast *ast, t_shell *shell)
 		redir->type = map_redir_type(ast->type);
 		redir_node = ft_lstnew(redir);
 		ft_lstadd_back(&child->redirections, redir_node);
-		redir->filename = ast->filename;
+		if (ast->filename)
+			redir->filename = ft_strdup(ast->filename);
 		free(cmd);
 		return (child);
 	}

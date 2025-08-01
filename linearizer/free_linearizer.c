@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_linearizer.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 05:50:48 by nando             #+#    #+#             */
-/*   Updated: 2025/08/01 15:54:48 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/01 16:31:09 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,12 @@ static void	free_redirections(t_list *redir_list)
 	{
 		next = redir_list->next;
 		redir = redir_list->content;
-		free(redir);
+		if (redir)
+		{
+			if (redir->filename)
+				free(redir->filename);
+			free(redir);
+		}
 		free(redir_list);
 		redir_list = next;
 	}
@@ -44,16 +49,16 @@ static void	free_command_list(t_list *cmd_list)
 	{
 		next = cmd_list->next;
 		cmd = cmd_list->content;
-		if (cmd->subshell_ast)
-			free_andor_ast(cmd->subshell_ast);
-		if (cmd->redirections)
+		if (cmd)
 		{
-			printf("free _ redirections \n");
-			free_redirections(cmd->redirections);
-		} // もしかしたら消すかも　下の二行
-		if (cmd->heredoc_filename)
-			free(cmd->heredoc_filename);
-		free(cmd);
+			if (cmd->subshell_ast)
+				free_andor_ast(cmd->subshell_ast);
+			if (cmd->redirections)
+				free_redirections(cmd->redirections);
+			if (cmd->heredoc_filename)
+				free(cmd->heredoc_filename);
+			free(cmd);
+		}
 		free(cmd_list);
 		cmd_list = next;
 	}
