@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 12:54:02 by nando             #+#    #+#             */
-/*   Updated: 2025/07/31 22:39:39 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/01 19:18:06 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,6 @@ int								handle_heredoc(t_tmp *ctx, t_command *cmd,
 void							process_heredoc(t_command *cmd, t_shell *shell);
 t_command						*handle_redir_node(t_ast *ast, t_shell *shell);
 char							*finalize_heredoc(pid_t pid,
-									t_heredoc_file *path, struct sigaction *old,
-									char *clean_delim);
+									t_heredoc_file *h_file,
+									struct sigaction *old, char *clean_delim);
 #endif

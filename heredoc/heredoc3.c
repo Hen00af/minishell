@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 17:00:40 by nando             #+#    #+#             */
-/*   Updated: 2025/07/31 22:40:24 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/01 19:24:32 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_heredoc_file	open_and_prepare_file(char *delimiter, char **clean_delimiter)
 	return (file);
 }
 
-char	*finalize_heredoc(pid_t pid, t_heredoc_file *path,
+char	*finalize_heredoc(pid_t pid, t_heredoc_file *h_file,
 		struct sigaction *old, char *clean_delim)
 {
 	int	status;
@@ -77,10 +77,12 @@ char	*finalize_heredoc(pid_t pid, t_heredoc_file *path,
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 	{
 		g_ack_status = 1;
-		unlink(path->path);
+		unlink(h_file->path);
+		free(h_file->path);
+		free(clean_delim);
 		return (NULL);
 	}
 	free(clean_delim);
-	close(path->fd);
-	return (path->path);
+	close(h_file->fd);
+	return (h_file->path);
 }
