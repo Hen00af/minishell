@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 05:50:48 by nando             #+#    #+#             */
-/*   Updated: 2025/07/31 22:52:44 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/01 15:54:48 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,10 @@ static void	free_command_list(t_list *cmd_list)
 		if (cmd->subshell_ast)
 			free_andor_ast(cmd->subshell_ast);
 		if (cmd->redirections)
+		{
+			printf("free _ redirections \n");
 			free_redirections(cmd->redirections);
-		// もしかしたら消すかも　下の二行
+		} // もしかしたら消すかも　下の二行
 		if (cmd->heredoc_filename)
 			free(cmd->heredoc_filename);
 		free(cmd);
