@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 07:13:47 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/25 10:03:33 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/01 16:15:52 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,21 @@ void	free_ast(t_ast *ast)
 
 	if (!ast)
 		return ;
-	free_ast(ast->left);
-	free_ast(ast->right);
+	if (ast->left)
+		free_ast(ast->left);
+	if (ast->right)
+		free_ast(ast->right);
 	if (ast->argv)
 	{
 		i = 0;
 		while (ast->argv[i])
 		{
-			free(ast->argv[i]);
+			if (ast->argv[i])
+				free(ast->argv[i]);
 			i++;
 		}
-		free(ast->argv);
+		if (ast->argv)
+			free(ast->argv);
 	}
 	if (ast->filename)
 		free(ast->filename);
