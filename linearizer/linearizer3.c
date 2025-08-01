@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linearizer3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 09:30:05 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/30 09:33:32 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/01 15:19:34 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_andor	*linearize_andor(t_ast *ast, t_shell *shell)
 {
 	t_andor	*node;
 
-	node = malloc(sizeof(t_andor));
+	node = ft_calloc(1, sizeof(t_andor));
 	if (!node)
 		return (NULL);
 	if (ast->type == NODE_AND)

@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 02:36:01 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/31 17:47:41 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/01 15:24:49 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ t_andor	*linearize_simple_command(t_ast *ast, t_shell *shell)
 
 	cmd = linearize_simple_command_to_command(ast, shell);
 	process_heredoc(cmd, shell);
-	pipeline = malloc(sizeof(t_pipeline));
+	pipeline = ft_calloc(1, sizeof(t_pipeline));
 	pipeline->commands = ft_lstnew(cmd);
-	andor = malloc(sizeof(t_andor));
+	andor = ft_calloc(1, sizeof(t_andor));
 	andor->type = ANDOR_PIPELINE;
 	andor->pipeline = pipeline;
 	return (andor);
@@ -47,10 +47,10 @@ t_andor	*linearize_pipeline(t_ast *ast, t_shell *shell)
 	t_pipeline	*pipeline;
 	t_andor		*node;
 
-	pipeline = malloc(sizeof(t_pipeline));
+	pipeline = ft_calloc(1, sizeof(t_pipeline));
 	pipeline->commands = NULL;
 	flatten_pipeline(ast, pipeline, shell);
-	node = malloc(sizeof(t_andor));
+	node = ft_calloc(1, sizeof(t_andor));
 	node->type = ANDOR_PIPELINE;
 	node->pipeline = pipeline;
 	return (node);

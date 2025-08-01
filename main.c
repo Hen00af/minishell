@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:08:04 by nando             #+#    #+#             */
-/*   Updated: 2025/07/31 22:51:10 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/01 15:48:12 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,11 @@ t_andor	*make_linearized_ast(char *cmd, t_shell *shell, t_ast **ast)
 	if (!add_history_and_parse(lex, shell, cmd, ast))
 		return (NULL);
 	linearized_ast = linearizer(*ast, shell);
+	if (g_ack_status)
+	{
+		free_andor_ast(linearized_ast);
+		return (NULL);
+	}
 	if (!linearized_ast)
 		return (NULL);
 	if (g_ack_status)
@@ -79,6 +84,7 @@ int	prompt(t_shell *shell)
 	linearized_ast = make_linearized_ast(cmd, shell, &ast);
 	if (!linearized_ast)
 	{
+		// printf("linearized ast is NULL\n");
 		if (cmd)
 			free(cmd);
 		return (0);
