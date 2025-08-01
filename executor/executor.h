@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 17:18:58 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/31 16:34:04 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/01 14:56:25 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ int								exec_subshell(t_command *cmd, t_shell *shell,
 									struct sigaction *old);
 void							handle_redirections(t_command *cmd);
 int								handle_redirections_builtin(t_command *cmd);
-int								open_redirection_file_builtin(t_redirection *redir,
-									char *last_tmpfile);
+int								open_redirection_file_builtin(
+									t_redirection *redir, char *last_tmpfile);
 int								apply_redirection_builtin(int fd, int type);
 int								is_builtin(const char *cmd);
 int								exec_builtin(char **argv, t_shell *shell);
@@ -69,4 +69,11 @@ int								exec_child_process(t_exec *exec, t_command *cmd,
 void							setup_child_process(t_command *cmd,
 									t_shell *shell);
 void							exec_close_fd(t_exec *exec, int has_next);
+int								save_std_fds(t_exec *exec);
+int								restore_std_fds(t_exec *exec);
+int								exec_single_command(t_list *cmd_list,
+									t_exec *exec, t_shell *shell);
+int								exec_pipeline_loop(t_list *cmd_list,
+									t_exec *exec, t_shell *shell);
+
 #endif
