@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 11:07:27 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/31 22:52:21 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/01 15:06:31 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ int	check_pipe_syntax(t_token *tok, t_token *prev)
 		return (print_syntax_error("|", tok->type));
 	if (prev->type != TOK_WORD && prev->type != TOK_RPAREN)
 		return (print_syntax_error("|", tok->type));
-	if (tok->next->type != TOK_WORD && tok->next->type != TOK_LPAREN)
+	if (tok->next->type != TOK_WORD && tok->next->type != TOK_LPAREN
+		&& tok->next->type != TOK_REDIR_APP && tok->next->type != TOK_REDIR_IN
+		&& tok->next->type != TOK_REDIR_OUT && tok->next->type != TOK_HEREDOC)
 		return (print_syntax_error("|", tok->type));
 	return (0);
 }
@@ -78,11 +80,11 @@ void	has_syntax_error(t_token *tok, t_shell *shell)
 	while (tok && tok->type != TOK_EOF)
 	{
 		// パイプの先にリダイレクションがあった場合の処理　実装する
-		// if (tok->type == TOK_PIPE)
-		// {
-		// 	if (check_pipe_syntax(tok, prev))
-		// 		shell->exit_status = 258;
-		// }
+		if (tok->type == TOK_PIPE)
+		{
+			if (check_pipe_syntax(tok, prev))
+				shell->exit_status = 258;
+		}
 		if (tok->type == TOK_REDIR_IN || tok->type == TOK_REDIR_OUT
 			|| tok->type == TOK_REDIR_APP || tok->type == TOK_HEREDOC)
 		{
