@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: shattori <shattori@student.42.fr>          +#+  +:+       +#+         #
+#    By: nando <nando@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/25 06:16:56 by shattori          #+#    #+#              #
-#    Updated: 2025/07/28 12:13:33 by shattori         ###   ########.fr        #
+#    Updated: 2025/08/01 19:28:52 by nando            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC      := cc
-CFLAGS  := -Wall -Wextra -Werror -O2
+CFLAGS  := -Wall -Wextra -Werror -O2 
 INCLUDES := -Iinclude
 
 LIBFT_DIR := ./libft
