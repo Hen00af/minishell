@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 14:30:21 by nando             #+#    #+#             */
-/*   Updated: 2025/07/24 18:00:24 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/04 01:02:54 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ void	expand_command_args(t_command *cmd, t_shell *shell)
 
 void	expander(t_andor *ast, t_shell *shell)
 {
-	t_list			*cmd_node;
-	t_command		*cmd;
+	t_list		*cmd_node;
+	t_command	*cmd;
 
 	if (!ast || ast->type != ANDOR_PIPELINE || !ast->pipeline
 		|| !ast->pipeline->commands)
