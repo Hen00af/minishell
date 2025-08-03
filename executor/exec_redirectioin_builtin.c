@@ -66,5 +66,10 @@ int	handle_redirections_builtin(t_command *cmd)
 			return (1);
 		redir_list = redir_list->next;
 	}
+	// heredocファイルを削除
+	if (cmd->heredoc_filename)
+	{
+		unlink(cmd->heredoc_filename);
+	}
 	return (0);
 }

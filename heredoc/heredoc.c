@@ -67,7 +67,11 @@ int	handle_heredoc(t_tmp *ctx, t_command *cmd, t_redirection *redir,
 	{
 		unlink(ctx->file);
 		free(ctx->file);
-		free(cmd->heredoc_filename);
+		if (cmd->heredoc_filename)
+		{
+			free(cmd->heredoc_filename);
+			cmd->heredoc_filename = NULL;
+		}
 	}
 	ctx->file = run_heredoc(redir->filename, shell);
 	if (!ctx->file)
@@ -96,7 +100,14 @@ void	process_heredoc(t_command *cmd, t_shell *shell)
 			if (!handle_heredoc(&ctx, cmd, redir, shell))
 			{
 				if (ctx.flag)
+				{
 					free(ctx.file);
+					if (cmd->heredoc_filename)
+					{
+						free(cmd->heredoc_filename);
+						cmd->heredoc_filename = NULL;
+					}
+				}
 				return ;
 			}
 		}

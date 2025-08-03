@@ -62,4 +62,9 @@ void	handle_redirections(t_command *cmd)
 		apply_redirection(fd, redir->type);
 		redir_list = redir_list->next;
 	}
+	// heredocファイルを削除
+	if (cmd->heredoc_filename)
+	{
+		unlink(cmd->heredoc_filename);
+	}
 }
