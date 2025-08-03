@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 11:07:27 by shattori          #+#    #+#             */
-/*   Updated: 2025/08/01 15:06:31 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/03 21:30:59 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void	has_syntax_error(t_token *tok, t_shell *shell)
 	prev = NULL;
 	while (tok && tok->type != TOK_EOF)
 	{
-		// パイプの先にリダイレクションがあった場合の処理　実装する
 		if (tok->type == TOK_PIPE)
 		{
 			if (check_pipe_syntax(tok, prev))

@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:08:04 by nando             #+#    #+#             */
-/*   Updated: 2025/08/03 21:00:19 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/03 21:24:34 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,8 @@ int	add_history_and_parse(t_token *lex, t_shell *shell, char *cmd, t_ast **ast)
 {
 	has_syntax_error(lex, shell);
 	if (shell->exit_status == 258)
-		add_history(cmd);
-	if (shell->exit_status == 258)
 	{
+		add_history(cmd);
 		free_tokens(lex);
 		shell->exit_status = 2;
 		return (-1);
