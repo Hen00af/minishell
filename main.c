@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:08:04 by nando             #+#    #+#             */
-/*   Updated: 2025/08/01 16:20:11 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/03 21:00:19 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,5 @@ int	main(int ac, char **av, char **envp)
 		if (!prompt(&shell))
 			continue ;
 	}
-	rl_clear_history();
-	free_env_list(shell.env);
 	return (0);
 }

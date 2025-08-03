@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 05:32:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/31 17:56:04 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/03 20:58:18 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ char	*run_readline(t_shell *shell)
 	{
 		if (shell->is_interactive)
 			ft_putstr_fd("exit\n", STDOUT_FILENO);
+		rl_clear_history();
+		free_env_list(shell->env);
 		exit(shell->exit_status);
 	}
 	return (cmd);
