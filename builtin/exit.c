@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 15:28:33 by nando             #+#    #+#             */
-/*   Updated: 2025/07/25 09:43:12 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/03 21:10:35 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ int	builtin_exit(char **args, t_shell *shell)
 		ft_fprintf(2, "minishell: exit: %s: numeric argument required\n",
 			args[1]);
 		safe_exit_builtin(shell, args, 2);
-		free_env_list(shell->env);
-		exit(2);
 	}
 	status = ft_atoi(args[1]) % 256;
 	if (status < 0)
