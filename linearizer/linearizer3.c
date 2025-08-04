@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 09:30:05 by shattori          #+#    #+#             */
-/*   Updated: 2025/08/04 09:05:34 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/04 21:42:06 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ t_andor	*linearize_andor(t_ast *ast, t_shell *shell)
 {
 	t_andor	*node;
 
-	printf("linearize_andor: \n");
 	node = ft_calloc(1, sizeof(t_andor));
 	if (!node)
 		return (NULL);
@@ -31,7 +30,6 @@ t_andor	*linearize_andor(t_ast *ast, t_shell *shell)
 
 t_redir_type	map_redir_type(t_node_type type)
 {
-	printf("map_redir_type: \n");
 	if (type == NODE_REDIR_IN)
 		return (REDIR_IN);
 	if (type == NODE_REDIR_OUT)

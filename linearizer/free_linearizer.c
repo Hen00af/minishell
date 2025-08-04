@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_linearizer.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 05:50:48 by nando             #+#    #+#             */
-/*   Updated: 2025/08/04 18:48:23 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/04 21:41:00 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	free_redirections(t_list *redir_list)
 	t_list			*next;
 	t_redirection	*redir;
 
-	printf("free_redirections: start\n");
 	while (redir_list)
 	{
 		next = redir_list->next;
@@ -33,17 +32,12 @@ void	free_redirections(t_list *redir_list)
 		if (redir)
 		{
 			if (redir->filename)
-			{
-				printf("free_redirections: freeing filename='%s'\n",
-					redir->filename);
 				free(redir->filename);
-			}
 			free(redir);
 		}
 		free(redir_list);
 		redir_list = next;
 	}
-	printf("free_redirections: end\n");
 }
 
 static void	free_command_list2(t_command *cmd)

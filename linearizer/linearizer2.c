@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 02:36:01 by shattori          #+#    #+#             */
-/*   Updated: 2025/08/04 19:21:40 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/04 21:41:48 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ t_andor	*linearize_pipeline(t_ast *ast, t_shell *shell)
 	t_pipeline	*pipeline;
 	t_andor		*node;
 
-	printf("linearize_pipeline: \n");
 	pipeline = ft_calloc(1, sizeof(t_pipeline));
 	pipeline->commands = NULL;
 	flatten_pipeline(ast, pipeline, shell);
