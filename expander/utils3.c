@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 17:12:10 by nando             #+#    #+#             */
-/*   Updated: 2025/07/10 23:50:55 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/04 17:55:03 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	generate_wildcard_matches(t_expand *ctx, t_command *cmd, int *i)
 	*i = ctx->expand_point;
 	cmd->argv = ctx->new_argv;
 	free_args(ctx->split_words);
-	ctx->expanded = NULL;
+	free(ctx->expanded);
 	return ;
 }
 

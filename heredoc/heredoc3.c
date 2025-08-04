@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 17:00:40 by nando             #+#    #+#             */
-/*   Updated: 2025/08/01 19:24:32 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/04 17:13:23 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,6 @@ void	write_heredoc_lines(int fd, char *clean_delimiter, int need_expand,
 	}
 }
 
-void	child_heredoc_process(int fd, char *delimiter, int expand,
-		t_shell *shell)
-{
-	write_heredoc_lines(fd, delimiter, expand, shell);
-	close(fd);
-	free(delimiter);
-	_exit(0);
-}
-
 char	*handle_fork_error(int fd, char *delimiter, char *path)
 {
 	perror("fork");
@@ -54,6 +45,28 @@ char	*handle_fork_error(int fd, char *delimiter, char *path)
 	free(path);
 	close(fd);
 	return (NULL);
+}
+
+int	open_heredoc_file(char **path)
+{
+	char	*tmp_path;
+	int		fd;
+
+	tmp_path = generate_tmpfile_path();
+	if (!tmp_path)
+		return (-1);
+	while (1)
+	{
+		fd = open(tmp_path, O_CREAT | O_EXCL | O_WRONLY, 0600);
+		if (fd >= 0)
+			break ;
+		free(tmp_path);
+		tmp_path = generate_tmpfile_path();
+		if (!tmp_path)
+			return (-1);
+	}
+	*path = tmp_path;
+	return (fd);
 }
 
 t_heredoc_file	open_and_prepare_file(char *delimiter, char **clean_delimiter)
@@ -65,24 +78,4 @@ t_heredoc_file	open_and_prepare_file(char *delimiter, char **clean_delimiter)
 	if (file.fd < 0)
 		free(*clean_delimiter);
 	return (file);
-}
-
-char	*finalize_heredoc(pid_t pid, t_heredoc_file *h_file,
-		struct sigaction *old, char *clean_delim)
-{
-	int	status;
-
-	waitpid(pid, &status, 0);
-	sigaction(SIGINT, old, NULL);
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-	{
-		g_ack_status = 1;
-		unlink(h_file->path);
-		free(h_file->path);
-		free(clean_delim);
-		return (NULL);
-	}
-	free(clean_delim);
-	close(h_file->fd);
-	return (h_file->path);
 }

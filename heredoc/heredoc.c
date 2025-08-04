@@ -6,32 +6,39 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/08/04 16:49:12 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/04 17:13:30 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "heredoc.h"
 
-int	open_heredoc_file(char **path)
+void	child_heredoc_process(int fd, char *delimiter, int expand,
+		t_shell *shell)
 {
-	char	*tmp_path;
-	int		fd;
+	write_heredoc_lines(fd, delimiter, expand, shell);
+	close(fd);
+	free(delimiter);
+	_exit(0);
+}
 
-	tmp_path = generate_tmpfile_path();
-	if (!tmp_path)
-		return (-1);
-	while (1)
+char	*finalize_heredoc(pid_t pid, t_heredoc_file *h_file,
+		struct sigaction *old, char *clean_delim)
+{
+	int	status;
+
+	waitpid(pid, &status, 0);
+	sigaction(SIGINT, old, NULL);
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 	{
-		fd = open(tmp_path, O_CREAT | O_EXCL | O_WRONLY, 0600);
-		if (fd >= 0)
-			break ;
-		free(tmp_path);
-		tmp_path = generate_tmpfile_path();
-		if (!tmp_path)
-			return (-1);
+		g_ack_status = 1;
+		unlink(h_file->path);
+		free(h_file->path);
+		free(clean_delim);
+		return (NULL);
 	}
-	*path = tmp_path;
-	return (fd);
+	free(clean_delim);
+	close(h_file->fd);
+	return (h_file->path);
 }
 
 char	*run_heredoc(char *delimiter, t_shell *shell)

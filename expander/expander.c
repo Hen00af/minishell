@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 14:30:21 by nando             #+#    #+#             */
-/*   Updated: 2025/08/04 01:02:54 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/04 17:55:24 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ char	*expand_string(char *arg, t_shell *shell, t_expand *ctx)
 	char	*old_out;
 
 	buf_init(&ctx->buf);
-	ctx->output = ft_strdup("");
 	i = 0;
 	while (arg[i])
 		run_expand(arg[i++], shell, ctx);
@@ -50,7 +49,7 @@ char	*expand_string(char *arg, t_shell *shell, t_expand *ctx)
 	}
 	else
 		expanded_tail = remove_quote(tail);
-	old_out = ctx->output;
+	old_out = ft_strdup("");
 	ctx->output = ft_strjoin(old_out, expanded_tail);
 	free(old_out);
 	free(expanded_tail);
