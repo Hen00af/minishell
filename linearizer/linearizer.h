@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:13 by shattori          #+#    #+#             */
-/*   Updated: 2025/08/04 14:37:32 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/04 14:42:22 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ void						free_andor_ast(t_andor *node);
 void						free_redirections(t_list *redir_list);
 void						free_command(void *ptr);
 int							add_redirection(t_command *cmd, t_ast *ast);
-char						**copy_argv(char **argv);
 void						free_redirection_in_command(t_command *cmd,
 								t_redirection *redir, t_list *node,
 								t_list *next);
+char						**copy_argv_line(char **argv);
 #endif // LINEARIZER

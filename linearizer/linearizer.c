@@ -6,13 +6,13 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:37 by shattori          #+#    #+#             */
-/*   Updated: 2025/08/04 14:36:59 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/04 14:42:13 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./linearizer.h"
 
-char	**copy_argv(char **argv)
+char	**copy_argv_line(char **argv)
 {
 	char	**copy;
 	int		i;

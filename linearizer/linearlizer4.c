@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:33:18 by shattori          #+#    #+#             */
-/*   Updated: 2025/08/04 14:24:51 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/04 14:42:36 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_command	*linearize_simple_command_to_command(t_ast *ast, t_shell *shell)
 	cmd = ft_calloc(1, sizeof(t_command));
 	if (!cmd)
 		return (NULL);
-	cmd->argv = copy_argv(ast->argv);
+	cmd->argv = copy_argv_line(ast->argv);
 	if (!cmd->argv && ast->argv)
 	{
 		free_command(cmd);

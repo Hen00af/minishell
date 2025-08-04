@@ -6,13 +6,13 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 17:23:44 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/25 10:00:22 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/04 14:41:20 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-static char	**copy_argv(char **argv, int argc)
+char	**copy_argv(char **argv, int argc)
 {
 	char	**new_argv;
 	int		i;
