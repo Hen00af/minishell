@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 01:07:55 by nando             #+#    #+#             */
-/*   Updated: 2025/07/25 05:52:29 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/04 17:17:54 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 
 void		expand_and_execute(t_andor *linearized_ast, t_shell *shell);
 char		*run_readline(t_shell *shell);
+
 typedef struct s_shell
 {
 	t_env	*env;
