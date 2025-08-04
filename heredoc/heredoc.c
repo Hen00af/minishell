@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/08/04 12:34:53 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:49:12 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,23 +63,19 @@ char	*run_heredoc(char *delimiter, t_shell *shell)
 int	handle_heredoc(t_tmp *ctx, t_command *cmd, t_redirection *redir,
 		t_shell *shell)
 {
-	char	*original_filename;
-
 	if (ctx->flag)
 	{
 		unlink(ctx->file);
-		free(ctx->file);
 		if (cmd->heredoc_filename)
 		{
 			free(cmd->heredoc_filename);
 			cmd->heredoc_filename = NULL;
 		}
 	}
-	original_filename = redir->filename;
 	ctx->file = run_heredoc(redir->filename, shell);
 	if (!ctx->file)
 		return (0);
-	free(original_filename);
+	free(redir->filename);
 	redir->filename = NULL;
 	cmd->heredoc_filename = ctx->file;
 	ctx->flag = 1;
