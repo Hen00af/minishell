@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 05:50:48 by nando             #+#    #+#             */
-/*   Updated: 2025/08/04 13:21:48 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/04 14:37:22 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,24 +83,6 @@ static void	free_command_list(t_list *cmd_list)
 		}
 		free(cmd_list);
 		cmd_list = next;
-	}
-}
-
-void	free_redirection_in_command(t_command *cmd, t_redirection *redir,
-		t_list *node, t_list *next)
-{
-	node = cmd->redirections;
-	while (node)
-	{
-		next = node->next;
-		redir = node->content;
-		if (redir)
-		{
-			free(redir->filename);
-			free(redir);
-		}
-		free(node);
-		node = next;
 	}
 }
 

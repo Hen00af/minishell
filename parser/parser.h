@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 20:32:34 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/28 12:18:17 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/04 14:41:15 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,5 @@ int						append_argv(t_ast *cmd, char *word);
 t_ast					*create_empty_command(t_token *cur);
 t_ast					*parse_simple_command(t_token **cur);
 int						is_redirection_token(t_token *tok);
+char					**copy_argv(char **argv, int argc);
 #endif
