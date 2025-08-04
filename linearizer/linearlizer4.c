@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linearlizer4.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:33:18 by shattori          #+#    #+#             */
-/*   Updated: 2025/08/04 18:48:26 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/04 19:50:46 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,6 @@ void	flatten_pipeline(t_ast *node, t_pipeline *pipeline, t_shell *shell)
 	}
 }
 
-// void free_command_and_pipe()
-// {
-	
-// }
-
 t_andor	*linearize_subshell(t_ast *ast, t_shell *shell)
 {
 	t_command	*cmd;
@@ -123,18 +118,10 @@ t_andor	*linearize_subshell(t_ast *ast, t_shell *shell)
 	}
 	pipeline->commands = ft_lstnew(cmd);
 	if (!pipeline->commands)
-	{
-		free_command(cmd);
-		free(pipeline);
-		return (NULL);
-	}
+		return (linearize_free_simple_command(cmd, pipeline));
 	andor = ft_calloc(1, sizeof(t_andor));
 	if (!andor)
-	{
-		free_command(cmd);
-		free(pipeline);
-		return (NULL);
-	}
+		return (linearize_free_simple_command(cmd, pipeline));
 	andor->type = ANDOR_PIPELINE;
 	andor->pipeline = pipeline;
 	return (andor);

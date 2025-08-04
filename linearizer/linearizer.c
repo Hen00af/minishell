@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linearizer.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:37 by shattori          #+#    #+#             */
-/*   Updated: 2025/08/04 18:48:28 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/04 19:46:43 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,7 @@ char	**copy_argv_line(char **argv)
 		copy[i] = ft_strdup(argv[i]);
 		if (!copy[i])
 		{
-			while (--i >= 0)
-				free(copy[i]);
-			free(copy);
+			free_split(copy);
 			return (NULL);
 		}
 		i++;
@@ -60,13 +58,10 @@ int	add_redirection(t_command *cmd, t_ast *ast)
 			return (0);
 		}
 	}
-	else
-		redir->filename = NULL;
 	redir_node = ft_lstnew(redir);
 	if (!redir_node)
 	{
-		if (redir->filename)
-			free(redir->filename);
+		free(redir->filename);
 		free(redir);
 		return (0);
 	}
