@@ -16,9 +16,8 @@ int	add_history_and_parse(t_token *lex, t_shell *shell, char *cmd, t_ast **ast)
 {
 	has_syntax_error(lex, shell);
 	if (shell->exit_status == 258)
-		add_history(cmd);
-	if (shell->exit_status == 258)
 	{
+		add_history(cmd);
 		free_tokens(lex);
 		shell->exit_status = 2;
 		return (-1);
