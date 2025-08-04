@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 12:54:02 by nando             #+#    #+#             */
-/*   Updated: 2025/08/01 19:18:06 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/04 12:35:05 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HEREDOC_H
 # define HEREDOC_H
 
-//# include "../linearizer/linearizer.h"
 # include "../minishell.h"
 # include <stdbool.h>
 
