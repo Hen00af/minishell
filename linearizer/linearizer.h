@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linearizer.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:14:13 by shattori          #+#    #+#             */
-/*   Updated: 2025/08/04 18:49:00 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/04 19:49:11 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,6 @@ void						free_redirection_in_command(t_command *cmd,
 								t_redirection *redir, t_list *node,
 								t_list *next);
 char						**copy_argv_line(char **argv);
+t_andor						*linearize_free_simple_command(t_command *cmd,
+								t_pipeline *pipeline);
 #endif // LINEARIZER
