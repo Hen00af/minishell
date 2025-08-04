@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:40:32 by nando             #+#    #+#             */
-/*   Updated: 2025/08/04 18:00:32 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/04 19:32:59 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,13 +110,13 @@ char	*expand_wild_card(char *arg, t_expand *ctx)
 	free_file_list(files);
 	if (!match_files)
 		return (ft_strdup(arg));
+	ctx->wild_flag = 1;
 	if (match_files->next == NULL)
 	{
 		single_result = ft_strdup(match_files->name);
 		free_file_list(match_files);
 		return (single_result);
 	}
-	ctx->wild_flag = 1;
 	sort_files(match_files);
 	joined = join_files(match_files);
 	free_file_list(match_files);
