@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/08/01 19:20:46 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/04 12:34:53 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,16 +63,25 @@ char	*run_heredoc(char *delimiter, t_shell *shell)
 int	handle_heredoc(t_tmp *ctx, t_command *cmd, t_redirection *redir,
 		t_shell *shell)
 {
+	char	*original_filename;
+
 	if (ctx->flag)
 	{
 		unlink(ctx->file);
 		free(ctx->file);
-		free(cmd->heredoc_filename);
+		if (cmd->heredoc_filename)
+		{
+			free(cmd->heredoc_filename);
+			cmd->heredoc_filename = NULL;
+		}
 	}
+	original_filename = redir->filename;
 	ctx->file = run_heredoc(redir->filename, shell);
 	if (!ctx->file)
 		return (0);
-	cmd->heredoc_filename = ft_strdup(ctx->file);
+	free(original_filename);
+	redir->filename = NULL;
+	cmd->heredoc_filename = ctx->file;
 	ctx->flag = 1;
 	return (1);
 }
@@ -95,13 +104,11 @@ void	process_heredoc(t_command *cmd, t_shell *shell)
 		{
 			if (!handle_heredoc(&ctx, cmd, redir, shell))
 			{
-				if (ctx.flag)
+				if (ctx.flag && ctx.file)
 					free(ctx.file);
 				return ;
 			}
 		}
 		redir_list = redir_list->next;
 	}
-	if (ctx.flag)
-		free(ctx.file);
 }

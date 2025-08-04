@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 05:50:48 by nando             #+#    #+#             */
-/*   Updated: 2025/08/01 16:31:09 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/04 13:21:48 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@
 
 #include "linearizer.h"
 
-static void	free_redirections(t_list *redir_list)
+void	free_redirections(t_list *redir_list)
 {
 	t_list			*next;
 	t_redirection	*redir;
 
+	printf("free_redirections: start\n");
 	while (redir_list)
 	{
 		next = redir_list->next;
@@ -32,18 +33,35 @@ static void	free_redirections(t_list *redir_list)
 		if (redir)
 		{
 			if (redir->filename)
+			{
+				printf("free_redirections: freeing filename='%s'\n",
+					redir->filename);
 				free(redir->filename);
+			}
 			free(redir);
 		}
 		free(redir_list);
 		redir_list = next;
 	}
+	printf("free_redirections: end\n");
+}
+
+static void	free_command_list2(t_command *cmd)
+{
+	if (cmd->subshell_ast)
+		free_andor_ast(cmd->subshell_ast);
+	if (cmd->redirections)
+		free_redirections(cmd->redirections);
+	if (cmd->heredoc_filename)
+		free(cmd->heredoc_filename);
+	free(cmd);
 }
 
 static void	free_command_list(t_list *cmd_list)
 {
 	t_list		*next;
 	t_command	*cmd;
+	int			i;
 
 	while (cmd_list)
 	{
@@ -51,17 +69,65 @@ static void	free_command_list(t_list *cmd_list)
 		cmd = cmd_list->content;
 		if (cmd)
 		{
-			if (cmd->subshell_ast)
-				free_andor_ast(cmd->subshell_ast);
-			if (cmd->redirections)
-				free_redirections(cmd->redirections);
-			if (cmd->heredoc_filename)
-				free(cmd->heredoc_filename);
-			free(cmd);
+			if (cmd->argv)
+			{
+				i = 0;
+				while (cmd->argv[i])
+				{
+					free(cmd->argv[i]);
+					i++;
+				}
+				free(cmd->argv);
+			}
+			free_command_list2(cmd);
 		}
 		free(cmd_list);
 		cmd_list = next;
 	}
+}
+
+void	free_redirection_in_command(t_command *cmd, t_redirection *redir,
+		t_list *node, t_list *next)
+{
+	node = cmd->redirections;
+	while (node)
+	{
+		next = node->next;
+		redir = node->content;
+		if (redir)
+		{
+			free(redir->filename);
+			free(redir);
+		}
+		free(node);
+		node = next;
+	}
+}
+
+void	free_command(void *ptr)
+{
+	t_command		*cmd;
+	t_list			*node;
+	t_list			*next;
+	t_redirection	*redir;
+
+	cmd = (t_command *)ptr;
+	redir = NULL;
+	next = NULL;
+	if (!cmd)
+		return ;
+	if (cmd->argv)
+		free_split(cmd->argv);
+	if (cmd->redirections)
+	{
+		node = cmd->redirections;
+		while (node)
+			free_redirection_in_command(cmd, redir, node, next);
+	}
+	free(cmd->heredoc_filename);
+	if (cmd->subshell_ast)
+		free_andor_ast(cmd->subshell_ast);
+	free(cmd);
 }
 
 void	free_andor_ast(t_andor *node)
