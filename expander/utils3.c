@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 17:12:10 by nando             #+#    #+#             */
-/*   Updated: 2025/08/04 17:55:03 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/04 19:37:13 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ void	create_new_args(t_expand *ctx, t_command *cmd, int i)
 
 void	generate_wildcard_matches(t_expand *ctx, t_command *cmd, int *i)
 {
+	int	j;
+
 	ctx->split_words = ft_split(ctx->expanded, " ");
 	ctx->count_av = count_args(cmd->argv);
 	ctx->count_sw = count_args(ctx->split_words);
@@ -82,6 +84,13 @@ void	generate_wildcard_matches(t_expand *ctx, t_command *cmd, int *i)
 				+ 1));
 	create_new_args(ctx, cmd, *i);
 	*i = ctx->expand_point;
+	j = 0;
+	while (cmd->argv && cmd->argv[j])
+	{
+		free(cmd->argv[j]);
+		j++;
+	}
+	free(cmd->argv);
 	cmd->argv = ctx->new_argv;
 	free_args(ctx->split_words);
 	free(ctx->expanded);
