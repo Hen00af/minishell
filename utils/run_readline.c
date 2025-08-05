@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 05:32:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/08/03 21:28:32 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/05 16:09:40 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ static char	*get_input_line(t_shell *shell)
 	{
 		cwd = getcwd(NULL, 0);
 		if (!cwd)
+		{
+			ft_fprintf(2, "You deleted the directory you’re currently in.\n");
 			return (NULL);
+		}
 		prompt = ft_strjoin(cwd, " $ ");
 		free(cwd);
 		if (!prompt)
