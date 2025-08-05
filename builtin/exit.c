@@ -6,7 +6,7 @@
 /*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 15:28:33 by nando             #+#    #+#             */
-/*   Updated: 2025/08/03 21:10:35 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/05 14:35:07 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static int	is_numeric(const char *str)
 	int	i;
 
 	i = 0;
+	if()
 	if (str[0] == '-' || str[0] == '+')
 		i++;
 	while (str[i])
@@ -58,6 +59,12 @@ int	builtin_exit(char **args, t_shell *shell)
 
 	count = count_args(args);
 	ft_printf("exit\n");
+	if (!is_numeric(args[1]))
+	{
+		ft_fprintf(2, "minishell: exit: %s: numeric argument required\n",
+			args[1]);
+		safe_exit_builtin(shell, args, 2);
+	}
 	if (count > 2)
 	{
 		ft_fprintf(2, "minishell: exit: too many arguments\n");
@@ -65,12 +72,6 @@ int	builtin_exit(char **args, t_shell *shell)
 	}
 	else if (count == 1)
 		safe_exit_builtin(shell, args, 0);
-	if (!is_numeric(args[1]))
-	{
-		ft_fprintf(2, "minishell: exit: %s: numeric argument required\n",
-			args[1]);
-		safe_exit_builtin(shell, args, 2);
-	}
 	status = ft_atoi(args[1]) % 256;
 	if (status < 0)
 		status += 256;
