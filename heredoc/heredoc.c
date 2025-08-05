@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/08/04 17:13:30 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/05 15:07:39 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ char	*finalize_heredoc(pid_t pid, t_heredoc_file *h_file,
 	{
 		g_ack_status = 1;
 		unlink(h_file->path);
+		close(h_file->fd);
 		free(h_file->path);
 		free(clean_delim);
 		return (NULL);

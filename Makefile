@@ -6,12 +6,12 @@
 #    By: shattori <shattori@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/25 06:16:56 by shattori          #+#    #+#              #
-#    Updated: 2025/08/04 21:36:00 by shattori         ###   ########.fr        #
+#    Updated: 2025/08/05 15:04:35 by shattori         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC      := cc
-CFLAGS  := -Wall -Wextra -Werror -O2 
+CFLAGS  := -Wall -Wextra -Werror -O2 -g
 INCLUDES := -Iinclude
 
 LIBFT_DIR := ./libft
