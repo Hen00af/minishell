@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/08/05 15:07:39 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/05 16:46:30 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,10 @@ int	handle_heredoc(t_tmp *ctx, t_command *cmd, t_redirection *redir,
 	}
 	ctx->file = run_heredoc(redir->filename, shell);
 	if (!ctx->file)
+	{
+		shell->exit_status = 130;
 		return (0);
+	}
 	free(redir->filename);
 	redir->filename = NULL;
 	cmd->heredoc_filename = ctx->file;
