@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 22:34:59 by nando             #+#    #+#             */
-/*   Updated: 2025/08/05 16:46:30 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/08 16:00:04 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "heredoc.h"
 
-void	child_heredoc_process(int fd, char *delimiter, int expand,
-		t_shell *shell)
+void	child_heredoc_process(t_heredoc_file h_file, char *delimiter,
+		int expand, t_shell *shell)
 {
-	write_heredoc_lines(fd, delimiter, expand, shell);
-	close(fd);
+	write_heredoc_lines(h_file, delimiter, expand, shell);
+	close(h_file.fd);
 	free(delimiter);
 	_exit(0);
 }
@@ -63,7 +63,7 @@ char	*run_heredoc(char *delimiter, t_shell *shell)
 	else if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
-		child_heredoc_process(h_file.fd, clean_delim, !is_quoted, shell);
+		child_heredoc_process(h_file, clean_delim, !is_quoted, shell);
 	}
 	return (finalize_heredoc(pid, &h_file, &old, clean_delim));
 }
