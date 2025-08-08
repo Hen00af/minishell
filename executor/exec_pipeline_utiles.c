@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 14:48:28 by shattori          #+#    #+#             */
-/*   Updated: 2025/08/01 14:48:39 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/08 16:19:44 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	exec_single_command(t_list *cmd_list, t_exec *exec, t_shell *shell)
 
 	cmd = cmd_list->content;
 	if (cmd->subshell_ast)
-		return (exec_subshell(cmd, shell, &exec->old));
+		return (exec_subshell(cmd, shell, &exec->old, exec));
 	else if (cmd->argv && cmd->argv[0] && is_builtin(cmd->argv[0]))
 		return (exec_single_builtin(cmd, exec, shell));
 	return (exec_pipeline_loop(cmd_list, exec, shell));

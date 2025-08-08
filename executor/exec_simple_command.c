@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:50:34 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/31 22:54:17 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/08 16:24:33 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-int	exec_subshell(t_command *cmd, t_shell *shell, struct sigaction *old)
+int	exec_subshell(t_command *cmd, t_shell *shell, struct sigaction *old,
+		t_exec *exec)
 {
 	pid_t	pid;
 	int		status;
@@ -24,6 +25,8 @@ int	exec_subshell(t_command *cmd, t_shell *shell, struct sigaction *old)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
+		close(exec->in);
+		close(exec->out);
 		exit(executor(cmd->subshell_ast, shell));
 	}
 	waitpid(pid, &status, 0);

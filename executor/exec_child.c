@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 17:44:15 by shattori          #+#    #+#             */
-/*   Updated: 2025/08/05 14:56:33 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/08 16:20:45 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,13 @@ int	exec_child_process(t_exec *exec, t_command *cmd, t_shell *shell,
 		sigemptyset(&sa.sa_mask);
 		sigaction(SIGQUIT, &sa, NULL);
 		exec_close_fd(exec, has_next);
-		restore_std_fds(exec);
+		// restore_std_fds(exec);
+		close(exec->in);
+		close(exec->out);
 		if (!g_ack_status)
 			handle_redirections(cmd);
 		if (cmd->subshell_ast)
-			exit(exec_subshell(cmd, shell, NULL));
+			exit(exec_subshell(cmd, shell, NULL, exec));
 		else if (is_builtin(cmd->argv[0]))
 			exit(exec_builtin(cmd->argv, shell));
 		else

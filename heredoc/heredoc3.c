@@ -3,20 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 17:00:40 by nando             #+#    #+#             */
-/*   Updated: 2025/08/04 17:13:23 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/08 16:11:28 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "heredoc.h"
 
-void	write_heredoc_lines(int fd, char *clean_delimiter, int need_expand,
-		t_shell *shell)
+void	write_heredoc_lines(t_heredoc_file h_file, char *clean_delimiter,
+		int need_expand, t_shell *shell)
 {
 	char	*line;
+	int		fd;
 
+	close(h_file.fd);
 	while (1)
 	{
 		line = readline("> ");
@@ -32,8 +34,11 @@ void	write_heredoc_lines(int fd, char *clean_delimiter, int need_expand,
 		}
 		if (need_expand)
 			line = expand_variables(line, shell);
+		printf("%s\n", h_file.path);
+		fd = open(h_file.path, O_WRONLY | O_APPEND);
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
+		close(fd);
 		free(line);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 12:54:02 by nando             #+#    #+#             */
-/*   Updated: 2025/08/04 12:35:05 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/08 16:04:02 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,12 @@ char							*append_str(char *dst, const char *src);
 char							*build_tmp_path(const char *count_str);
 char							*generate_tmpfile_path(void);
 int								is_include_quote(char *delimiter);
-void							write_heredoc_lines(int fd,
+void							write_heredoc_lines(t_heredoc_file h_file,
 									char *clean_delimiter, int need_expand,
 									t_shell *shell);
-void							child_heredoc_process(int fd, char *delimiter,
-									int expand, t_shell *shell);
+void							child_heredoc_process(t_heredoc_file h_file,
+									char *delimiter, int expand,
+									t_shell *shell);
 char							*handle_fork_error(int fd, char *delimiter,
 									char *path);
 t_heredoc_file					open_and_prepare_file(char *delimiter,
@@ -53,4 +54,5 @@ t_command						*handle_redir_node(t_ast *ast, t_shell *shell);
 char							*finalize_heredoc(pid_t pid,
 									t_heredoc_file *h_file,
 									struct sigaction *old, char *clean_delim);
+
 #endif
