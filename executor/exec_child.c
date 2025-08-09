@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   exec_child.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 17:44:15 by shattori          #+#    #+#             */
-/*   Updated: 2025/08/08 16:20:45 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/09 12:36:07 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
+
+static void	close_fd_exec_in_out(t_exec *exec)
+{
+	close(exec->in);
+	close(exec->out);
+}
 
 void	core_dumped_out(int sig, siginfo_t *info, void *context)
 {
@@ -52,9 +58,7 @@ int	exec_child_process(t_exec *exec, t_command *cmd, t_shell *shell,
 		sigemptyset(&sa.sa_mask);
 		sigaction(SIGQUIT, &sa, NULL);
 		exec_close_fd(exec, has_next);
-		// restore_std_fds(exec);
-		close(exec->in);
-		close(exec->out);
+		close_fd_exec_in_out(exec);
 		if (!g_ack_status)
 			handle_redirections(cmd);
 		if (cmd->subshell_ast)

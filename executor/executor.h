@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 17:18:58 by shattori          #+#    #+#             */
-/*   Updated: 2025/08/08 16:20:33 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/09 12:34:06 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,12 @@ char							*ft_strjoin_path(char *dir, char *file);
 int								env_size(t_env *env);
 char							*ft_strjoin_3(char *s1, char *s2, char *s3);
 char							*search_path(char *cmd, t_env *env);
-int								exec_simple_command(t_command *cmd,
-									t_shell *shell, t_exec *exec);
 int								exec_subshell(t_command *cmd, t_shell *shell,
 									struct sigaction *old, t_exec *exec);
 void							handle_redirections(t_command *cmd);
 int								handle_redirections_builtin(t_command *cmd);
-int								open_redirection_file_builtin(t_redirection *redir,
+int								open_redirection_file_builtin(
+									t_redirection *redir,
 									char *last_tmpfile);
 int								apply_redirection_builtin(int fd, int type);
 int								is_builtin(const char *cmd);
