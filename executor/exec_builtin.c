@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:55:03 by shattori          #+#    #+#             */
-/*   Updated: 2025/07/30 07:28:39 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/09 12:57:35 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	exec_single_builtin(t_command *cmd, t_exec *exec, t_shell *shell)
 		dup2(exec->out, STDOUT_FILENO);
 		return (1);
 	}
+	restore_std_fds(exec);
 	shell->exit_status = exec_builtin(cmd->argv, shell);
 	dup2(exec->in, STDIN_FILENO);
 	dup2(exec->out, STDOUT_FILENO);
