@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
+/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 17:00:40 by nando             #+#    #+#             */
-/*   Updated: 2025/08/09 12:30:34 by nando            ###   ########.fr       */
+/*   Updated: 2025/08/09 13:21:28 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	write_heredoc_lines(t_heredoc_file h_file, char *clean_delimiter,
 		}
 		if (need_expand)
 			line = expand_variables(line, shell);
-		printf("%s\n", h_file.path);
 		fd = open(h_file.path, O_WRONLY | O_APPEND);
 		write_one_line(fd, line);
 		close(fd);

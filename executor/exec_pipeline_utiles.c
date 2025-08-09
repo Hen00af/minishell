@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 14:48:28 by shattori          #+#    #+#             */
-/*   Updated: 2025/08/08 16:19:44 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/09 13:16:01 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,8 @@ int	save_std_fds(t_exec *exec)
 
 int	restore_std_fds(t_exec *exec)
 {
-	if (dup2(exec->in, STDIN_FILENO) == -1)
-		perror("dup2 in");
-	if (dup2(exec->out, STDOUT_FILENO) == -1)
-		perror("dup2 out");
+	dup2(exec->in, STDIN_FILENO);
+	dup2(exec->out, STDOUT_FILENO);
 	close(exec->in);
 	close(exec->out);
 	return (0);
