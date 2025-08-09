@@ -6,7 +6,7 @@
 /*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 14:24:41 by shattori          #+#    #+#             */
-/*   Updated: 2025/08/09 12:52:54 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/09 13:03:46 by shattori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@ int	exec_pipeline(t_pipeline *pipeline, t_shell *shell)
 
 	sigaction(SIGINT, NULL, &exec.old);
 	if (save_std_fds(&exec))
-	{
-		printf("\n\n\n\n");
 		return (1);
-	}
 	exec.prev_fd = -1;
 	signal(SIGINT, SIG_IGN);
 	cmd_list = pipeline->commands;
