@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shattori <shattori@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nando <nando@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 15:28:33 by nando             #+#    #+#             */
-/*   Updated: 2025/08/09 12:58:03 by shattori         ###   ########.fr       */
+/*   Updated: 2025/08/24 11:48:54 by nando            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,14 @@ static int	is_numeric(const char *str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	if (str[0] == '-' || str[0] == '+')
+	{
+		if (str[1] == '\0')
+			return (0);
 		i++;
+	}
 	while (str[i])
 	{
 		if (!ft_isdigit(str[i]))
@@ -58,19 +64,19 @@ int	builtin_exit(char **args, t_shell *shell)
 
 	count = count_args(args);
 	ft_printf("exit\n");
-	if (!is_numeric(args[1]))
+	if (count == 1)
+		safe_exit_builtin(shell, args, 0);
+	else if (!is_numeric(args[1]))
 	{
 		ft_fprintf(2, "minishell: exit: %s: numeric argument required\n",
 			args[1]);
 		safe_exit_builtin(shell, args, 2);
 	}
-	if (count > 2)
+	else if (count > 2)
 	{
 		ft_fprintf(2, "minishell: exit: too many arguments\n");
 		return (1);
 	}
-	else if (count == 1)
-		safe_exit_builtin(shell, args, 0);
 	status = ft_atoi(args[1]) % 256;
 	if (status < 0)
 		status += 256;
