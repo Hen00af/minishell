@@ -2,4 +2,9 @@
 
 this is a project making bash like program.
 
-this include function to deal these 
+this include function to deal these builtin command 
+"cd"
+"pwd"
+"env"
+"echo" with option "-n"
+"
