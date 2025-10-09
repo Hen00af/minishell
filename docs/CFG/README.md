@@ -50,11 +50,3 @@ REDIR       → '<' WORD
 SIMPLE      → WORD WORD*
 
 SUBSHELL    → '(' AND_OR ')'
-```
-🧩 Visualizer
-
-CFG Visualizer:
-👉 https://github.com/Hen00af/minishell.com/docs/CFG/visuallizer
-
-More details and notes on the grammar can be found in the Wiki:
-👉 https://github.com/Hen00af/minishell.com/wiki/Context-Free-Grammar
