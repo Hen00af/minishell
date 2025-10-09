@@ -6,7 +6,7 @@ this include function to deal options
 
 these builtin command 
 
-```
+```sh
 "cd"
     change directry
 "pwd"
@@ -24,7 +24,7 @@ these builtin command
 these syntax with ast(absolute struct tree)
 ```
 and these syntax.
-```
+```sh
 "|"
     connect stdout of left command to stdin of right command (pipe)
 "<"
