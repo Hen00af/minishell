@@ -4,7 +4,7 @@ this is a project making bash like program in C, but it's minimum.
 
 this include function to deal options
 
-these builtin command 
+## these builtin command 
 
 ```sh
 "cd"
@@ -23,7 +23,7 @@ these builtin command
     unset args to environment argument
 these syntax with ast(absolute struct tree)
 ```
-and these syntax.
+## and these syntax.
 ```sh
 "|"
     connect stdout of left command to stdin of right command (pipe)
@@ -45,6 +45,38 @@ and these syntax.
     match multiple filenames (wildcard / glob)
 ```
 
-for making this, I made "Context-free Grammar"(CFG)
-about it
-[CFG] [https://github.com/Hen00af/docs/CFG/](https://github.com/Hen00af/minishell/tree/main/docs/CFG)
+## About the Grammar (CFG)
+
+This shell is built around a Context-Free Grammar (CFG),
+which defines how commands and operators combine to form valid shell expressions.
+
+You can view the full CFG and visualize how it constructs an AST (Abstract Syntax Tree) here:
+
+📘 Source Code: github.com/Hen00af/ast_visualizer
+
+🌐 Live Visualizer: hen00af.github.io/ast_visualizer
+
+Concept
+
+“As beautiful as a shell.”
+
+The project aims to express the structural beauty of shells —
+combining recursion, logic, and minimalism into a single, elegant design.
+
+💻 Built With
+
+C (Standard 42 project style)
+
+Manual memory management (no external libs)
+
+Recursive descent parser
+
+AST-based execution logic
+
+## How to Build
+git clone https://github.com/Hen00af/minishell.git
+cd minishell
+make && ./minishell
+
+
+Then, you can start playing with your own Minishell 🎮
