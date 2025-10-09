@@ -47,4 +47,4 @@ and these syntax.
 
 for making this, I made "Context-free Grammar"(CFG)
 about it
-[CFG] https://github.com/Hen00af/docs/CFG/
+[CFG] [https://github.com/Hen00af/docs/CFG/](https://github.com/Hen00af/minishell/tree/main/docs/CFG)
