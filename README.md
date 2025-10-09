@@ -74,9 +74,10 @@ Recursive descent parser
 AST-based execution logic
 
 ## How to Build
+'''sh
 git clone https://github.com/Hen00af/minishell.git
 cd minishell
 make && ./minishell
-
+'''
 
 Then, you can start playing with your own Minishell 🎮
