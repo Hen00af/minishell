@@ -23,7 +23,7 @@ these builtin command
     unset args to environment argument
 these syntax with ast(absolute struct tree)
 ```
-
+and these syntax.
 ```
 "|"
     connect stdout of left command to stdin of right command (pipe)
@@ -47,4 +47,4 @@ these syntax with ast(absolute struct tree)
 
 for making this, I made "Context-free Grammar"(CFG)
 about it
-[CFG] https://github.com/Hen00af/
+[CFG] https://github.com/Hen00af/docs/CFG/
