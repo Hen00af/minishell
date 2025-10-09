@@ -1,0 +1,29 @@
+body {
+  font-family: monospace;
+  background-color: #0d1117;
+  color: #e6edf3;
+  text-align: center;
+  padding: 20px;
+}
+
+input {
+  width: 60%;
+  padding: 8px;
+  margin-right: 8px;
+  border-radius: 4px;
+  border: none;
+}
+
+button {
+  padding: 8px 12px;
+  background: #238636;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+svg {
+  margin-top: 20px;
+  background-color: #161b22;
+  border-radius: 10px;
+}
