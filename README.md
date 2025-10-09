@@ -52,7 +52,7 @@ which defines how commands and operators combine to form valid shell expressions
 
 You can view the full CFG and visualize how it constructs an AST (Abstract Syntax Tree) here:
 
-##### 📘 Source Code: [https://github.com/Hen00af/ast_visualizer]
+##### 📘 Source Code and Explanation: https://github.com/Hen00af/ast_visualizer
 
 ##### 🌐 Live Visualizer:[https://hen00af.github.io/ast_visualizer]
 
